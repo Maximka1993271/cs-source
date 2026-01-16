@@ -104,14 +104,80 @@ body, html {
 .plugin-item {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem; color: var(--c-blue);
-    opacity: 0; transform: translateX(30px);
+    opacity: 0; 
+    transform: translateY(-30px); /* старт сверху */
     animation: pluginAppear 0.5s forwards;
     white-space: nowrap;
+    cursor: pointer; /* Делаем курсор рукой */
+    transition: all 0.2s ease;
+}
+
+.plugin-item:hover {
+    color: var(--c-orange);
+    transform: scale(1.05) translateX(5px);
+    text-shadow: 0 0 8px var(--c-orange);
 }
 
 @keyframes pluginAppear {
-    to { opacity: 1; transform: translateX(0); }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); /* приземление на место */
+    }
 }
+
+/* МОДАЛЬНОЕ ОКНО ИНФОРМАЦИИ */
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background: var(--glass);
+    border: 1px solid var(--c-blue);
+    width: 600px;
+    padding: 30px;
+    font-family: 'JetBrains Mono', monospace;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.15);
+    position: relative;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--c-blue);
+    font-weight: 900;
+}
+
+.modal-body {
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.modal-footer {
+    margin-top: 25px;
+    font-size: 0.7rem;
+    color: #444;
+    letter-spacing: 1px;
+}
+
+.close-btn {
+    background: none; border: none;
+    color: var(--c-orange);
+    font-family: 'Orbitron';
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.close-btn:hover { color: #fff; }
 
 /* ИНДИКАТОРЫ СЛЕВА */
 .v-bar { height: 250px; width: 4px; background: #111; position: relative; margin-top: 10px; }

@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS CORE | THE OVERWATCH NEXUS</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
@@ -43,7 +42,6 @@
 
                 <div class="action-portal">
                     <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-overwatch">
-                        <span class="btn-edge-decoration"></span>
                         <div class="btn-inner">
                             <span class="btn-subtext">INITIATE FILE TRANSFER</span>
                             <span class="btn-main-text">DOWNLOAD</span>
@@ -54,8 +52,7 @@
             </section>
 
             <aside class="side-panel right-panel">
-                <div class="log-terminal" id="log-stream">
-                    </div>
+                <div class="log-terminal" id="log-stream"></div>
             </aside>
         </main>
 
@@ -63,6 +60,21 @@
             <div class="author-credits">CORE_ENGINEER: MAXIM MELNIKOV</div>
             <div class="legal-credits">© 2026 BLACK MESA & COMBINE TECHNOLOGY</div>
         </footer>
+    </div>
+
+    <div id="plugin-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modal-title">SYSTEM_DATA</span>
+                <button onclick="closeModal()" class="close-btn">[X]</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-text">SELECT_PLUGIN_FOR_DETAILS</p>
+            </div>
+            <div class="modal-footer">
+                CORE_ACCESS: AUTHORIZED // ENGINEER: MAXIM MELNIKOV
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
