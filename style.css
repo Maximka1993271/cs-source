@@ -1,5 +1,4 @@
-/* CSS CORE - MASSIVE DESIGN
-   AUTHOR: MAXIM MELNIKOV */
+/* CSS CORE - MASSIVE DESIGN // AUTHOR: MAXIM MELNIKOV */
 
 :root {
     --c-blue: #00d4ff;
@@ -70,10 +69,20 @@ body, html {
 
 .giant-header span { color: var(--c-orange); text-shadow: 0 0 50px rgba(255, 157, 0, 0.4); }
 
+/* АНИМИРОВАННАЯ ПОЛОСКА (INDUSTRIAL HAZARD) */
 .industrial-hazard {
     width: 250px; height: 6px;
-    background: repeating-linear-gradient(90deg, var(--c-orange), var(--c-orange) 25px, #000 25px, #000 50px);
     margin: 40px auto;
+    position: relative;
+    overflow: hidden;
+    background: repeating-linear-gradient(90deg, var(--c-orange), var(--c-orange) 25px, #000 25px, #000 50px);
+    background-size: 50px 100%;
+    animation: hazardMove 1s linear infinite;
+}
+
+@keyframes hazardMove {
+    from { background-position: 0 0; }
+    to { background-position: 50px 0; }
 }
 
 /* КНОПКА */
@@ -105,81 +114,40 @@ body, html {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem; color: var(--c-blue);
     opacity: 0; 
-    transform: translateY(-30px); /* старт сверху */
+    transform: translateY(-30px);
     animation: pluginAppear 0.5s forwards;
     white-space: nowrap;
-    cursor: pointer; /* Делаем курсор рукой */
-    transition: all 0.2s ease;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .plugin-item:hover {
     color: var(--c-orange);
-    transform: scale(1.05) translateX(5px);
-    text-shadow: 0 0 8px var(--c-orange);
+    transform: translateX(5px);
 }
 
 @keyframes pluginAppear {
-    to { 
-        opacity: 1; 
-        transform: translateY(0); /* приземление на место */
-    }
+    to { opacity: 1; transform: translateY(0); }
 }
-
-/* МОДАЛЬНОЕ ОКНО ИНФОРМАЦИИ */
-.modal-overlay {
-    display: none; /* Скрыто по умолчанию */
-    position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 9999;
-    justify-content: center; align-items: center;
-    backdrop-filter: blur(10px);
-}
-
-.modal-content {
-    background: var(--glass);
-    border: 1px solid var(--c-blue);
-    width: 600px;
-    padding: 30px;
-    font-family: 'JetBrains Mono', monospace;
-    box-shadow: 0 0 50px rgba(0, 212, 255, 0.15);
-    position: relative;
-}
-
-.modal-header {
-    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--c-blue);
-    font-weight: 900;
-}
-
-.modal-body {
-    color: #ccc;
-    line-height: 1.6;
-    font-size: 0.9rem;
-}
-
-.modal-footer {
-    margin-top: 25px;
-    font-size: 0.7rem;
-    color: #444;
-    letter-spacing: 1px;
-}
-
-.close-btn {
-    background: none; border: none;
-    color: var(--c-orange);
-    font-family: 'Orbitron';
-    cursor: pointer;
-    font-weight: 900;
-}
-
-.close-btn:hover { color: #fff; }
 
 /* ИНДИКАТОРЫ СЛЕВА */
 .v-bar { height: 250px; width: 4px; background: #111; position: relative; margin-top: 10px; }
 .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); }
 .gauge-label { font-size: 0.6rem; color: #333; }
+
+/* МОДАЛЬНОЕ ОКНО */
+.modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.85); z-index: 1000;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background: var(--glass); border: 1px solid var(--c-blue);
+    width: 500px; padding: 30px; font-family: 'JetBrains Mono';
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
+}
+
+.modal-header { display: flex; justify-content: space-between; color: var(--c-blue); border-bottom: 1px solid rgba(0,212,255,0.2); padding-bottom: 10px; margin-bottom: 15px; }
+.close-btn { background: none; border: none; color: var(--c-orange); cursor: pointer; font-weight: 900; font-family: 'Orbitron'; }
