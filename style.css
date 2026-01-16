@@ -18,7 +18,6 @@ body, html {
     overflow: hidden;
 }
 
-/* ФОН */
 .citadel-background {
     position: fixed; inset: 0; z-index: -1;
     background: url('https://i.imgur.com/kS5x8A4.jpg') center center / cover no-repeat;
@@ -32,7 +31,6 @@ body, html {
     opacity: 0.2;
 }
 
-/* ИНТЕРФЕЙС */
 .terminal-master-frame {
     display: flex; flex-direction: column;
     height: 100vh; padding: 0 60px;
@@ -46,6 +44,13 @@ body, html {
     letter-spacing: 2px; color: #444;
 }
 
+/* ЦВЕТ ЧАСОВ И ДАТЫ */
+.clock-highlight {
+    color: var(--c-blue) !important;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    font-weight: bold;
+}
+
 .bottom-system-hud { border-top: 1px solid rgba(0, 212, 255, 0.1); border-bottom: none; }
 .center-hud { color: var(--c-blue); font-weight: 900; }
 
@@ -54,7 +59,6 @@ body, html {
     align-items: center; gap: 40px;
 }
 
-/* ЛОГОТИП */
 .main-monolith { text-align: center; position: relative; }
 .lambda-background {
     position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
@@ -69,7 +73,6 @@ body, html {
 
 .giant-header span { color: var(--c-orange); text-shadow: 0 0 50px rgba(255, 157, 0, 0.4); }
 
-/* АНИМИРОВАННАЯ ПОЛОСКА (INDUSTRIAL HAZARD) */
 .industrial-hazard {
     width: 250px; height: 6px;
     margin: 40px auto;
@@ -85,7 +88,6 @@ body, html {
     to { background-position: 50px 0; }
 }
 
-/* КНОПКА */
 .btn-overwatch {
     display: inline-block; padding: 45px 160px;
     background: var(--glass); border: 1px solid var(--c-blue);
@@ -104,38 +106,22 @@ body, html {
 .btn-subtext { display: block; font-size: 0.8rem; opacity: 0.5; letter-spacing: 4px; }
 .btn-protocol { display: block; font-family: 'JetBrains Mono'; font-size: 0.7rem; margin-top: 15px; }
 
-/* ПРАВАЯ ПАНЕЛЬ И ПЛАГИНЫ */
-.log-terminal {
-    height: 450px; overflow: hidden;
-    display: flex; flex-direction: column; gap: 5px;
-}
+.log-terminal { height: 450px; overflow: hidden; display: flex; flex-direction: column; gap: 5px; }
 
 .plugin-item {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem; color: var(--c-blue);
-    opacity: 0; 
-    transform: translateY(-30px);
-    animation: pluginAppear 0.5s forwards;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: 0.2s;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--c-blue);
+    opacity: 0; transform: translateY(-30px);
+    animation: pluginAppear 0.5s forwards; white-space: nowrap;
+    cursor: pointer; transition: 0.2s;
 }
 
-.plugin-item:hover {
-    color: var(--c-orange);
-    transform: translateX(5px);
-}
+.plugin-item:hover { color: var(--c-orange); transform: translateX(5px); }
+@keyframes pluginAppear { to { opacity: 1; transform: translateY(0); } }
 
-@keyframes pluginAppear {
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ИНДИКАТОРЫ СЛЕВА */
 .v-bar { height: 250px; width: 4px; background: #111; position: relative; margin-top: 10px; }
 .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); }
 .gauge-label { font-size: 0.6rem; color: #333; }
 
-/* МОДАЛЬНОЕ ОКНО */
 .modal-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0, 0, 0, 0.85); z-index: 1000;
