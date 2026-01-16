@@ -67,6 +67,8 @@
         .chart-column { flex: 1; background: rgba(255, 255, 255, 0.02); position: relative; height: 100%; }
         .chart-bar { position: absolute; bottom: 0; width: 100%; background: var(--c-orange); height: 10%; transition: height 0.4s; }
         
+        .network-stats-row { display: flex; justify-content: space-between; font-size: 0.6rem; font-family: 'JetBrains Mono'; border-top: 1px solid rgba(255,255,255,0.05); pt: 5px; }
+
         .v-bar { height: 150px; width: 2px; background: #111; position: relative; margin-bottom: 20px; }
         .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 10px var(--c-blue); }
         .clickable-cmd { color: var(--c-orange); cursor: pointer; text-decoration: underline; font-weight: bold; }
@@ -141,6 +143,10 @@
                         <div class="chart-column"><div class="chart-bar" id="bar-5"></div></div>
                         <div class="chart-column"><div class="chart-bar" id="bar-6"></div></div>
                     </div>
+                    <div class="network-stats-row">
+                        <div>RX: <span id="rx-val" style="color: #fff;">0.00 Mbps</span></div>
+                        <div>TX: <span id="tx-val" style="color: #fff;">LINKING...</span></div>
+                    </div>
                 </div>
             </aside>
         </main>
@@ -152,6 +158,7 @@
     </div>
 
     <script>
+        /* CORE SCRIPTING // ENGINEER: MAXIM MELNIKOV // 2026 */
         const input = document.getElementById('console-input');
         const logStream = document.getElementById('log-stream');
         const downloadBtn = document.getElementById('download-btn');
@@ -240,12 +247,17 @@
         }
 
         function updateNetwork() {
-            const conn = navigator.connection || {};
-            let speed = conn.downlink || 10;
+            const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
+            let speed = conn.downlink || (Math.random() * 50 + 20).toFixed(2);
+            let type = (conn.effectiveType || "4G").toUpperCase();
+            
+            document.getElementById('rx-val').innerText = speed + " Mbps";
+            document.getElementById('tx-val').innerText = type;
+
             for (let i = 1; i <= 6; i++) {
                 const bar = document.getElementById(`bar-${i}`);
                 if (bar) {
-                    let h = (speed * 3) + (Math.random() * 45);
+                    let h = (speed * 3) + (Math.random() * 30);
                     bar.style.height = Math.min(Math.max(h, 15), 95) + "%";
                     bar.style.background = h > 70 ? "var(--c-orange)" : "var(--c-blue)";
                 }
