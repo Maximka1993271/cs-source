@@ -2,83 +2,66 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>CSS CORE | NEXUS TERMINAL</title>
+    <title>CSS CORE | THE CITADEL STATION</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="game-ambient">
-        <div class="digital-noise"></div>
-        <div class="citadel-flare"></div>
-        <div class="vector-grid"></div>
+    <div class="citadel-panorama">
+        <div class="overlay-vignette"></div>
+        <div class="scanner-line"></div>
     </div>
 
-    <div class="main-terminal">
-        <header class="hud-header">
-            <div class="hazard-stripe"></div>
-            <div class="header-inner">
-                <div class="status-group">
-                    <span class="label">NODE:</span> <span class="val">C17_NEXUS</span>
-                    <span class="label">SEC:</span> <span class="val">LOCAL_ENCRYPTION_ACTIVE</span>
-                </div>
-                <div class="brand-id">HL2_DEVOPS // 2026</div>
-            </div>
+    <div class="ui-layer">
+        <header class="top-hud">
+            <div class="hud-left">C17_STATION_ACCESS // AUTH_LEVEL: SUPREME</div>
+            <div class="hud-right">SYSTEM_TIME: 2026.01.16</div>
         </header>
 
-        <section class="viewport-hero">
-            <div class="side-hud left">
-                <div class="energy-scale">
-                    <div class="fill"></div>
-                </div>
-                <div class="axis-label">PWR_SYNC</div>
-            </div>
-
-            <div class="center-console">
-                <div class="logo-stack">
-                    <div class="glitch-lambda">λ</div>
-                    <h1 class="main-title">CSS <span>CORE</span></h1>
-                    <div class="subtitle-mono">>_ INITIATING_V94_STABLE_BUILD</div>
+        <main class="panoramic-content">
+            <div class="hero-center">
+                <div class="logo-group">
+                    <h1 class="giant-title">CSS <span>CORE</span></h1>
+                    <div class="hl2-divider"></div>
+                    <p class="hero-desc">ПЕРЕДОВАЯ АРХИТЕКТУРА СЕРВЕРОВ ДЛЯ COUNTER-STRIKE: SOURCE</p>
                 </div>
 
-                <div class="interaction-zone">
-                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-mega-gaming">
-                        <span class="corner tl"></span><span class="corner tr"></span>
-                        <span class="corner bl"></span><span class="corner br"></span>
-                        <div class="btn-text">Download Server</div>
-                        <div class="btn-meta">PROTOCOL: REVEmu // NO-STEAM</div>
+                <div class="download-section">
+                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-ultra-download">
+                        <span class="btn-top-label">INITIALIZE DATA TRANSFER</span>
+                        <span class="btn-main-text">DOWNLOAD</span>
+                        <span class="btn-meta">V.94 // STABLE_BUILD // NO-STEAM</span>
+                        <div class="btn-glow"></div>
                     </a>
                 </div>
             </div>
 
-            <div class="side-hud right">
-                <div class="data-stream">
-                    <div class="line">DATA_PKT_RCV...</div>
-                    <div class="line">SRC_MOD_OK</div>
-                    <div class="line">META_LNK_UP</div>
-                    <div class="line">REV_EMU_ACTIVE</div>
+            <section class="module-panorama">
+                <div class="m-card">
+                    <div class="m-id">MOD_01</div>
+                    <h3>SOURCEMOD</h3>
+                    <p>Ядро управления плагинами и администрацией сервера.</p>
                 </div>
-            </div>
-        </section>
+                <div class="m-card highlight">
+                    <div class="m-id">MOD_02</div>
+                    <h3>REVEMU PRO</h3>
+                    <p>Протокол v94. Стабильный доступ для No-Steam игроков.</p>
+                </div>
+                <div class="m-card">
+                    <div class="m-id">MOD_03</div>
+                    <h3>METAMOD</h3>
+                    <p>Низкоуровневая интеграция в движок Source Engine.</p>
+                </div>
+            </section>
+        </main>
 
-        <section class="stat-grid">
-            <div class="stat-card">
-                <div class="card-head">01 // SOURCEMOD</div>
-                <div class="card-body">v1.12.7221 - Оптимизированное ядро.</div>
+        <footer class="bottom-hud">
+            <div class="hazard-strip"></div>
+            <div class="footer-wrap">
+                <span>PROJECT_REVISION_2026</span>
+                <span>SECURE CONNECTION ESTABLISHED</span>
             </div>
-            <div class="stat-card highlight">
-                <div class="card-head">02 // REVEMU PRO</div>
-                <div class="card-body">Полная поддержка протоколов v94.</div>
-            </div>
-            <div class="stat-card">
-                <div class="card-head">03 // METAMOD</div>
-                <div class="card-body">v1.12.1219 - Низкоуровневый доступ.</div>
-            </div>
-        </section>
-
-        <footer class="hud-footer">
-            <div class="footer-left">ACCESS_GRANTED: AUTHORIZED_ONLY</div>
-            <div class="footer-right">© 2026 BLACK MESA RESEARCH</div>
         </footer>
     </div>
 

@@ -1,187 +1,153 @@
-/* Игровой Дизайн "На миллион" 
-   Стиль: Техно-Брутализм / Half-Life 2 */
+/* CSS CORE: Citadel Panoramic Design 
+   Style: Massive, Immersive, HL2-Themed */
 
 :root {
     --hl-orange: #ff9d00;
     --hl-blue: #00d4ff;
-    --bg-dark: #050608;
-    --panel-bg: rgba(10, 11, 15, 0.85);
+    --dark-metal: #0a0b0d;
 }
+
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
-    background: var(--bg-dark);
+    background: #000;
     color: #fff;
     font-family: 'Orbitron', sans-serif;
-    overflow: hidden;
-    height: 100vh;
+    overflow-x: hidden;
 }
 
-/* ФОНОВЫЕ ЭФФЕКТЫ */
-.game-ambient {
+/* ЗАДНИЙ ФОН ИЗ HALF-LIFE */
+.citadel-panorama {
     position: fixed;
     inset: 0;
     z-index: -1;
-    background: radial-gradient(circle at center, #0d121a 0%, #050608 100%);
+    /* Здесь можно поставить картинку Цитадели или Сити-17 */
+    background: url('https://i.imgur.com/kS5x8A4.jpg') center center / cover no-repeat;
+    filter: brightness(0.4) contrast(1.2);
 }
 
-.citadel-flare {
-    position: absolute;
-    width: 100vw; height: 100vh;
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.vector-grid {
+.overlay-vignette {
     position: absolute;
     inset: 0;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
 }
 
-/* ГЛАВНЫЙ ИНТЕРФЕЙС */
-.main-terminal {
+.scanner-line {
+    position: absolute;
+    width: 100%; height: 2px;
+    background: rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 15px var(--hl-blue);
+    top: 0;
+    animation: scan-move 8s linear infinite;
+}
+
+@keyframes scan-move { from { top: 0; } to { top: 100%; } }
+
+/* СЛОЙ ИНТЕРФЕЙСА */
+.ui-layer {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    padding: 0 50px;
+    min-height: 100vh;
+    padding: 0 5%;
 }
 
-.hud-header {
-    padding: 30px 0;
-}
-
-.hazard-stripe {
-    height: 4px;
-    background: repeating-linear-gradient(90deg, var(--hl-orange), var(--hl-orange) 20px, #000 20px, #000 40px);
-    margin-bottom: 20px;
-}
-
-.header-inner {
+.top-hud {
     display: flex;
     justify-content: space-between;
+    padding: 30px 0;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
-    letter-spacing: 3px;
-    color: #555;
+    color: var(--hl-blue);
+    opacity: 0.6;
 }
 
-.header-inner .val { color: var(--hl-blue); }
-
-/* ГЛАВНЫЙ ЭКРАН */
-.viewport-hero {
+.panoramic-content {
     flex: 1;
     display: flex;
-    align-items: center;
-    position: relative;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.center-console {
-    flex: 1;
+/* ЦЕНТРАЛЬНЫЙ БЛОК */
+.hero-center {
     text-align: center;
+    padding: 100px 0;
 }
 
-.glitch-lambda {
-    font-size: 20rem;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.03;
-    color: var(--hl-orange);
-}
-
-.main-title {
+.giant-title {
     font-family: 'Syncopate', sans-serif;
-    font-size: 9rem;
+    font-size: 12rem; /* ОГРОМНЫЙ РАЗМЕР */
     margin: 0;
-    letter-spacing: -12px;
+    letter-spacing: -20px;
+    line-height: 0.8;
 }
 
-.main-title span { color: var(--hl-orange); text-shadow: 0 0 40px rgba(255, 157, 0, 0.3); }
+.giant-title span { color: var(--hl-orange); text-shadow: 0 0 50px rgba(255, 157, 0, 0.5); }
 
-.subtitle-mono {
-    font-family: 'JetBrains Mono', monospace;
-    color: #444;
-    letter-spacing: 10px;
-    margin-top: 20px;
-}
-
-/* ГИГАНТСКАЯ КНОПКА */
-.btn-mega-gaming {
-    display: inline-block;
-    margin-top: 80px;
-    padding: 40px 120px;
-    background: rgba(255, 157, 0, 0.05);
-    border: 1px solid rgba(255, 157, 0, 0.2);
-    text-decoration: none;
-    color: #fff;
-    position: relative;
-    transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.btn-mega-gaming:hover {
+.hl2-divider {
+    width: 300px; height: 1px;
     background: var(--hl-orange);
-    color: #000;
-    box-shadow: 0 0 80px rgba(255, 157, 0, 0.4);
+    margin: 40px auto;
 }
 
-.corner { position: absolute; width: 10px; height: 10px; border: 2px solid var(--hl-orange); }
-.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
-.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
-.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
-
-.btn-text { font-size: 2rem; font-weight: 900; letter-spacing: 2px; }
-.btn-meta { font-size: 0.7rem; font-family: 'JetBrains Mono'; margin-top: 10px; opacity: 0.6; }
-
-/* HUD БОКОВЫЕ ПАНЕЛИ */
-.side-hud {
-    width: 150px;
-}
-
-.energy-scale {
-    height: 300px; width: 4px; background: #111; position: relative;
-}
-
-.energy-scale .fill {
-    position: absolute; bottom: 0; width: 100%; height: 75%; background: var(--hl-orange);
-    box-shadow: 0 0 20px var(--hl-orange);
-}
-
-.data-stream {
-    font-family: 'JetBrains Mono';
-    font-size: 0.6rem;
-    color: var(--hl-blue);
-    text-align: right;
-}
-
-/* СЕТКА СТАТИСТИКИ */
-.stat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+.hero-desc {
+    font-size: 1.2rem;
+    letter-spacing: 12px;
+    color: #aaa;
     margin-bottom: 60px;
 }
 
-.stat-card {
-    background: var(--panel-bg);
-    border-top: 2px solid #222;
-    padding: 30px;
+/* КНОПКА DOWNLOAD */
+.btn-ultra-download {
+    display: inline-block;
+    padding: 40px 150px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--hl-orange);
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    transition: 0.4s;
     backdrop-filter: blur(10px);
 }
 
-.stat-card.highlight { border-top-color: var(--hl-orange); }
-
-.card-head { font-size: 0.7rem; color: #555; margin-bottom: 10px; font-weight: 900; }
-.card-body { font-size: 1.1rem; color: #eee; }
-
-.hud-footer {
-    padding: 30px 0;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.6rem;
-    color: #333;
-    letter-spacing: 5px;
+.btn-ultra-download:hover {
+    background: var(--hl-orange);
+    color: #000;
+    box-shadow: 0 0 100px rgba(255, 157, 0, 0.6);
+    transform: scale(1.05);
 }
+
+.btn-main-text { display: block; font-size: 4rem; font-weight: 900; letter-spacing: 10px; }
+.btn-top-label { font-size: 0.8rem; opacity: 0.5; letter-spacing: 3px; }
+.btn-meta { font-family: 'JetBrains Mono'; font-size: 0.8rem; margin-top: 10px; display: block; }
+
+/* МОДУЛИ (ПАНОРАМА) */
+.module-panorama {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 100px;
+}
+
+.m-card {
+    background: rgba(10, 11, 15, 0.9);
+    border-left: 5px solid #222;
+    padding: 40px;
+    transition: 0.3s;
+}
+
+.m-card.highlight { border-left-color: var(--hl-orange); background: rgba(255, 157, 0, 0.05); }
+
+.m-id { color: var(--hl-orange); font-size: 0.7rem; margin-bottom: 20px; }
+.m-card h3 { font-size: 2rem; margin: 0 0 15px 0; }
+.m-card p { font-size: 0.9rem; color: #666; font-family: 'JetBrains Mono'; }
+
+/* ФУТЕР */
+.bottom-hud { padding: 40px 0; }
+.hazard-strip {
+    height: 10px;
+    background: repeating-linear-gradient(90deg, var(--hl-orange), var(--hl-orange) 40px, #000 40px, #000 80px);
+    margin-bottom: 20px;
+}
+.footer-wrap { display: flex; justify-content: space-between; font-size: 0.7rem; color: #444; }
