@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
     <title>CSS CORE | THE OVERWATCH NEXUS</title>
     <link rel="stylesheet" href="style.css">
@@ -11,7 +12,6 @@
 
     <div class="citadel-background">
         <div class="energy-beam"></div>
-        <div class="scanline-heavy"></div>
     </div>
 
     <div id="glitch-overlay" class="glitch-fx"></div>
@@ -62,12 +62,12 @@
                         <input type="text" id="console-input" placeholder="ENTER COMMAND..." autocomplete="off">
                     </div>
                     <div class="console-help-bar">
-                        <span>HELP:</span>
-                        <button onclick="setCmd('status')">status</button>
-                        <button onclick="setCmd('version')">version</button>
-                        <button onclick="setCmd('matrix')">matrix</button>
-                        <button onclick="setCmd('reset')">reset</button>
-                        <button onclick="setCmd('clear')">clear</button>
+                        <span class="help-label">HELP:</span>
+                        <button class="cmd-btn" onclick="setCmd('status')">status</button>
+                        <button class="cmd-btn" onclick="setCmd('version')">version</button>
+                        <button class="cmd-btn" onclick="setCmd('matrix')">matrix</button>
+                        <button class="cmd-btn" onclick="setCmd('reset')">reset</button>
+                        <button class="cmd-btn" onclick="setCmd('clear')">clear</button>
                     </div>
                 </div>
             </aside>
