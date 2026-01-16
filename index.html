@@ -4,38 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
-    <title>CSS CORE | MAXIM MELNIKOV</title>
+    <title>CSS CORE | SERVER</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
     <style>
         :root { --c-blue: #00d4ff; --c-orange: #ff9d00; --bg: #000; }
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var(--bg); color: #fff; font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
         .citadel-background { position: fixed; inset: 0; z-index: -1; }
         .energy-beam { position: absolute; left: 50%; width: 1px; height: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); opacity: 0.1; }
         
-        .terminal-master-frame { display: flex; flex-direction: column; height: 100vh; padding: 0 40px; }
+        .terminal-master-frame { display: flex; flex-direction: column; height: 100vh; padding: 0 40px; position: relative; z-index: 10; }
         .top-system-hud, .bottom-system-hud { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-family: 'JetBrains Mono'; font-size: 0.65rem; color: #444; }
         .hud-highlight { color: var(--c-blue); }
         .panoramic-viewport { flex: 1; display: grid; grid-template-columns: 100px 1fr 420px; align-items: center; gap: 30px; }
 
         .main-monolith { text-align: center; position: relative; }
         .lambda-background { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 15rem; color: var(--c-blue); opacity: 0.03; z-index: -1; }
-        .giant-header { font-family: 'Syncopate'; font-size: 6.5rem; margin: 0; letter-spacing: -5px; line-height: 1; }
+        
+        .giant-header { font-family: 'Syncopate'; font-size: 6.5rem; margin: 0; letter-spacing: -5px; line-height: 1; position: relative; }
         .giant-header span { color: var(--c-orange); }
-        .hero-tagline { font-size: 0.7rem; letter-spacing: 2px; color: #555; margin-top: 10px; }
         
         .industrial-hazard { width: 150px; height: 3px; margin: 20px auto; background: repeating-linear-gradient(90deg, var(--c-orange), var(--c-orange) 10px, #000 10px, #000 20px); animation: hazard 1s linear infinite; }
         @keyframes hazard { from { background-position: 0 0; } to { background-position: 20px 0; } }
 
-        .btn-overwatch { display: inline-block; padding: 30px 60px; border: 1px solid var(--c-blue); color: #fff; text-decoration: none; margin-top: 30px; transition: 0.3s ease; cursor: pointer; }
+        .btn-overwatch { display: inline-block; padding: 30px 60px; border: 1px solid var(--c-blue); color: #fff; text-decoration: none; margin-top: 30px; transition: 0.3s ease; cursor: pointer; position: relative; }
         .btn-overwatch:hover { background: var(--c-blue); color: #000; box-shadow: 0 0 40px var(--c-blue); }
         .btn-main-text { display: block; font-size: 2.4rem; font-weight: 900; letter-spacing: 5px; }
         .hidden-btn { display: none; }
         .visible-btn { display: block !important; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .terminal-wrapper { height: 400px; background: rgba(0, 5, 10, 0.9); border: 1px solid rgba(0, 212, 255, 0.1); display: flex; flex-direction: column; }
+        .terminal-wrapper { height: 400px; background: rgba(0, 5, 10, 0.9); border: 1px solid rgba(0, 212, 255, 0.1); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .terminal-wrapper::after {
+            content: "";
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 0%, rgba(0, 212, 255, 0.05) 50%, rgba(18, 16, 16, 0) 100%);
+            opacity: 0.1; pointer-events: none; animation: scanline 6s linear infinite;
+        }
+        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
         .log-terminal { flex: 1; overflow-y: auto; padding: 15px; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #00d4ff; scrollbar-width: none; line-height: 1.4; }
         .console-input-area { display: flex; padding: 10px; border-top: 1px solid rgba(0, 212, 255, 0.1); background: #000; }
         #console-input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: 'JetBrains Mono'; flex: 1; }
@@ -45,16 +63,12 @@
         .cmd-btn:hover { border-color: var(--c-blue); background: rgba(0, 212, 255, 0.1); }
 
         .network-hud-box { margin-top: 20px; padding: 15px; background: rgba(0, 8, 15, 0.6); border: 1px solid rgba(0, 212, 255, 0.1); }
-        .hud-label { font-size: 0.55rem; color: var(--c-blue); margin-bottom: 10px; letter-spacing: 1px; }
         .mini-charts-grid { display: flex; align-items: flex-end; gap: 5px; height: 50px; margin-bottom: 10px; }
         .chart-column { flex: 1; background: rgba(255, 255, 255, 0.02); position: relative; height: 100%; }
         .chart-bar { position: absolute; bottom: 0; width: 100%; background: var(--c-orange); height: 10%; transition: height 0.4s; }
         
-        .gauge-label { font-size: 0.5rem; color: #444; margin-bottom: 5px; }
         .v-bar { height: 150px; width: 2px; background: #111; position: relative; margin-bottom: 20px; }
         .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 10px var(--c-blue); }
-
-        .system-locked-msg { color: #444; font-size: 0.8rem; letter-spacing: 1px; margin-top: 30px; }
         .clickable-cmd { color: var(--c-orange); cursor: pointer; text-decoration: underline; font-weight: bold; }
     </style>
 </head>
@@ -71,14 +85,8 @@
 
         <main class="panoramic-viewport">
             <aside class="side-panel left-panel">
-                <div class="gauge-container">
-                    <div class="gauge-label">CORE_STABILITY</div>
-                    <div class="v-bar"><div class="v-fill" style="height: 94%;"></div></div>
-                </div>
-                <div class="gauge-container">
-                    <div class="gauge-label">LINK_UPTIME</div>
-                    <div class="v-bar"><div class="v-fill" style="height: 99%;"></div></div>
-                </div>
+                <div class="gauge-container"><div class="gauge-label" style="font-size:0.5rem; color:#444;">CORE_STABILITY</div><div class="v-bar"><div class="v-fill" style="height: 94%;"></div></div></div>
+                <div class="gauge-container"><div class="gauge-label" style="font-size:0.5rem; color:#444;">LINK_UPTIME</div><div class="v-bar"><div class="v-fill" style="height: 99%;"></div></div></div>
             </aside>
 
             <section class="main-monolith">
@@ -86,16 +94,20 @@
                     <div class="lambda-background">λ</div>
                     <h1 class="giant-header">CSS <span>CORE</span></h1>
                     <div class="industrial-hazard"></div>
-                    <p class="hero-tagline">UNIVERSAL SERVER ARCHITECTURE BY MAXIM MELNIKOV</p>
+                    <p style="font-size: 0.7rem; letter-spacing: 2px; color: #555; margin-top: 10px;">UNIVERSAL SERVER ARCHITECTURE BY MAXIM MELNIKOV</p>
                 </div>
 
                 <div class="action-portal">
-                    <div id="lock-msg" class="system-locked-msg">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
-                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn">
+                    <div id="lock-msg" style="color: #444; font-size: 0.8rem; letter-spacing: 1px; margin-top: 30px;">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
+                    <a id="download-btn" 
+                       href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" 
+                       class="btn-overwatch hidden-btn"
+                       onmouseenter="startChargeSound()"
+                       onmouseleave="stopChargeSound()">
                         <div class="btn-inner">
-                            <span class="btn-subtext">INITIATE FILE TRANSFER</span>
+                            <span style="display:block; font-size:0.6rem; opacity:0.7;">INITIATE FILE TRANSFER</span>
                             <span class="btn-main-text">DOWNLOAD</span>
-                            <span class="btn-protocol">PROT: V94 // REVEmu // NO-STEAM</span>
+                            <span style="display:block; font-size:0.6rem; opacity:0.7;">PROT: V94 // REVEmu // NO-STEAM</span>
                         </div>
                     </a>
                 </div>
@@ -120,7 +132,7 @@
                 </div>
 
                 <div class="network-hud-box">
-                    <div class="hud-label">REAL_TIME_NETWORK_MONITOR</div>
+                    <div class="hud-label" style="font-size: 0.55rem; color: var(--c-blue); margin-bottom: 10px;">REAL_TIME_NETWORK_MONITOR</div>
                     <div class="mini-charts-grid">
                         <div class="chart-column"><div class="chart-bar" id="bar-1"></div></div>
                         <div class="chart-column"><div class="chart-bar" id="bar-2"></div></div>
@@ -128,10 +140,6 @@
                         <div class="chart-column"><div class="chart-bar" id="bar-4"></div></div>
                         <div class="chart-column"><div class="chart-bar" id="bar-5"></div></div>
                         <div class="chart-column"><div class="chart-bar" id="bar-6"></div></div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-family: 'JetBrains Mono';">
-                        <div>SPEED: <span id="rx-val" style="color: #fff;">Detecting...</span></div>
-                        <div>TYPE: <span id="tx-val" style="color: #fff;">Unknown</span></div>
                     </div>
                 </div>
             </aside>
@@ -144,45 +152,58 @@
     </div>
 
     <script>
-        /* CORE SCRIPTING // ENGINEER: MAXIM MELNIKOV // 2026 */
         const input = document.getElementById('console-input');
         const logStream = document.getElementById('log-stream');
         const downloadBtn = document.getElementById('download-btn');
         const lockMsg = document.getElementById('lock-msg');
-        let isDeployed = false;
+        let isDeployed = false, audioCtx = null, chargeOsc = null, chargeGain = null;
+
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+
+        function playBeep(freq = 400, duration = 30, type = "square", volume = 0.008) {
+            initAudio();
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration/1000);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration/1000);
+        }
+
+        function startChargeSound() {
+            initAudio(); chargeOsc = audioCtx.createOscillator(); chargeGain = audioCtx.createGain();
+            chargeOsc.type = "sawtooth"; chargeOsc.frequency.setValueAtTime(100, audioCtx.currentTime);
+            chargeOsc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 1);
+            chargeGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            chargeGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            chargeOsc.connect(chargeGain); chargeGain.connect(audioCtx.destination);
+            chargeOsc.start();
+        }
+
+        function stopChargeSound() {
+            if (chargeGain) {
+                chargeGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+                setTimeout(() => { if(chargeOsc) chargeOsc.stop(); }, 100);
+            }
+        }
 
         function showInitialHint() {
             const hint = document.createElement('div');
-            hint.innerHTML = `
-                <span style="color: var(--c-blue);">[SYSTEM]: DEPLOYMENT_LOCKED.</span><br>
-                <span style="color: var(--c-blue);">[ACTION]: Run SteamCMD protocol.</span><br>
-                <span style="color: var(--c-orange);">[CMD]: </span><span class="clickable-cmd" onclick="setCmd('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>
-            `;
+            hint.innerHTML = `<span style="color: var(--c-blue);">[SYSTEM]: DEPLOYMENT_LOCKED.</span><br><span style="color: var(--c-blue);">[ACTION]: Run SteamCMD protocol.</span><br><span style="color: var(--c-orange);">[CMD]: </span><span class="clickable-cmd" onclick="setCmd('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>`;
             logStream.appendChild(hint);
         }
 
         function setCmd(name) {
-            if (name === 'clear') {
-                logStream.innerHTML = '';
-                showInitialHint();
-            } else {
-                processInput(name);
-            }
+            playBeep(900, 40, "square"); 
+            if (name === 'clear') { logStream.innerHTML = ''; showInitialHint(); } else { processInput(name); }
         }
 
         function processInput(val) {
             if (!val) return;
-            const line = document.createElement('div');
-            line.style.color = "#fff";
-            line.innerText = `> ${val}`;
+            const line = document.createElement('div'); line.style.color = "#fff"; line.innerText = `> ${val}`;
             logStream.appendChild(line);
-            
             const cmd = val.toLowerCase();
-            if (cmd.includes('steamcmd')) {
-                simulateDownload();
-            } else {
-                handleBaseCommands(cmd);
-            }
+            if (cmd.includes('steamcmd')) { simulateDownload(); } else { handleBaseCommands(cmd); }
             logStream.scrollTop = logStream.scrollHeight;
         }
 
@@ -195,47 +216,32 @@
                 case 'reset': document.documentElement.style.setProperty('--c-blue', '#00d4ff'); res = "THEME: DEFAULT"; break;
                 default: res = "ERROR: UNKNOWN_PROTOCOL";
             }
-            const s = document.createElement('div');
-            s.style.color = "var(--c-blue)";
-            s.innerText = res;
-            logStream.appendChild(s);
+            const s = document.createElement('div'); s.style.color = "var(--c-blue)"; s.innerText = res;
+            logStream.appendChild(s); playBeep(440, 150, "sine", 0.005); 
         }
 
         function simulateDownload() {
             const steps = [
-                { text: "Connecting to Steam Public...", delay: 500 },
+                { text: "Connecting to Steam...", delay: 500 },
                 { text: "Logged in OK", delay: 1200 },
-                { text: "Updating App 232330...", delay: 1800 },
-                { text: "<span style='color: #fff;'>[ 10%]</span> Downloading content...", delay: 2400 },
-                { text: "<span style='color: #fff;'>[ 45%]</span> Extracting binaries...", delay: 3500 },
-                { text: "<span style='color: #fff;'>[ 82%]</span> Installing RevEmu...", delay: 4600 },
-                { text: "<span style='color: #fff;'>[ 90%]</span> RevEmu installed successfully.", delay: 5400 },
-                { text: "<span style='color: #fff;'>[100%]</span> Success! Build finalized.", delay: 6200 },
-                { text: "Quitting SteamCMD...", delay: 6800 }
+                { text: "<span style='color: #fff;'>[ 10%]</span> Downloading...", delay: 2400 },
+                { text: "<span style='color: #fff;'>[ 45%]</span> Extracting...", delay: 3500 },
+                { text: "<span style='color: #fff;'>[ 90%]</span> RevEmu success.", delay: 5400 },
+                { text: "<span style='color: #fff;'>[100%]</span> Success! Build finalized.", delay: 6200 }
             ];
-
             steps.forEach((step, i) => {
                 setTimeout(() => {
-                    const l = document.createElement('div');
-                    l.style.color = "var(--c-orange)";
-                    l.innerHTML = step.text;
-                    logStream.appendChild(l);
-                    logStream.scrollTop = logStream.scrollHeight;
-                    if (i === steps.length - 1) {
-                        isDeployed = true;
-                        downloadBtn.classList.add('visible-btn');
-                        if(lockMsg) lockMsg.style.display = 'none';
-                    }
+                    playBeep(350, 25, "square", 0.008); 
+                    const l = document.createElement('div'); l.style.color = "var(--c-orange)"; l.innerHTML = step.text;
+                    logStream.appendChild(l); logStream.scrollTop = logStream.scrollHeight;
+                    if (i === steps.length - 1) { isDeployed = true; playBeep(880, 400, "sine", 0.015); downloadBtn.classList.add('visible-btn'); if(lockMsg) lockMsg.style.display = 'none'; }
                 }, step.delay);
             });
         }
 
         function updateNetwork() {
-            const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-            let speed = conn ? conn.downlink : 10; 
-            let type = conn ? conn.effectiveType : "4G";
-            document.getElementById('rx-val').innerText = speed + " Mbps";
-            document.getElementById('tx-val').innerText = type.toUpperCase();
+            const conn = navigator.connection || {};
+            let speed = conn.downlink || 10;
             for (let i = 1; i <= 6; i++) {
                 const bar = document.getElementById(`bar-${i}`);
                 if (bar) {
@@ -247,10 +253,8 @@
         }
 
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                processInput(input.value.trim());
-                input.value = '';
-            }
+            playBeep(1200 + (Math.random() * 300), 15, "square", 0.006); 
+            if (e.key === 'Enter') { playBeep(700, 60, "square", 0.012); processInput(input.value.trim()); input.value = ''; }
         });
 
         setInterval(updateNetwork, 400);
