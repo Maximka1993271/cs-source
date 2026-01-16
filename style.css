@@ -1,6 +1,5 @@
 /* CSS CORE - MASSIVE DESIGN
-   AUTHOR: MAXIM MELNIKOV
-*/
+   AUTHOR: MAXIM MELNIKOV */
 
 :root {
     --c-blue: #00d4ff;
@@ -20,11 +19,11 @@ body, html {
     overflow: hidden;
 }
 
-/* ЗАДНИЙ ФОН ЦИТАДЕЛИ */
+/* ФОН */
 .citadel-background {
     position: fixed; inset: 0; z-index: -1;
     background: url('https://i.imgur.com/kS5x8A4.jpg') center center / cover no-repeat;
-    filter: brightness(0.2) contrast(1.5) grayscale(0.5);
+    filter: brightness(0.2) contrast(1.5);
 }
 
 .energy-beam {
@@ -34,7 +33,7 @@ body, html {
     opacity: 0.2;
 }
 
-/* ОБЩАЯ РАМА ТЕРМИНАЛА */
+/* ИНТЕРФЕЙС */
 .terminal-master-frame {
     display: flex; flex-direction: column;
     height: 100vh; padding: 0 60px;
@@ -49,22 +48,18 @@ body, html {
 }
 
 .bottom-system-hud { border-top: 1px solid rgba(0, 212, 255, 0.1); border-bottom: none; }
-
 .center-hud { color: var(--c-blue); font-weight: 900; }
 
-/* ПАНОРАМНЫЙ КОНТЕНТ */
 .panoramic-viewport {
-    flex: 1; display: grid; grid-template-columns: 150px 1fr 250px;
+    flex: 1; display: grid; grid-template-columns: 150px 1fr 300px;
     align-items: center; gap: 40px;
 }
 
-/* ЦЕНТРАЛЬНЫЙ БЛОК */
+/* ЛОГОТИП */
 .main-monolith { text-align: center; position: relative; }
-
 .lambda-background {
-    position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 30rem; font-family: 'Syncopate';
-    color: var(--c-blue); opacity: 0.02; z-index: -1;
+    position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 30rem; color: var(--c-blue); opacity: 0.03; z-index: -1;
 }
 
 .giant-header {
@@ -78,14 +73,10 @@ body, html {
 .industrial-hazard {
     width: 250px; height: 6px;
     background: repeating-linear-gradient(90deg, var(--c-orange), var(--c-orange) 25px, #000 25px, #000 50px);
-    margin: 40px auto; box-shadow: 0 0 15px var(--c-orange);
+    margin: 40px auto;
 }
 
-.hero-tagline { font-size: 1.2rem; letter-spacing: 12px; color: #555; }
-
-/* КНОПКА OVERWATCH */
-.action-portal { margin-top: 80px; }
-
+/* КНОПКА */
 .btn-overwatch {
     display: inline-block; padding: 45px 160px;
     background: var(--glass); border: 1px solid var(--c-blue);
@@ -96,22 +87,33 @@ body, html {
 
 .btn-overwatch:hover {
     background: var(--c-blue); color: #000;
-    box-shadow: 0 0 120px rgba(0, 212, 255, 0.5);
+    box-shadow: 0 0 100px var(--c-blue);
     transform: scale(1.05);
 }
 
 .btn-main-text { display: block; font-size: 5rem; font-weight: 900; letter-spacing: 12px; }
-.btn-subtext { display: block; font-size: 0.8rem; opacity: 0.5; letter-spacing: 4px; margin-bottom: 5px; }
+.btn-subtext { display: block; font-size: 0.8rem; opacity: 0.5; letter-spacing: 4px; }
 .btn-protocol { display: block; font-family: 'JetBrains Mono'; font-size: 0.7rem; margin-top: 15px; }
 
-/* БОКОВЫЕ ПАНЕЛИ */
-.v-bar { height: 300px; width: 4px; background: #111; position: relative; margin-top: 10px; }
-.v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); }
-.gauge-label { font-size: 0.6rem; color: #333; writing-mode: vertical-rl; }
-
+/* ПРАВАЯ ПАНЕЛЬ И ПЛАГИНЫ */
 .log-terminal {
-    background: rgba(0,0,0,0.5); border: 1px solid #111;
-    padding: 20px; height: 350px; font-family: 'JetBrains Mono';
-    font-size: 0.7rem; color: var(--c-blue); line-height: 1.8;
-    overflow: hidden;
+    height: 450px; overflow: hidden;
+    display: flex; flex-direction: column; gap: 5px;
 }
+
+.plugin-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; color: var(--c-blue);
+    opacity: 0; transform: translateX(30px);
+    animation: pluginAppear 0.5s forwards;
+    white-space: nowrap;
+}
+
+@keyframes pluginAppear {
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ИНДИКАТОРЫ СЛЕВА */
+.v-bar { height: 250px; width: 4px; background: #111; position: relative; margin-top: 10px; }
+.v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); }
+.gauge-label { font-size: 0.6rem; color: #333; }
