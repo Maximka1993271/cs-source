@@ -1,4 +1,4 @@
-/* CORE SCRIPTING // ENGINEER: MAXIM MELNIKOV */
+/* CORE SCRIPTING // ENGINEER: MAXIM MELNIKOV // 2026 */
 const input = document.getElementById('console-input');
 const logStream = document.getElementById('log-stream');
 const downloadBtn = document.getElementById('download-btn');
@@ -6,123 +6,111 @@ const lockMsg = document.getElementById('lock-msg');
 
 let isDeployed = false;
 
-// ИНИЦИАЛИЗАЦИЯ ПОДСКАЗКИ
+// Показ начальной инструкции
 function showInitialHint() {
     const hint = document.createElement('div');
-    hint.className = 'system-msg';
-    hint.innerHTML = `[SYSTEM]: DEPLOYMENT_LOCKED.<br>
-    [ACTION]: Run SteamCMD to fetch binaries.<br>
-    [CMD]: <span class="hint-cmd" onclick="copyHint()">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>`;
+    hint.innerHTML = `[SYSTEM]: DEPLOYMENT_LOCKED.<br>[ACTION]: Run SteamCMD protocol.<br>
+    [CMD]: <span class="clickable-cmd" onclick="setCmd('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>`;
     logStream.appendChild(hint);
 }
 
-function copyHint() {
-    input.value = "steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit";
-    input.focus();
-}
-
+// ВЫПОЛНЕНИЕ КОМАНД ЧЕРЕЗ КНОПКИ
 function setCmd(name) {
-    input.value = name;
-    input.focus();
+    if (name === 'clear') {
+        logStream.innerHTML = '';
+        showInitialHint();
+    } else {
+        processInput(name);
+    }
 }
 
-// ДИНАМИЧЕСКИЕ ДАТЧИКИ (CORE STABILITY / UPTIME)
-function updateGauges() {
-    const stability = document.getElementById('stability-fill');
-    const uptime = document.getElementById('uptime-fill');
+// Обработка ввода в консоль
+function processInput(val) {
+    if (!val) return;
     
-    // Плавное колебание значений
-    if (stability) {
-        const sVal = 90 + Math.random() * 8;
-        stability.style.height = `${sVal}%`;
+    // Печать команды в лог
+    const line = document.createElement('div');
+    line.style.color = "#fff";
+    line.innerText = `> ${val}`;
+    logStream.appendChild(line);
+    
+    // Логика
+    const cmd = val.toLowerCase();
+    if (cmd.includes('steamcmd')) {
+        simulateDownload();
+    } else {
+        handleBaseCommands(cmd);
     }
-    if (uptime) {
-        const uVal = 98 + Math.random() * 2;
-        uptime.style.height = `${uVal}%`;
-    }
+    
+    logStream.scrollTop = logStream.scrollHeight;
 }
 
-// ОБРАБОТКА КОМАНД
+// Слушатель клавиатуры
 if (input) {
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            const val = input.value.trim();
-            if (!val) return;
-
-            const line = document.createElement('div');
-            line.className = 'system-msg';
-            line.style.color = "var(--c-blue)";
-            line.innerText = `> ${val}`;
-            logStream.appendChild(line);
-
-            if (val.includes('steamcmd') && val.includes('232330')) {
-                simulateDownload();
-            } else {
-                handleCommands(val.toLowerCase());
-            }
-
+            processInput(input.value.trim());
             input.value = '';
-            logStream.scrollTop = logStream.scrollHeight;
         }
     });
 }
 
-function handleCommands(cmd) {
+// Логика базовых команд
+function handleBaseCommands(cmd) {
     let res = "";
     switch(cmd) {
-        case 'status': res = isDeployed ? "STATUS: ONLINE // CORE_V94 // LINK: ACTIVE" : "STATUS: IDLE // DEPLOYMENT_REQUIRED"; break;
-        case 'version': res = "CSS_CORE_V94_STABLE // BUILD_2026 // BY MAXIM MELNIKOV"; break;
-        case 'matrix': document.documentElement.style.setProperty('--c-blue', '#00ff41'); res = "THEME: MATRIX_ACTIVE"; break;
+        case 'status': res = isDeployed ? "STATUS: ONLINE // CORE_V94" : "STATUS: IDLE // WAITING_FOR_EXTRACTION"; break;
+        case 'version': res = "CSS_CORE_V94_FINAL BY MAXIM MELNIKOV"; break;
+        case 'matrix': document.documentElement.style.setProperty('--c-blue', '#00ff41'); res = "THEME: MATRIX"; break;
         case 'reset': document.documentElement.style.setProperty('--c-blue', '#00d4ff'); res = "THEME: DEFAULT"; break;
-        case 'clear': logStream.innerHTML = ''; showInitialHint(); return;
-        default: res = "ERROR: UNKNOWN_COMMAND. TYPE 'HELP'.";
+        default: res = "ERROR: UNKNOWN_PROTOCOL";
     }
     const s = document.createElement('div');
-    s.className = 'system-msg';
     s.innerText = res;
     logStream.appendChild(s);
 }
 
-// СИМУЛЯЦИЯ ЗАГРУЗКИ STEAMCMD
+// Имитация процесса загрузки
 function simulateDownload() {
-    const lines = [
-        "Connecting to Steam Public...", "Logged in OK", "Updating App 232330...",
-        "[ 10%] Downloading...", "[ 40%] Extracting binaries...", "[ 80%] Applying REVEmu patches...",
-        "[100%] Success! Build finalized.", "Quitting SteamCMD..."
-    ];
+    const lines = ["Connecting to Steam...", "Logged in as Anonymous", "App 232330 found", "Downloading content...", "[100%] Verification Complete.", "Quitting..."];
     lines.forEach((text, i) => {
         setTimeout(() => {
             const l = document.createElement('div');
-            l.className = text.includes('%') ? 'download-progress' : 'system-msg';
             l.innerText = text;
             logStream.appendChild(l);
             logStream.scrollTop = logStream.scrollHeight;
             if (i === lines.length - 1) {
                 isDeployed = true;
-                unlockUI();
+                downloadBtn.classList.add('visible-btn');
+                lockMsg.style.display = 'none';
             }
-        }, i * 450);
+        }, i * 600);
     });
 }
 
-function unlockUI() {
-    if (lockMsg) lockMsg.style.display = 'none';
-    downloadBtn.classList.remove('hidden-btn');
-    downloadBtn.classList.add('visible-btn');
-    const g = document.getElementById('glitch-overlay');
-    g.style.display = 'block';
-    setTimeout(() => g.style.display = 'none', 200);
+// АВТО-ОПРЕДЕЛЕНИЕ СКОРОСТИ ИНТЕРНЕТА (NETWORK MONITOR)
+function updateNetwork() {
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    let speed = conn ? conn.downlink : 10; 
+    let type = conn ? conn.effectiveType : "4G";
+
+    document.getElementById('rx-val').innerText = speed + " Mbps";
+    document.getElementById('tx-val').innerText = type.toUpperCase();
+
+    // Прыгающие бары
+    for (let i = 1; i <= 6; i++) {
+        const bar = document.getElementById(`bar-${i}`);
+        if (bar) {
+            let h = (speed * 4) + (Math.random() * 40);
+            bar.style.height = Math.min(Math.max(h, 15), 95) + "%";
+            bar.style.background = h > 75 ? "var(--c-orange)" : "var(--c-blue)";
+        }
+    }
 }
 
-function updateClock() {
-    const c = document.getElementById('live-clock');
-    if (c) c.innerText = new Date().toLocaleString();
-}
+setInterval(updateNetwork, 400);
+setInterval(() => {
+    document.getElementById('live-clock').innerText = new Date().toLocaleString();
+}, 1000);
 
-document.addEventListener('DOMContentLoaded', () => {
-    showInitialHint();
-    setInterval(updateClock, 1000);
-    setInterval(updateGauges, 2000); // Запуск анимации полосок
-    updateClock();
-    updateGauges();
-});
+document.addEventListener('DOMContentLoaded', showInitialHint);

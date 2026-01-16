@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
-    <title>CSS CORE | SERVER</title>
+    <title>CSS CORE | MAXIM MELNIKOV</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="citadel-background"><div class="energy-beam"></div></div>
-    <div id="glitch-overlay" class="glitch-fx"></div>
 
     <div class="terminal-master-frame">
         <header class="top-system-hud">
             <div class="hud-item hud-highlight">LOCATION: SECTOR_17 // NEXUS_TERMINAL</div>
             <div class="hud-item center-hud">CSS_CORE_V94_DEPLOYMENT</div>
-            <div class="hud-item hud-highlight" id="live-clock">0000.00.00 // 00:00:00</div>
+            <div class="hud-item hud-highlight" id="live-clock">17.01.2026 // 00:00:00</div>
         </header>
 
         <main class="panoramic-viewport">
@@ -42,7 +41,7 @@
 
                 <div class="action-portal">
                     <div id="lock-msg" class="system-lock-status">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
-                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn">
+                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn">
                         <div class="btn-inner">
                             <span class="btn-subtext">INITIATE FILE TRANSFER</span>
                             <span class="btn-main-text">DOWNLOAD</span>
@@ -61,11 +60,29 @@
                     </div>
                     <div class="console-help-bar">
                         <span class="help-label">QUICK_CMD:</span>
-                        <button class="cmd-btn" onclick="setCmd('status')">status</button>
-                        <button class="cmd-btn" onclick="setCmd('version')">version</button>
-                        <button class="cmd-btn" onclick="setCmd('matrix')">matrix</button>
-                        <button class="cmd-btn" onclick="setCmd('reset')">reset</button>
-                        <button class="cmd-btn" onclick="setCmd('clear')">clear</button>
+                        <div class="btn-row">
+                            <button class="cmd-btn" onclick="setCmd('status')">status</button>
+                            <button class="cmd-btn" onclick="setCmd('version')">version</button>
+                            <button class="cmd-btn" onclick="setCmd('matrix')">matrix</button>
+                            <button class="cmd-btn" onclick="setCmd('reset')">reset</button>
+                            <button class="cmd-btn" onclick="setCmd('clear')">clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="network-hud-box">
+                    <div class="hud-label">REAL_TIME_NETWORK_MONITOR</div>
+                    <div class="mini-charts-grid">
+                        <div class="chart-column"><div class="chart-bar" id="bar-1"></div></div>
+                        <div class="chart-column"><div class="chart-bar" id="bar-2"></div></div>
+                        <div class="chart-column"><div class="chart-bar" id="bar-3"></div></div>
+                        <div class="chart-column"><div class="chart-bar" id="bar-4"></div></div>
+                        <div class="chart-column"><div class="chart-bar" id="bar-5"></div></div>
+                        <div class="chart-column"><div class="chart-bar" id="bar-6"></div></div>
+                    </div>
+                    <div class="status-grid">
+                        <div class="stat-item">SPEED: <span id="rx-val">Detecting...</span></div>
+                        <div class="stat-item">TYPE: <span id="tx-val">Unknown</span></div>
                     </div>
                 </div>
             </aside>
