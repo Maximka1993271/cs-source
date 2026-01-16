@@ -44,7 +44,9 @@
                 </div>
 
                 <div class="action-portal">
-                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-overwatch">
+                    <div id="lock-msg" class="system-lock-status">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
+                    
+                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn">
                         <div class="btn-inner">
                             <span class="btn-subtext">INITIATE FILE TRANSFER</span>
                             <span class="btn-main-text">DOWNLOAD</span>
@@ -62,7 +64,7 @@
                         <input type="text" id="console-input" placeholder="ENTER COMMAND..." autocomplete="off">
                     </div>
                     <div class="console-help-bar">
-                        <span class="help-label">HELP:</span>
+                        <span class="help-label">QUICK_CMD:</span>
                         <button class="cmd-btn" onclick="setCmd('status')">status</button>
                         <button class="cmd-btn" onclick="setCmd('version')">version</button>
                         <button class="cmd-btn" onclick="setCmd('matrix')">matrix</button>
@@ -77,18 +79,6 @@
             <div class="author-credits hud-highlight">CORE_ENGINEER: MAXIM MELNIKOV</div>
             <div class="legal-credits hud-highlight">© 2026 BLACK MESA & COMBINE TECHNOLOGY</div>
         </footer>
-    </div>
-
-    <div id="plugin-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span id="modal-title">SYSTEM_DATA</span>
-                <button onclick="closeModal()" class="close-btn">[X]</button>
-            </div>
-            <div class="modal-body">
-                <p id="modal-text">SELECT_PLUGIN_FOR_DETAILS</p>
-            </div>
-        </div>
     </div>
 
     <script src="script.js"></script>
