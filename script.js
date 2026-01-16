@@ -6,11 +6,12 @@ const lockMsg = document.getElementById('lock-msg');
 
 let isDeployed = false;
 
+// ИНИЦИАЛИЗАЦИЯ ПОДСКАЗКИ
 function showInitialHint() {
     const hint = document.createElement('div');
     hint.className = 'system-msg';
     hint.innerHTML = `[SYSTEM]: DEPLOYMENT_LOCKED.<br>
-    [ACTION]: Execute SteamCMD to fetch binaries.<br>
+    [ACTION]: Run SteamCMD to fetch binaries.<br>
     [CMD]: <span class="hint-cmd" onclick="copyHint()">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>`;
     logStream.appendChild(hint);
 }
@@ -25,6 +26,23 @@ function setCmd(name) {
     input.focus();
 }
 
+// ДИНАМИЧЕСКИЕ ДАТЧИКИ (CORE STABILITY / UPTIME)
+function updateGauges() {
+    const stability = document.getElementById('stability-fill');
+    const uptime = document.getElementById('uptime-fill');
+    
+    // Плавное колебание значений
+    if (stability) {
+        const sVal = 90 + Math.random() * 8;
+        stability.style.height = `${sVal}%`;
+    }
+    if (uptime) {
+        const uVal = 98 + Math.random() * 2;
+        uptime.style.height = `${uVal}%`;
+    }
+}
+
+// ОБРАБОТКА КОМАНД
 if (input) {
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -65,11 +83,12 @@ function handleCommands(cmd) {
     logStream.appendChild(s);
 }
 
+// СИМУЛЯЦИЯ ЗАГРУЗКИ STEAMCMD
 function simulateDownload() {
     const lines = [
         "Connecting to Steam Public...", "Logged in OK", "Updating App 232330...",
-        "[ 20%] Downloading core files...", "[ 55%] Verifying integrity...", "[ 90%] Patching v94 binaries...",
-        "[100%] Success! Final build ready.", "Quitting SteamCMD..."
+        "[ 10%] Downloading...", "[ 40%] Extracting binaries...", "[ 80%] Applying REVEmu patches...",
+        "[100%] Success! Build finalized.", "Quitting SteamCMD..."
     ];
     lines.forEach((text, i) => {
         setTimeout(() => {
@@ -82,7 +101,7 @@ function simulateDownload() {
                 isDeployed = true;
                 unlockUI();
             }
-        }, i * 400);
+        }, i * 450);
     });
 }
 
@@ -103,5 +122,7 @@ function updateClock() {
 document.addEventListener('DOMContentLoaded', () => {
     showInitialHint();
     setInterval(updateClock, 1000);
+    setInterval(updateGauges, 2000); // Запуск анимации полосок
     updateClock();
+    updateGauges();
 });

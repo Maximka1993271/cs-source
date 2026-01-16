@@ -10,17 +10,14 @@
 </head>
 <body>
 
-    <div class="citadel-background">
-        <div class="energy-beam"></div>
-    </div>
-
+    <div class="citadel-background"><div class="energy-beam"></div></div>
     <div id="glitch-overlay" class="glitch-fx"></div>
 
     <div class="terminal-master-frame">
         <header class="top-system-hud">
             <div class="hud-item hud-highlight">LOCATION: SECTOR_17 // NEXUS_TERMINAL</div>
             <div class="hud-item center-hud">CSS_CORE_V94_DEPLOYMENT</div>
-            <div class="hud-item hud-highlight" id="live-clock">2026.01.16 // 00:00:00</div>
+            <div class="hud-item hud-highlight" id="live-clock">0000.00.00 // 00:00:00</div>
         </header>
 
         <main class="panoramic-viewport">
@@ -31,7 +28,7 @@
                 </div>
                 <div class="gauge-container">
                     <div class="gauge-label">LINK_UPTIME</div>
-                    <div class="v-bar"><div class="v-fill" style="height: 100%;"></div></div>
+                    <div class="v-bar"><div class="v-fill" id="uptime-fill" style="height: 99%;"></div></div>
                 </div>
             </aside>
 
@@ -45,8 +42,7 @@
 
                 <div class="action-portal">
                     <div id="lock-msg" class="system-lock-status">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
-                    
-                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn">
+                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn">
                         <div class="btn-inner">
                             <span class="btn-subtext">INITIATE FILE TRANSFER</span>
                             <span class="btn-main-text">DOWNLOAD</span>
