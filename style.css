@@ -1,0 +1,188 @@
+/* Автор: Maxim Melnikov */
+
+:root {
+    --accent: #00ffaa;
+    --accent-glow: rgba(0, 255, 170, 0.4);
+    --glass: rgba(15, 15, 20, 0.7);
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #050508;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Эстетика фона */
+.bg-visuals {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 255, 170, 0.1) 0%, transparent 70%);
+    top: -200px;
+    left: -100px;
+    filter: blur(80px);
+}
+
+.orb-2 {
+    top: unset;
+    left: unset;
+    bottom: -200px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(112, 0, 255, 0.1) 0%, transparent 70%);
+}
+
+/* Главная карточка */
+.main-card {
+    position: relative;
+    padding: 2px; /* Для эффекта рамки */
+    background: linear-gradient(135deg, var(--border), transparent);
+    border-radius: 40px;
+}
+
+.card-inner {
+    background: var(--glass);
+    backdrop-filter: blur(40px);
+    border-radius: 38px;
+    padding: 60px;
+    width: 450px;
+    text-align: center;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+}
+
+.badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.badge {
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 5px 12px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 100px;
+    font-weight: bold;
+}
+
+h1 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 2.5rem;
+    margin: 0;
+    letter-spacing: -2px;
+}
+
+h1 span {
+    color: transparent;
+    -webkit-text-stroke: 1px #fff;
+}
+
+.tagline {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 40px 0;
+}
+
+/* Сетка характеристик */
+.feature-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.feature {
+    display: flex;
+    flex-direction: column;
+}
+
+.f-label {
+    font-size: 9px;
+    color: #666;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.f-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+/* Кнопка нового поколения */
+.premium-button {
+    position: relative;
+    display: block;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    padding: 22px;
+    border-radius: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    overflow: hidden;
+    transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.premium-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+}
+
+.btn-shine {
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    transition: 0.5s;
+}
+
+.premium-button:hover .btn-shine {
+    left: 100%;
+}
+
+.file-info {
+    font-size: 11px;
+    color: #444;
+    margin-top: 15px;
+}
+
+footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+
+footer p {
+    font-size: 9px;
+    color: #333;
+    letter-spacing: 3px;
+    margin: 5px 0;
+}
+
+.author {
+    color: #555 !important;
+    font-weight: bold;
+}
