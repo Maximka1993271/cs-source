@@ -2,62 +2,85 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS CORE | Maxim Melnikov</title>
+    <title>CSS CORE | NEXUS TERMINAL</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="bg-visuals">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
+    <div class="game-ambient">
+        <div class="digital-noise"></div>
+        <div class="citadel-flare"></div>
+        <div class="vector-grid"></div>
     </div>
 
-    <main class="content-wrapper">
-        <div class="main-card">
-            <div class="card-inner">
-                <header>
-                    <div class="badge-row">
-                        <span class="badge">SECURE</span>
-                        <span class="badge">NO-STEAM</span>
-                    </div>
-                    <h1>CSS <span>CORE</span></h1>
-                    <p class="tagline">ENGINEERED BY MAXIM MELNIKOV</p>
-                </header>
-
-                <div class="divider"></div>
-
-                <div class="feature-grid">
-                    <div class="feature">
-                        <span class="f-label">VERSION</span>
-                        <span class="f-value">v94 Build</span>
-                    </div>
-                    <div class="feature">
-                        <span class="f-label">SOURCEMOD</span>
-                        <span class="f-value">1.12.7221</span>
-                    </div>
-                    <div class="feature">
-                        <span class="f-label">METAMOD</span>
-                        <span class="f-value">1.12.1219</span>
-                    </div>
+    <div class="main-terminal">
+        <header class="hud-header">
+            <div class="hazard-stripe"></div>
+            <div class="header-inner">
+                <div class="status-group">
+                    <span class="label">NODE:</span> <span class="val">C17_NEXUS</span>
+                    <span class="label">SEC:</span> <span class="val">LOCAL_ENCRYPTION_ACTIVE</span>
                 </div>
-
-                <div class="download-container">
-                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="premium-button">
-                        <span class="btn-shine"></span>
-                        <span class="btn-text">СКАЧАТЬ ЧИСТЫЙ СЕРВЕР</span>
-                    </a>
-                    <p class="file-info">EXE Installer • Build 17399420 • Verified</p>
-                </div>
-
-                <footer>
-                    <p>SYSTEM REVISION: 2026.01.16</p>
-                    <p class="author">Maxim Melnikov</p>
-                </footer>
+                <div class="brand-id">HL2_DEVOPS // 2026</div>
             </div>
-        </div>
-    </main>
+        </header>
+
+        <section class="viewport-hero">
+            <div class="side-hud left">
+                <div class="energy-scale">
+                    <div class="fill"></div>
+                </div>
+                <div class="axis-label">PWR_SYNC</div>
+            </div>
+
+            <div class="center-console">
+                <div class="logo-stack">
+                    <div class="glitch-lambda">λ</div>
+                    <h1 class="main-title">CSS <span>CORE</span></h1>
+                    <div class="subtitle-mono">>_ INITIATING_V94_STABLE_BUILD</div>
+                </div>
+
+                <div class="interaction-zone">
+                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-mega-gaming">
+                        <span class="corner tl"></span><span class="corner tr"></span>
+                        <span class="corner bl"></span><span class="corner br"></span>
+                        <div class="btn-text">Download Server</div>
+                        <div class="btn-meta">PROTOCOL: REVEmu // NO-STEAM</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="side-hud right">
+                <div class="data-stream">
+                    <div class="line">DATA_PKT_RCV...</div>
+                    <div class="line">SRC_MOD_OK</div>
+                    <div class="line">META_LNK_UP</div>
+                    <div class="line">REV_EMU_ACTIVE</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stat-grid">
+            <div class="stat-card">
+                <div class="card-head">01 // SOURCEMOD</div>
+                <div class="card-body">v1.12.7221 - Оптимизированное ядро.</div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="card-head">02 // REVEMU PRO</div>
+                <div class="card-body">Полная поддержка протоколов v94.</div>
+            </div>
+            <div class="stat-card">
+                <div class="card-head">03 // METAMOD</div>
+                <div class="card-body">v1.12.1219 - Низкоуровневый доступ.</div>
+            </div>
+        </section>
+
+        <footer class="hud-footer">
+            <div class="footer-left">ACCESS_GRANTED: AUTHORIZED_ONLY</div>
+            <div class="footer-right">© 2026 BLACK MESA RESEARCH</div>
+        </footer>
+    </div>
 
 </body>
 </html>

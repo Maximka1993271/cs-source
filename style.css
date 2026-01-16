@@ -1,214 +1,187 @@
-/* Автор: Maxim Melnikov */
+/* Игровой Дизайн "На миллион" 
+   Стиль: Техно-Брутализм / Half-Life 2 */
 
 :root {
-    --accent: #ff9d00; /* Оранжевый цвет Half-Life */
-    --accent-glow: rgba(255, 157, 0, 0.4);
-    --glass: rgba(10, 10, 15, 0.9);
-    --border: rgba(255, 255, 255, 0.1);
+    --hl-orange: #ff9d00;
+    --hl-blue: #00d4ff;
+    --bg-dark: #050608;
+    --panel-bg: rgba(10, 11, 15, 0.85);
 }
 
 body {
     margin: 0;
-    padding: 0;
-    background: #050508;
+    background: var(--bg-dark);
     color: #fff;
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: 'Orbitron', sans-serif;
     overflow: hidden;
+    height: 100vh;
 }
 
-/* Эффекты анимированного фона */
-.bg-visuals {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+/* ФОНОВЫЕ ЭФФЕКТЫ */
+.game-ambient {
+    position: fixed;
+    inset: 0;
     z-index: -1;
-    overflow: hidden;
+    background: radial-gradient(circle at center, #0d121a 0%, #050608 100%);
 }
 
-.orb {
+.citadel-flare {
     position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    animation: float 25s infinite alternate ease-in-out;
+    width: 100vw; height: 100vh;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
 }
 
-.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-    top: -150px;
-    left: -150px;
-}
-
-.orb-2 {
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, #5e00d3 0%, transparent 70%);
-    bottom: -200px;
-    right: -100px;
-    animation-delay: -7s;
-}
-
-@keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(120px, 60px) scale(1.1); }
-}
-
-/* Свечение и рамка карточки в стиле No-Steam */
-.main-card {
-    position: relative;
-    padding: 1px;
-    border-radius: 40px;
-}
-
-.main-card::after {
-    content: "";
+.vector-grid {
     position: absolute;
-    inset: -3px;
-    background: linear-gradient(45deg, var(--accent), transparent, #7000ff, transparent, var(--accent));
-    background-size: 400%;
-    border-radius: 43px;
-    z-index: -1;
-    filter: blur(18px);
-    opacity: 0.25;
-    animation: steam 15s linear infinite;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    background-size: 50px 50px;
 }
 
-@keyframes steam {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 200% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.card-inner {
-    background: var(--glass);
-    backdrop-filter: blur(60px);
-    border-radius: 38px;
-    padding: 60px;
-    width: 450px;
-    text-align: center;
-    border: 1px solid var(--border);
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
-}
-
-/* Стилизация текстовых элементов */
-.badge {
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding: 6px 16px;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    border-radius: 100px;
-    font-weight: 700;
-    box-shadow: 0 0 10px var(--accent-glow);
-}
-
-h1 {
-    font-family: 'Syncopate', sans-serif;
-    font-size: 3rem;
-    margin: 0;
-    letter-spacing: -3px;
-    transition: 0.5s;
-}
-
-h1 span {
-    color: transparent;
-    -webkit-text-stroke: 1px #fff;
-}
-
-.tagline {
-    font-size: 11px;
-    letter-spacing: 5px;
-    color: #444;
-    margin-top: 15px;
-    text-transform: uppercase;
-}
-
-.divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 40px 0;
-}
-
-/* Сетка характеристик */
-.feature-grid {
+/* ГЛАВНЫЙ ИНТЕРФЕЙС */
+.main-terminal {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 50px;
+    flex-direction: column;
+    height: 100vh;
+    padding: 0 50px;
 }
 
-.f-label {
-    font-size: 9px;
+.hud-header {
+    padding: 30px 0;
+}
+
+.hazard-stripe {
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--hl-orange), var(--hl-orange) 20px, #000 20px, #000 40px);
+    margin-bottom: 20px;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
     color: #555;
-    letter-spacing: 2px;
 }
 
-.f-value {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-}
+.header-inner .val { color: var(--hl-blue); }
 
-/* Оранжевая кнопка с пульсацией */
-.premium-button {
+/* ГЛАВНЫЙ ЭКРАН */
+.viewport-hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
     position: relative;
-    display: block;
-    background: var(--accent);
-    color: #000;
-    text-decoration: none;
-    padding: 24px;
-    border-radius: 24px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    overflow: hidden;
-    transition: 0.4s ease;
-    animation: pulse-orange 2.5s infinite;
 }
 
-@keyframes pulse-orange {
-    0% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0.4); }
-    70% { box-shadow: 0 0 0 20px rgba(255, 157, 0, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 157, 0, 0); }
+.center-console {
+    flex: 1;
+    text-align: center;
 }
 
-.premium-button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 30px var(--accent-glow);
-    filter: brightness(1.1);
-}
-
-.btn-shine {
+.glitch-lambda {
+    font-size: 20rem;
     position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-    transition: 0.7s;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.03;
+    color: var(--hl-orange);
 }
 
-.premium-button:hover .btn-shine {
-    left: 100%;
+.main-title {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 9rem;
+    margin: 0;
+    letter-spacing: -12px;
 }
 
-.file-info {
-    font-size: 11px;
-    color: #333;
+.main-title span { color: var(--hl-orange); text-shadow: 0 0 40px rgba(255, 157, 0, 0.3); }
+
+.subtitle-mono {
+    font-family: 'JetBrains Mono', monospace;
+    color: #444;
+    letter-spacing: 10px;
     margin-top: 20px;
 }
 
-footer {
-    margin-top: 50px;
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
+/* ГИГАНТСКАЯ КНОПКА */
+.btn-mega-gaming {
+    display: inline-block;
+    margin-top: 80px;
+    padding: 40px 120px;
+    background: rgba(255, 157, 0, 0.05);
+    border: 1px solid rgba(255, 157, 0, 0.2);
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+    transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.author {
-    color: var(--accent) !important;
-    font-weight: 900;
-    letter-spacing: 3px;
-    text-transform: uppercase;
+.btn-mega-gaming:hover {
+    background: var(--hl-orange);
+    color: #000;
+    box-shadow: 0 0 80px rgba(255, 157, 0, 0.4);
+}
+
+.corner { position: absolute; width: 10px; height: 10px; border: 2px solid var(--hl-orange); }
+.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+.btn-text { font-size: 2rem; font-weight: 900; letter-spacing: 2px; }
+.btn-meta { font-size: 0.7rem; font-family: 'JetBrains Mono'; margin-top: 10px; opacity: 0.6; }
+
+/* HUD БОКОВЫЕ ПАНЕЛИ */
+.side-hud {
+    width: 150px;
+}
+
+.energy-scale {
+    height: 300px; width: 4px; background: #111; position: relative;
+}
+
+.energy-scale .fill {
+    position: absolute; bottom: 0; width: 100%; height: 75%; background: var(--hl-orange);
+    box-shadow: 0 0 20px var(--hl-orange);
+}
+
+.data-stream {
+    font-family: 'JetBrains Mono';
+    font-size: 0.6rem;
+    color: var(--hl-blue);
+    text-align: right;
+}
+
+/* СЕТКА СТАТИСТИКИ */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.stat-card {
+    background: var(--panel-bg);
+    border-top: 2px solid #222;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.stat-card.highlight { border-top-color: var(--hl-orange); }
+
+.card-head { font-size: 0.7rem; color: #555; margin-bottom: 10px; font-weight: 900; }
+.card-body { font-size: 1.1rem; color: #eee; }
+
+.hud-footer {
+    padding: 30px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: #333;
+    letter-spacing: 5px;
 }
