@@ -1,55 +1,61 @@
 /* CSS CORE: Citadel Panoramic Design 
-   Style: Massive, Immersive, HL2-Themed */
+   Style: Massive, Immersive, Game-Luxury */
 
 :root {
     --hl-orange: #ff9d00;
     --hl-blue: #00d4ff;
-    --dark-metal: #0a0b0d;
+    --bg-dark: #050608;
+    --glass: rgba(10, 11, 15, 0.9);
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
+    padding: 0;
     background: #000;
     color: #fff;
     font-family: 'Orbitron', sans-serif;
     overflow-x: hidden;
+    height: 100vh;
 }
 
-/* ЗАДНИЙ ФОН ИЗ HALF-LIFE */
+/* ЗАДНИЙ ФОН */
 .citadel-panorama {
     position: fixed;
     inset: 0;
     z-index: -1;
-    /* Здесь можно поставить картинку Цитадели или Сити-17 */
+    /* Огромный качественный фон */
     background: url('https://i.imgur.com/kS5x8A4.jpg') center center / cover no-repeat;
-    filter: brightness(0.4) contrast(1.2);
+    filter: brightness(0.3) contrast(1.1) saturate(0.6);
 }
 
 .overlay-vignette {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+    background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.9) 100%);
 }
 
 .scanner-line {
     position: absolute;
     width: 100%; height: 2px;
-    background: rgba(0, 212, 255, 0.2);
-    box-shadow: 0 0 15px var(--hl-blue);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 20px var(--hl-blue);
     top: 0;
-    animation: scan-move 8s linear infinite;
+    animation: scan-move 10s linear infinite;
+    z-index: 1;
 }
 
 @keyframes scan-move { from { top: 0; } to { top: 100%; } }
 
-/* СЛОЙ ИНТЕРФЕЙСА */
+/* ИНТЕРФЕЙСНЫЙ СЛОЙ */
 .ui-layer {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding: 0 5%;
+    padding: 0 4%;
+    position: relative;
+    z-index: 2;
 }
 
 .top-hud {
@@ -57,97 +63,162 @@ body {
     justify-content: space-between;
     padding: 30px 0;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--hl-blue);
-    opacity: 0.6;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
 }
 
 .panoramic-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 /* ЦЕНТРАЛЬНЫЙ БЛОК */
 .hero-center {
     text-align: center;
-    padding: 100px 0;
+    padding: 60px 0;
 }
 
 .giant-title {
     font-family: 'Syncopate', sans-serif;
-    font-size: 12rem; /* ОГРОМНЫЙ РАЗМЕР */
+    font-size: clamp(4rem, 12vw, 12rem); /* Адаптивный огромный размер */
     margin: 0;
-    letter-spacing: -20px;
+    letter-spacing: -15px;
     line-height: 0.8;
+    text-transform: uppercase;
 }
 
-.giant-title span { color: var(--hl-orange); text-shadow: 0 0 50px rgba(255, 157, 0, 0.5); }
+.giant-title span { 
+    color: var(--hl-orange); 
+    text-shadow: 0 0 60px rgba(255, 157, 0, 0.4); 
+}
 
 .hl2-divider {
-    width: 300px; height: 1px;
+    width: 250px; height: 1px;
     background: var(--hl-orange);
     margin: 40px auto;
+    box-shadow: 0 0 10px var(--hl-orange);
 }
 
 .hero-desc {
-    font-size: 1.2rem;
-    letter-spacing: 12px;
-    color: #aaa;
-    margin-bottom: 60px;
+    font-size: 1.1rem;
+    letter-spacing: 10px;
+    color: #888;
+    font-weight: 300;
 }
 
-/* КНОПКА DOWNLOAD */
+/* ГИГАНТСКАЯ КНОПКА */
 .btn-ultra-download {
     display: inline-block;
-    padding: 40px 150px;
-    background: rgba(0, 0, 0, 0.7);
+    margin-top: 50px;
+    padding: 40px 140px;
+    background: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--hl-orange);
     color: #fff;
     text-decoration: none;
     position: relative;
-    transition: 0.4s;
-    backdrop-filter: blur(10px);
+    transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    backdrop-filter: blur(15px);
 }
 
 .btn-ultra-download:hover {
     background: var(--hl-orange);
     color: #000;
-    box-shadow: 0 0 100px rgba(255, 157, 0, 0.6);
-    transform: scale(1.05);
+    box-shadow: 0 0 120px rgba(255, 157, 0, 0.6);
+    transform: translateY(-5px) scale(1.02);
 }
 
-.btn-main-text { display: block; font-size: 4rem; font-weight: 900; letter-spacing: 10px; }
-.btn-top-label { font-size: 0.8rem; opacity: 0.5; letter-spacing: 3px; }
-.btn-meta { font-family: 'JetBrains Mono'; font-size: 0.8rem; margin-top: 10px; display: block; }
+.btn-main-text { 
+    display: block; 
+    font-size: 4rem; 
+    font-weight: 900; 
+    letter-spacing: 8px; 
+}
 
-/* МОДУЛИ (ПАНОРАМА) */
+.btn-top-label { 
+    font-size: 0.8rem; 
+    opacity: 0.6; 
+    letter-spacing: 4px; 
+    margin-bottom: 5px; 
+    display: block;
+}
+
+.btn-meta { 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.8rem; 
+    margin-top: 10px; 
+    display: block;
+    opacity: 0.7;
+}
+
+/* КАРТОЧКИ МОДУЛЕЙ */
 .module-panorama {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    margin-bottom: 100px;
+    gap: 40px;
+    margin-bottom: 60px;
 }
 
 .m-card {
-    background: rgba(10, 11, 15, 0.9);
-    border-left: 5px solid #222;
-    padding: 40px;
-    transition: 0.3s;
+    background: var(--glass);
+    border-top: 4px solid #1a1a1a;
+    padding: 45px;
+    backdrop-filter: blur(10px);
+    transition: 0.4s;
 }
 
-.m-card.highlight { border-left-color: var(--hl-orange); background: rgba(255, 157, 0, 0.05); }
+.m-card:hover {
+    transform: translateY(-15px);
+    background: rgba(255, 255, 255, 0.03);
+}
 
-.m-id { color: var(--hl-orange); font-size: 0.7rem; margin-bottom: 20px; }
-.m-card h3 { font-size: 2rem; margin: 0 0 15px 0; }
-.m-card p { font-size: 0.9rem; color: #666; font-family: 'JetBrains Mono'; }
+.m-card.highlight { 
+    border-top-color: var(--hl-orange); 
+    background: rgba(255, 157, 0, 0.03); 
+}
+
+.m-id { 
+    color: var(--hl-orange); 
+    font-family: 'JetBrains Mono'; 
+    font-size: 0.7rem; 
+    margin-bottom: 25px; 
+}
+
+.m-card h3 { 
+    font-size: 1.8rem; 
+    margin: 0 0 15px 0; 
+    letter-spacing: 2px; 
+}
+
+.m-card p { 
+    font-size: 0.95rem; 
+    color: #777; 
+    line-height: 1.6; 
+    font-weight: 300; 
+}
 
 /* ФУТЕР */
-.bottom-hud { padding: 40px 0; }
-.hazard-strip {
-    height: 10px;
-    background: repeating-linear-gradient(90deg, var(--hl-orange), var(--hl-orange) 40px, #000 40px, #000 80px);
-    margin-bottom: 20px;
+.bottom-hud { 
+    padding-bottom: 40px; 
 }
-.footer-wrap { display: flex; justify-content: space-between; font-size: 0.7rem; color: #444; }
+
+.hazard-strip {
+    height: 8px;
+    background: repeating-linear-gradient(90deg, var(--hl-orange), var(--hl-orange) 30px, #000 30px, #000 60px);
+    margin-bottom: 25px;
+    opacity: 0.8;
+}
+
+.footer-wrap { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 0.7rem; 
+    color: #444; 
+    font-family: 'JetBrains Mono';
+    letter-spacing: 3px;
+}
+
+.secure-msg { color: #00ff00; opacity: 0.4; }

@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>CSS CORE | THE CITADEL STATION</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS CORE | NEXUS OVERWATCH PORTAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
     <div class="ui-layer">
         <header class="top-hud">
             <div class="hud-left">C17_STATION_ACCESS // AUTH_LEVEL: SUPREME</div>
-            <div class="hud-right">SYSTEM_TIME: 2026.01.16</div>
+            <div class="hud-right">SYSTEM_TIME: <span id="live-clock">2026.01.16 // 00:00:00</span></div>
         </header>
 
         <main class="panoramic-content">
@@ -40,18 +41,18 @@
             <section class="module-panorama">
                 <div class="m-card">
                     <div class="m-id">MOD_01</div>
-                    <h3>SOURCEMOD</h3>
-                    <p>Ядро управления плагинами и администрацией сервера.</p>
+                    <h3>01 // SOURCEMOD</h3>
+                    <p>v1.12.7221 - Оптимизированное ядро управления плагинами.</p>
                 </div>
                 <div class="m-card highlight">
                     <div class="m-id">MOD_02</div>
-                    <h3>REVEMU PRO</h3>
-                    <p>Протокол v94. Стабильный доступ для No-Steam игроков.</p>
+                    <h3>02 // REVEMU PRO</h3>
+                    <p>Полная поддержка протоколов v94. Стабильный доступ No-Steam.</p>
                 </div>
                 <div class="m-card">
                     <div class="m-id">MOD_03</div>
-                    <h3>METAMOD</h3>
-                    <p>Низкоуровневая интеграция в движок Source Engine.</p>
+                    <h3>03 // METAMOD</h3>
+                    <p>v1.12.1219 - Низкоуровневый доступ к движку Source.</p>
                 </div>
             </section>
         </main>
@@ -60,10 +61,11 @@
             <div class="hazard-strip"></div>
             <div class="footer-wrap">
                 <span>PROJECT_REVISION_2026</span>
-                <span>SECURE CONNECTION ESTABLISHED</span>
+                <span class="secure-msg">SECURE CONNECTION ESTABLISHED</span>
             </div>
         </footer>
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
