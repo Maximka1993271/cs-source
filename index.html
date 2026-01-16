@@ -2,67 +2,68 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS CORE | NEXUS OVERWATCH PORTAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>CSS CORE | THE OVERWATCH NEXUS</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="citadel-panorama">
-        <div class="overlay-vignette"></div>
-        <div class="scanner-line"></div>
+    <div class="citadel-background">
+        <div class="energy-beam"></div>
+        <div class="scanline-heavy"></div>
     </div>
 
-    <div class="ui-layer">
-        <header class="top-hud">
-            <div class="hud-left">C17_STATION_ACCESS // AUTH_LEVEL: SUPREME</div>
-            <div class="hud-right">SYSTEM_TIME: <span id="live-clock">2026.01.16 // 00:00:00</span></div>
+    <div class="terminal-master-frame">
+        <header class="top-system-hud">
+            <div class="hud-item">LOCATION: SECTOR_17 // NEXUS_TERMINAL</div>
+            <div class="hud-item center-hud">CSS_CORE_V94_DEPLOYMENT</div>
+            <div class="hud-item" id="live-clock">2026.01.16 // 00:00:00</div>
         </header>
 
-        <main class="panoramic-content">
-            <div class="hero-center">
-                <div class="logo-group">
-                    <h1 class="giant-title">CSS <span>CORE</span></h1>
-                    <div class="hl2-divider"></div>
-                    <p class="hero-desc">ПЕРЕДОВАЯ АРХИТЕКТУРА СЕРВЕРОВ ДЛЯ COUNTER-STRIKE: SOURCE</p>
+        <main class="panoramic-viewport">
+            <aside class="side-panel left-panel">
+                <div class="gauge-container">
+                    <div class="gauge-label">CORE_STABILITY</div>
+                    <div class="v-bar"><div class="v-fill" style="height: 94%;"></div></div>
+                </div>
+                <div class="gauge-container">
+                    <div class="gauge-label">LINK_UPTIME</div>
+                    <div class="v-bar"><div class="v-fill" style="height: 100%;"></div></div>
+                </div>
+            </aside>
+
+            <section class="main-monolith">
+                <div class="logo-stack">
+                    <div class="lambda-background">λ</div>
+                    <h1 class="giant-header">CSS <span>CORE</span></h1>
+                    <div class="industrial-hazard"></div>
+                    <p class="hero-tagline">UNIVERSAL SERVER ARCHITECTURE FOR SOURCE ENGINE</p>
                 </div>
 
-                <div class="download-section">
-                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-ultra-download">
-                        <span class="btn-top-label">INITIALIZE DATA TRANSFER</span>
-                        <span class="btn-main-text">DOWNLOAD</span>
-                        <span class="btn-meta">V.94 // STABLE_BUILD // NO-STEAM</span>
-                        <div class="btn-glow"></div>
+                <div class="action-portal">
+                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-overwatch">
+                        <span class="btn-edge-decoration"></span>
+                        <div class="btn-inner">
+                            <span class="btn-subtext">INITIATE FILE TRANSFER</span>
+                            <span class="btn-main-text">DOWNLOAD</span>
+                            <span class="btn-protocol">PROT: V94 // REVEmu // NO-STEAM</span>
+                        </div>
                     </a>
                 </div>
-            </div>
-
-            <section class="module-panorama">
-                <div class="m-card">
-                    <div class="m-id">MOD_01</div>
-                    <h3>01 // SOURCEMOD</h3>
-                    <p>v1.12.7221 - Оптимизированное ядро управления плагинами.</p>
-                </div>
-                <div class="m-card highlight">
-                    <div class="m-id">MOD_02</div>
-                    <h3>02 // RevEmu 23-08-2025</h3>
-                    <p>Полная поддержка протоколов v94. Стабильный доступ No-Steam.</p>
-                </div>
-                <div class="m-card">
-                    <div class="m-id">MOD_03</div>
-                    <h3>03 // METAMOD</h3>
-                    <p>v1.12.1219 - Низкоуровневый доступ к движку Source.</p>
-                </div>
             </section>
+
+            <aside class="side-panel right-panel">
+                <div class="log-terminal" id="log-stream">
+                    <div>> PRTCL_SYNC: OK</div>
+                    <div>> SRC_ENGINE: READY</div>
+                    <div>> AUTH_LEVEL: SUPREME</div>
+                </div>
+            </aside>
         </main>
 
-        <footer class="bottom-hud">
-            <div class="hazard-strip"></div>
-            <div class="footer-wrap">
-                <span>PROJECT_REVISION_2026</span>
-                <span class="secure-msg">SECURE CONNECTION ESTABLISHED</span>
-            </div>
+        <footer class="bottom-system-hud">
+            <div class="author-credits">CORE_ENGINEER: MAXIM MELNIKOV</div>
+            <div class="legal-credits">© 2026 BLACK MESA & COMBINE TECHNOLOGY</div>
         </footer>
     </div>
 

@@ -1,40 +1,33 @@
-/**
- * CSS CORE TERMINAL ENGINE
- * Living Clock & Interface Logic
- */
+/* CORE SCRIPTING 
+   ENGINEER: MAXIM MELNIKOV
+*/
 
-function updateSystemTime() {
-    const clockElement = document.getElementById('live-clock');
-    if (!clockElement) return;
-
+function updateTerminal() {
+    // 1. ЖИВОЕ ВРЕМЯ
+    const clock = document.getElementById('live-clock');
     const now = new Date();
+    const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+    const timeStr = now.toLocaleTimeString();
+    clock.innerText = `${dateStr} // ${timeStr}`;
 
-    // Получаем компоненты даты
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
+    // 2. ДИНАМИЧЕСКИЕ ЛОГИ (Справа)
+    const logContainer = document.getElementById('log-stream');
+    const logs = [
+        "> ПРОВЕРКА ЦЕЛОСТНОСТИ ЯДРА...",
+        "> СИСТЕМА REVEMU АКТИВНА",
+        "> ПОДКЛЮЧЕНИЕ К NEXUS СЕКТОРУ 17",
+        "> ПАКЕТЫ ДАННЫХ V94 ПРИНЯТЫ",
+        "> ШИФРОВАНИЕ ENCRYPT_SUPREME"
+    ];
 
-    // Получаем компоненты времени
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-
-    // Формируем строку в стиле HL2: ГГГГ.ММ.ДД // ЧЧ:ММ:СС
-    const timeString = `${year}.${month}.${day} // ${hours}:${minutes}:${seconds}`;
-
-    // Выводим в HUD
-    clockElement.textContent = timeString;
+    if (Math.random() > 0.8) {
+        let div = document.createElement('div');
+        div.innerText = logs[Math.floor(Math.random() * logs.length)];
+        logContainer.prepend(div);
+        if (logContainer.childNodes.length > 12) logContainer.removeChild(logContainer.lastChild);
+    }
 }
 
-// Запускаем обновление каждую секунду
-setInterval(updateSystemTime, 1000);
-
-// Инициализируем сразу при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    updateSystemTime();
-    console.log("CSS CORE: System Clock Online");
-    
-    // Добавим небольшой эффект "мерцания" при обновлении (по желанию)
-    const clock = document.getElementById('live-clock');
-    clock.style.transition = "0.2s opacity";
-});
+// Запуск
+setInterval(updateTerminal, 1000);
+updateTerminal();

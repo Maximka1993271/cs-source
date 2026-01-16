@@ -1,224 +1,117 @@
-/* CSS CORE: Citadel Panoramic Design 
-   Style: Massive, Immersive, Game-Luxury */
+/* CSS CORE - MASSIVE DESIGN
+   AUTHOR: MAXIM MELNIKOV
+*/
 
 :root {
-    --hl-orange: #ff9d00;
-    --hl-blue: #00d4ff;
-    --bg-dark: #050608;
-    --glass: rgba(10, 11, 15, 0.9);
+    --c-blue: #00d4ff;
+    --c-orange: #ff9d00;
+    --bg: #010203;
+    --glass: rgba(0, 20, 30, 0.7);
 }
 
 * { box-sizing: border-box; }
 
-body {
-    margin: 0;
-    padding: 0;
-    background: #000;
+body, html {
+    margin: 0; padding: 0;
+    height: 100vh; width: 100vw;
+    background: var(--bg);
     color: #fff;
     font-family: 'Orbitron', sans-serif;
-    overflow-x: hidden;
-    height: 100vh;
+    overflow: hidden;
 }
 
-/* ЗАДНИЙ ФОН */
-.citadel-panorama {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    /* Огромный качественный фон */
+/* ЗАДНИЙ ФОН ЦИТАДЕЛИ */
+.citadel-background {
+    position: fixed; inset: 0; z-index: -1;
     background: url('https://i.imgur.com/kS5x8A4.jpg') center center / cover no-repeat;
-    filter: brightness(0.3) contrast(1.1) saturate(0.6);
+    filter: brightness(0.2) contrast(1.5) grayscale(0.5);
 }
 
-.overlay-vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.9) 100%);
+.energy-beam {
+    position: absolute; left: 50%; width: 2px; height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--c-blue), transparent);
+    box-shadow: 0 0 40px var(--c-blue);
+    opacity: 0.2;
 }
 
-.scanner-line {
-    position: absolute;
-    width: 100%; height: 2px;
-    background: rgba(0, 212, 255, 0.1);
-    box-shadow: 0 0 20px var(--hl-blue);
-    top: 0;
-    animation: scan-move 10s linear infinite;
-    z-index: 1;
+/* ОБЩАЯ РАМА ТЕРМИНАЛА */
+.terminal-master-frame {
+    display: flex; flex-direction: column;
+    height: 100vh; padding: 0 60px;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 100%);
 }
 
-@keyframes scan-move { from { top: 0; } to { top: 100%; } }
-
-/* ИНТЕРФЕЙСНЫЙ СЛОЙ */
-.ui-layer {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding: 0 4%;
-    position: relative;
-    z-index: 2;
+.top-system-hud, .bottom-system-hud {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 30px 0; border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+    letter-spacing: 2px; color: #444;
 }
 
-.top-hud {
-    display: flex;
-    justify-content: space-between;
-    padding: 30px 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--hl-blue);
-    letter-spacing: 2px;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-}
+.bottom-system-hud { border-top: 1px solid rgba(0, 212, 255, 0.1); border-bottom: none; }
 
-.panoramic-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+.center-hud { color: var(--c-blue); font-weight: 900; }
+
+/* ПАНОРАМНЫЙ КОНТЕНТ */
+.panoramic-viewport {
+    flex: 1; display: grid; grid-template-columns: 150px 1fr 250px;
+    align-items: center; gap: 40px;
 }
 
 /* ЦЕНТРАЛЬНЫЙ БЛОК */
-.hero-center {
-    text-align: center;
-    padding: 60px 0;
+.main-monolith { text-align: center; position: relative; }
+
+.lambda-background {
+    position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 30rem; font-family: 'Syncopate';
+    color: var(--c-blue); opacity: 0.02; z-index: -1;
 }
 
-.giant-title {
+.giant-header {
     font-family: 'Syncopate', sans-serif;
-    font-size: clamp(4rem, 12vw, 12rem); /* Адаптивный огромный размер */
-    margin: 0;
-    letter-spacing: -15px;
-    line-height: 0.8;
-    text-transform: uppercase;
+    font-size: 11rem; margin: 0;
+    letter-spacing: -18px; line-height: 0.8;
 }
 
-.giant-title span { 
-    color: var(--hl-orange); 
-    text-shadow: 0 0 60px rgba(255, 157, 0, 0.4); 
+.giant-header span { color: var(--c-orange); text-shadow: 0 0 50px rgba(255, 157, 0, 0.4); }
+
+.industrial-hazard {
+    width: 250px; height: 6px;
+    background: repeating-linear-gradient(90deg, var(--c-orange), var(--c-orange) 25px, #000 25px, #000 50px);
+    margin: 40px auto; box-shadow: 0 0 15px var(--c-orange);
 }
 
-.hl2-divider {
-    width: 250px; height: 1px;
-    background: var(--hl-orange);
-    margin: 40px auto;
-    box-shadow: 0 0 10px var(--hl-orange);
-}
+.hero-tagline { font-size: 1.2rem; letter-spacing: 12px; color: #555; }
 
-.hero-desc {
-    font-size: 1.1rem;
-    letter-spacing: 10px;
-    color: #888;
-    font-weight: 300;
-}
+/* КНОПКА OVERWATCH */
+.action-portal { margin-top: 80px; }
 
-/* ГИГАНТСКАЯ КНОПКА */
-.btn-ultra-download {
-    display: inline-block;
-    margin-top: 50px;
-    padding: 40px 140px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid var(--hl-orange);
-    color: #fff;
-    text-decoration: none;
-    position: relative;
-    transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+.btn-overwatch {
+    display: inline-block; padding: 45px 160px;
+    background: var(--glass); border: 1px solid var(--c-blue);
+    color: #fff; text-decoration: none; position: relative;
+    transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     backdrop-filter: blur(15px);
 }
 
-.btn-ultra-download:hover {
-    background: var(--hl-orange);
-    color: #000;
-    box-shadow: 0 0 120px rgba(255, 157, 0, 0.6);
-    transform: translateY(-5px) scale(1.02);
+.btn-overwatch:hover {
+    background: var(--c-blue); color: #000;
+    box-shadow: 0 0 120px rgba(0, 212, 255, 0.5);
+    transform: scale(1.05);
 }
 
-.btn-main-text { 
-    display: block; 
-    font-size: 4rem; 
-    font-weight: 900; 
-    letter-spacing: 8px; 
-}
+.btn-main-text { display: block; font-size: 5rem; font-weight: 900; letter-spacing: 12px; }
+.btn-subtext { display: block; font-size: 0.8rem; opacity: 0.5; letter-spacing: 4px; margin-bottom: 5px; }
+.btn-protocol { display: block; font-family: 'JetBrains Mono'; font-size: 0.7rem; margin-top: 15px; }
 
-.btn-top-label { 
-    font-size: 0.8rem; 
-    opacity: 0.6; 
-    letter-spacing: 4px; 
-    margin-bottom: 5px; 
-    display: block;
-}
+/* БОКОВЫЕ ПАНЕЛИ */
+.v-bar { height: 300px; width: 4px; background: #111; position: relative; margin-top: 10px; }
+.v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); }
+.gauge-label { font-size: 0.6rem; color: #333; writing-mode: vertical-rl; }
 
-.btn-meta { 
-    font-family: 'JetBrains Mono', monospace; 
-    font-size: 0.8rem; 
-    margin-top: 10px; 
-    display: block;
-    opacity: 0.7;
+.log-terminal {
+    background: rgba(0,0,0,0.5); border: 1px solid #111;
+    padding: 20px; height: 350px; font-family: 'JetBrains Mono';
+    font-size: 0.7rem; color: var(--c-blue); line-height: 1.8;
+    overflow: hidden;
 }
-
-/* КАРТОЧКИ МОДУЛЕЙ */
-.module-panorama {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-bottom: 60px;
-}
-
-.m-card {
-    background: var(--glass);
-    border-top: 4px solid #1a1a1a;
-    padding: 45px;
-    backdrop-filter: blur(10px);
-    transition: 0.4s;
-}
-
-.m-card:hover {
-    transform: translateY(-15px);
-    background: rgba(255, 255, 255, 0.03);
-}
-
-.m-card.highlight { 
-    border-top-color: var(--hl-orange); 
-    background: rgba(255, 157, 0, 0.03); 
-}
-
-.m-id { 
-    color: var(--hl-orange); 
-    font-family: 'JetBrains Mono'; 
-    font-size: 0.7rem; 
-    margin-bottom: 25px; 
-}
-
-.m-card h3 { 
-    font-size: 1.8rem; 
-    margin: 0 0 15px 0; 
-    letter-spacing: 2px; 
-}
-
-.m-card p { 
-    font-size: 0.95rem; 
-    color: #777; 
-    line-height: 1.6; 
-    font-weight: 300; 
-}
-
-/* ФУТЕР */
-.bottom-hud { 
-    padding-bottom: 40px; 
-}
-
-.hazard-strip {
-    height: 8px;
-    background: repeating-linear-gradient(90deg, var(--hl-orange), var(--hl-orange) 30px, #000 30px, #000 60px);
-    margin-bottom: 25px;
-    opacity: 0.8;
-}
-
-.footer-wrap { 
-    display: flex; 
-    justify-content: space-between; 
-    font-size: 0.7rem; 
-    color: #444; 
-    font-family: 'JetBrains Mono';
-    letter-spacing: 3px;
-}
-
-.secure-msg { color: #00ff00; opacity: 0.4; }
