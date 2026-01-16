@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
-    
-    <title>CSS CORE | SERVER</title>
+    <title>CSS CORE | THE OVERWATCH NEXUS</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
 </head>
@@ -14,6 +13,8 @@
         <div class="energy-beam"></div>
         <div class="scanline-heavy"></div>
     </div>
+
+    <div id="glitch-overlay" class="glitch-fx"></div>
 
     <div class="terminal-master-frame">
         <header class="top-system-hud">
@@ -26,7 +27,7 @@
             <aside class="side-panel left-panel">
                 <div class="gauge-container">
                     <div class="gauge-label">CORE_STABILITY</div>
-                    <div class="v-bar"><div class="v-fill" style="height: 94%;"></div></div>
+                    <div class="v-bar"><div class="v-fill" id="stability-fill" style="height: 94%;"></div></div>
                 </div>
                 <div class="gauge-container">
                     <div class="gauge-label">LINK_UPTIME</div>
@@ -43,7 +44,7 @@
                 </div>
 
                 <div class="action-portal">
-                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch">
+                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_/CSS_Server_v93_NoSteam_.exe" class="btn-overwatch">
                         <div class="btn-inner">
                             <span class="btn-subtext">INITIATE FILE TRANSFER</span>
                             <span class="btn-main-text">DOWNLOAD</span>
@@ -54,7 +55,21 @@
             </section>
 
             <aside class="side-panel right-panel">
-                <div class="log-terminal" id="log-stream"></div>
+                <div class="terminal-wrapper">
+                    <div class="log-terminal" id="log-stream"></div>
+                    <div class="console-input-area">
+                        <span class="prompt">></span>
+                        <input type="text" id="console-input" placeholder="ENTER COMMAND..." autocomplete="off">
+                    </div>
+                    <div class="console-help-bar">
+                        <span>HELP:</span>
+                        <button onclick="setCmd('status')">status</button>
+                        <button onclick="setCmd('version')">version</button>
+                        <button onclick="setCmd('matrix')">matrix</button>
+                        <button onclick="setCmd('reset')">reset</button>
+                        <button onclick="setCmd('clear')">clear</button>
+                    </div>
+                </div>
             </aside>
         </main>
 
