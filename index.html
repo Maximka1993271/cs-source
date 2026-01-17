@@ -33,7 +33,7 @@
 
         .main-monolith { text-align: center; position: relative; }
         .lambda-background { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 15rem; color: var(--c-blue); opacity: 0.03; z-index: -1; }
-        .giant-header { font-family: 'Syncopate'; font-size: 6.5rem; margin: 0; letter-spacing: -5px; line-height: 1; }
+        .giant-header { font-family: 'Syncopate'; font-size: 6.5rem; margin: 0; letter-spacing: -5px; line-height: 1; text-transform: uppercase; }
         .giant-header span { color: var(--c-orange); }
 
         .industrial-hazard { width: 150px; height: 3px; margin: 20px auto; background: repeating-linear-gradient(90deg, var(--c-orange), var(--c-orange) 10px, #000 10px, #000 20px); animation: hazard 1s linear infinite; }
@@ -147,7 +147,6 @@
         const lockMsg = document.getElementById('lock-msg');
         let audioCtx, chargeOsc, isDeployed = false;
 
-        // ЗВУКОВОЙ ДВИЖОК
         function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         function playBeep(f, d) {
             initAudio(); const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -237,7 +236,7 @@
                     if (i === steps.length - 1) {
                         isDeployed = true;
                         downloadZone.classList.add('visible-btn');
-                        if(lockMsg) lockMsg.innerText = "ENGINEER: MAXIM MELNIKOV // CORE: READY";
+                        if(lockMsg) lockMsg.innerText = "ENGINEER: MAXIM MELNIKOV // SERVER: READY";
                     }
                 }, step.delay);
             });
