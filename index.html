@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +12,9 @@
         body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var(--bg); color: #fff; font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
         body::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 100;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+            z-index: 100; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
         .citadel-background { position: fixed; inset: 0; z-index: -1; }
@@ -28,11 +23,16 @@
         .terminal-master-frame { display: flex; flex-direction: column; height: 100vh; padding: 0 40px; position: relative; z-index: 10; }
         .top-system-hud, .bottom-system-hud { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-family: 'JetBrains Mono'; font-size: 0.65rem; color: #444; }
         .hud-highlight { color: var(--c-blue); }
-        .panoramic-viewport { flex: 1; display: grid; grid-template-columns: 100px 1fr 420px; align-items: center; gap: 30px; }
+        .panoramic-viewport { flex: 1; display: grid; grid-template-columns: 120px 1fr 420px; align-items: center; gap: 30px; }
+
+        /* LEFT GAUGES */
+        .side-panel.left-panel { display: flex; flex-direction: column; gap: 15px; }
+        .v-bar { height: 100px; width: 6px; background: #111; position: relative; margin: 5px auto; border-radius: 3px; border: 1px solid #222; }
+        .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 8px var(--c-blue); transition: height 0.4s ease; }
+        .gauge-label { font-size: 0.5rem; color: #555; text-align: center; font-family: 'JetBrains Mono'; }
 
         .main-monolith { text-align: center; position: relative; }
         .lambda-background { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 15rem; color: var(--c-blue); opacity: 0.03; z-index: -1; }
-        
         .giant-header { font-family: 'Syncopate'; font-size: 6.5rem; margin: 0; letter-spacing: -5px; line-height: 1; position: relative; }
         .giant-header span { color: var(--c-orange); }
         
@@ -46,31 +46,13 @@
         .visible-btn { display: block !important; animation: fadeIn 0.5s; }
 
         .terminal-wrapper { height: 400px; background: rgba(0, 5, 10, 0.9); border: 1px solid rgba(0, 212, 255, 0.1); display: flex; flex-direction: column; position: relative; overflow: hidden; }
-        .terminal-wrapper::after {
-            content: "";
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 0%, rgba(0, 212, 255, 0.05) 50%, rgba(18, 16, 16, 0) 100%);
-            opacity: 0.1; pointer-events: none; animation: scanline 6s linear infinite;
-        }
-        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-
-        .log-terminal { flex: 1; overflow-y: auto; padding: 15px; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #00d4ff; scrollbar-width: none; line-height: 1.4; }
+        .log-terminal { flex: 1; overflow-y: auto; padding: 15px; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #00d4ff; scrollbar-width: none; }
         .console-input-area { display: flex; padding: 10px; border-top: 1px solid rgba(0, 212, 255, 0.1); background: #000; }
         #console-input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: 'JetBrains Mono'; flex: 1; }
         
-        .console-help-bar { padding: 10px; background: #000; border-top: 1px solid rgba(255,255,255,0.05); }
-        .cmd-btn { background: none; border: 1px solid #222; color: var(--c-blue); font-size: 0.6rem; padding: 3px 10px; cursor: pointer; margin-right: 5px; font-family: 'JetBrains Mono'; transition: 0.2s; }
-        .cmd-btn:hover { border-color: var(--c-blue); background: rgba(0, 212, 255, 0.1); }
-
         .network-hud-box { margin-top: 20px; padding: 15px; background: rgba(0, 8, 15, 0.6); border: 1px solid rgba(0, 212, 255, 0.1); }
         .mini-charts-grid { display: flex; align-items: flex-end; gap: 5px; height: 50px; margin-bottom: 10px; }
-        .chart-column { flex: 1; background: rgba(255, 255, 255, 0.02); position: relative; height: 100%; }
-        .chart-bar { position: absolute; bottom: 0; width: 100%; background: var(--c-orange); height: 10%; transition: height 0.4s; }
-        
-        .network-stats-row { display: flex; justify-content: space-between; font-size: 0.6rem; font-family: 'JetBrains Mono'; border-top: 1px solid rgba(255,255,255,0.05); pt: 5px; }
-
-        .v-bar { height: 150px; width: 2px; background: #111; position: relative; margin-bottom: 20px; }
-        .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 10px var(--c-blue); }
+        .chart-bar { flex: 1; background: var(--c-orange); transition: height 0.4s; min-height: 5px; }
         .clickable-cmd { color: var(--c-orange); cursor: pointer; text-decoration: underline; font-weight: bold; }
     </style>
 </head>
@@ -87,8 +69,10 @@
 
         <main class="panoramic-viewport">
             <aside class="side-panel left-panel">
-                <div class="gauge-container"><div class="gauge-label" style="font-size:0.5rem; color:#444;">CORE_STABILITY</div><div class="v-bar"><div class="v-fill" style="height: 94%;"></div></div></div>
-                <div class="gauge-container"><div class="gauge-label" style="font-size:0.5rem; color:#444;">LINK_UPTIME</div><div class="v-bar"><div class="v-fill" style="height: 99%;"></div></div></div>
+                <div class="gauge-container"><div class="gauge-label">CPU_LOAD</div><div class="v-bar"><div class="v-fill" id="g-cpu" style="height: 10%;"></div></div></div>
+                <div class="gauge-container"><div class="gauge-label">MEM_USE</div><div class="v-bar"><div class="v-fill" id="g-mem" style="height: 25%;"></div></div></div>
+                <div class="gauge-container"><div class="gauge-label">CORE_TEMP</div><div class="v-bar"><div class="v-fill" id="g-temp" style="height: 45%;"></div></div></div>
+                <div class="gauge-container"><div class="gauge-label">NET_STAB</div><div class="v-bar"><div class="v-fill" id="g-stab" style="height: 98%;"></div></div></div>
             </aside>
 
             <section class="main-monolith">
@@ -96,21 +80,13 @@
                     <div class="lambda-background">λ</div>
                     <h1 class="giant-header">CSS <span>CORE</span></h1>
                     <div class="industrial-hazard"></div>
-                    <p style="font-size: 0.7rem; letter-spacing: 2px; color: #555; margin-top: 10px;">UNIVERSAL SERVER ARCHITECTURE BY MAXIM MELNIKOV</p>
+                    <p style="font-size: 0.7rem; color: #555;">ENGINEER: MAXIM MELNIKOV</p>
                 </div>
 
                 <div class="action-portal">
-                    <div id="lock-msg" style="color: #444; font-size: 0.8rem; letter-spacing: 1px; margin-top: 30px;">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
-                    <a id="download-btn" 
-                       href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" 
-                       class="btn-overwatch hidden-btn"
-                       onmouseenter="startChargeSound()"
-                       onmouseleave="stopChargeSound()">
-                        <div class="btn-inner">
-                            <span style="display:block; font-size:0.6rem; opacity:0.7;">INITIATE FILE TRANSFER</span>
-                            <span class="btn-main-text">DOWNLOAD</span>
-                            <span style="display:block; font-size:0.6rem; opacity:0.7;">PROT: V94 // REVEmu // NO-STEAM</span>
-                        </div>
+                    <div id="lock-msg" style="color: #444; font-size: 0.8rem; margin-top: 20px;">SYSTEM_LOCKED: RUN_STEAMCMD_TO_EXTRACT</div>
+                    <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" class="btn-overwatch hidden-btn" onmouseenter="startChargeSound()" onmouseleave="stopChargeSound()">
+                        <span class="btn-main-text">DOWNLOAD</span>
                     </a>
                 </div>
             </section>
@@ -122,30 +98,20 @@
                         <span style="color: var(--c-blue); margin-right: 10px;">></span>
                         <input type="text" id="console-input" placeholder="ENTER COMMAND..." autocomplete="off">
                     </div>
-                    <div class="console-help-bar">
-                        <div class="btn-row">
-                            <button class="cmd-btn" onclick="setCmd('status')">status</button>
-                            <button class="cmd-btn" onclick="setCmd('version')">version</button>
-                            <button class="cmd-btn" onclick="setCmd('matrix')">matrix</button>
-                            <button class="cmd-btn" onclick="setCmd('reset')">reset</button>
-                            <button class="cmd-btn" onclick="setCmd('clear')">clear</button>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="network-hud-box">
-                    <div class="hud-label" style="font-size: 0.55rem; color: var(--c-blue); margin-bottom: 10px;">REAL_TIME_NETWORK_MONITOR</div>
                     <div class="mini-charts-grid">
-                        <div class="chart-column"><div class="chart-bar" id="bar-1"></div></div>
-                        <div class="chart-column"><div class="chart-bar" id="bar-2"></div></div>
-                        <div class="chart-column"><div class="chart-bar" id="bar-3"></div></div>
-                        <div class="chart-column"><div class="chart-bar" id="bar-4"></div></div>
-                        <div class="chart-column"><div class="chart-bar" id="bar-5"></div></div>
-                        <div class="chart-column"><div class="chart-bar" id="bar-6"></div></div>
+                        <div class="chart-bar" id="bar-1" style="height:20%"></div>
+                        <div class="chart-bar" id="bar-2" style="height:50%"></div>
+                        <div class="chart-bar" id="bar-3" style="height:30%"></div>
+                        <div class="chart-bar" id="bar-4" style="height:80%"></div>
+                        <div class="chart-bar" id="bar-5" style="height:40%"></div>
+                        <div class="chart-bar" id="bar-6" style="height:60%"></div>
                     </div>
-                    <div class="network-stats-row">
-                        <div>RX: <span id="rx-val" style="color: #fff;">0.00 Mbps</span></div>
-                        <div>TX: <span id="tx-val" style="color: #fff;">LINKING...</span></div>
+                    <div style="font-size: 0.6rem; display: flex; justify-content: space-between; font-family: 'JetBrains Mono';">
+                        <div>RX: <span id="rx-val" style="color:#fff;">0.00 Mbps</span></div>
+                        <div>TX: <span style="color:#fff;">ACTIVE</span></div>
                     </div>
                 </div>
             </aside>
@@ -153,12 +119,12 @@
 
         <footer class="bottom-system-hud">
             <div class="author-credits hud-highlight">CORE_ENGINEER: MAXIM MELNIKOV</div>
-            <div class="legal-credits">© 2026 BLACK MESA & COMBINE TECHNOLOGY</div>
+            <div>© 2026 BLACK MESA SYSTEM</div>
         </footer>
     </div>
 
     <script>
-        /* CORE SCRIPTING // ENGINEER: MAXIM MELNIKOV // 2026 */
+        /* FULL RESTORE OF ORIGINAL ENGLISH LOGIC // ENGINEER: MAXIM MELNIKOV */
         const input = document.getElementById('console-input');
         const logStream = document.getElementById('log-stream');
         const downloadBtn = document.getElementById('download-btn');
@@ -181,18 +147,11 @@
             initAudio(); chargeOsc = audioCtx.createOscillator(); chargeGain = audioCtx.createGain();
             chargeOsc.type = "sawtooth"; chargeOsc.frequency.setValueAtTime(100, audioCtx.currentTime);
             chargeOsc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 1);
-            chargeGain.gain.setValueAtTime(0, audioCtx.currentTime);
-            chargeGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-            chargeOsc.connect(chargeGain); chargeGain.connect(audioCtx.destination);
-            chargeOsc.start();
+            chargeGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+            chargeOsc.connect(chargeGain); chargeGain.connect(audioCtx.destination); chargeOsc.start();
         }
 
-        function stopChargeSound() {
-            if (chargeGain) {
-                chargeGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
-                setTimeout(() => { if(chargeOsc) chargeOsc.stop(); }, 100);
-            }
-        }
+        function stopChargeSound() { if(chargeOsc) { chargeOsc.stop(); chargeOsc = null; } }
 
         function showInitialHint() {
             const hint = document.createElement('div');
@@ -200,76 +159,51 @@
             logStream.appendChild(hint);
         }
 
-        function setCmd(name) {
-            playBeep(900, 40, "square"); 
-            if (name === 'clear') { logStream.innerHTML = ''; showInitialHint(); } else { processInput(name); }
-        }
+        function setCmd(name) { input.value = name; processInput(name); input.value = ''; }
 
         function processInput(val) {
             if (!val) return;
             const line = document.createElement('div'); line.style.color = "#fff"; line.innerText = `> ${val}`;
             logStream.appendChild(line);
+            
             const cmd = val.toLowerCase();
-            if (cmd.includes('steamcmd')) { simulateDownload(); } else { handleBaseCommands(cmd); }
+            if (cmd.includes('steamcmd')) {
+                const steps = [
+                    { t: "Connecting to Steam...", d: 500 },
+                    { t: "Logged in OK", d: 1200 },
+                    { t: "<span style='color: #fff;'>[ 10%]</span> Downloading...", d: 2400 },
+                    { t: "<span style='color: #fff;'>[ 45%]</span> Extracting...", d: 3500 },
+                    { t: "<span style='color: #fff;'>[ 80%]</span> Installing RevEmu...", d: 4600 },
+                    { t: "<span style='color: #fff;'>[ 90%]</span> RevEmu Installed.", d: 5400 },
+                    { t: "<span style='color: #fff;'>[100%]</span> Success! Build finalized.", d: 6200 }
+                ];
+                steps.forEach((step, i) => {
+                    setTimeout(() => {
+                        playBeep(350, 25, "square", 0.008);
+                        const l = document.createElement('div'); l.style.color = "var(--c-orange)"; l.innerHTML = step.t;
+                        logStream.appendChild(l); logStream.scrollTop = logStream.scrollHeight;
+                        if (i === steps.length - 1) { isDeployed = true; downloadBtn.classList.add('visible-btn'); lockMsg.style.display = 'none'; }
+                    }, step.d);
+                });
+            }
             logStream.scrollTop = logStream.scrollHeight;
         }
 
-        function handleBaseCommands(cmd) {
-            let res = "";
-            switch(cmd) {
-                case 'status': res = isDeployed ? "STATUS: ONLINE // CORE_READY" : "STATUS: IDLE // WAITING_FOR_EXTRACTION"; break;
-                case 'version': res = "CSS_CORE_V94_FINAL BY MAXIM MELNIKOV"; break;
-                case 'matrix': document.documentElement.style.setProperty('--c-blue', '#00ff41'); res = "THEME: MATRIX"; break;
-                case 'reset': document.documentElement.style.setProperty('--c-blue', '#00d4ff'); res = "THEME: DEFAULT"; break;
-                default: res = "ERROR: UNKNOWN_PROTOCOL";
-            }
-            const s = document.createElement('div'); s.style.color = "var(--c-blue)"; s.innerText = res;
-            logStream.appendChild(s); playBeep(440, 150, "sine", 0.005); 
-        }
-
-        function simulateDownload() {
-            const steps = [
-                { text: "Connecting to Steam...", delay: 500 },
-                { text: "Logged in OK", delay: 1200 },
-                { text: "<span style='color: #fff;'>[ 10%]</span> Downloading...", delay: 2400 },
-                { text: "<span style='color: #fff;'>[ 45%]</span> Extracting...", delay: 3500 },
-                { text: "<span style='color: #fff;'>[ 90%]</span> RevEmu success.", delay: 5400 },
-                { text: "<span style='color: #fff;'>[100%]</span> Success! Build finalized.", delay: 6200 }
-            ];
-            steps.forEach((step, i) => {
-                setTimeout(() => {
-                    playBeep(350, 25, "square", 0.008); 
-                    const l = document.createElement('div'); l.style.color = "var(--c-orange)"; l.innerHTML = step.text;
-                    logStream.appendChild(l); logStream.scrollTop = logStream.scrollHeight;
-                    if (i === steps.length - 1) { isDeployed = true; playBeep(880, 400, "sine", 0.015); downloadBtn.classList.add('visible-btn'); if(lockMsg) lockMsg.style.display = 'none'; }
-                }, step.delay);
-            });
-        }
-
-        function updateNetwork() {
-            const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
-            let speed = conn.downlink || (Math.random() * 50 + 20).toFixed(2);
-            let type = (conn.effectiveType || "4G").toUpperCase();
-            
-            document.getElementById('rx-val').innerText = speed + " Mbps";
-            document.getElementById('tx-val').innerText = type;
-
+        setInterval(() => {
+            document.getElementById('g-cpu').style.height = (Math.random()*15 + 5) + "%";
+            document.getElementById('g-mem').style.height = (Math.random()*10 + 20) + "%";
+            document.getElementById('g-temp').style.height = (Math.random()*5 + 40) + "%";
+            document.getElementById('rx-val').innerText = (Math.random()*50 + 20).toFixed(2) + " Mbps";
             for (let i = 1; i <= 6; i++) {
-                const bar = document.getElementById(`bar-${i}`);
-                if (bar) {
-                    let h = (speed * 3) + (Math.random() * 30);
-                    bar.style.height = Math.min(Math.max(h, 15), 95) + "%";
-                    bar.style.background = h > 70 ? "var(--c-orange)" : "var(--c-blue)";
-                }
+                document.getElementById(`bar-${i}`).style.height = (Math.random()*70 + 15) + "%";
             }
-        }
+        }, 600);
 
         input.addEventListener('keydown', (e) => {
-            playBeep(1200 + (Math.random() * 300), 15, "square", 0.006); 
+            playBeep(1200 + (Math.random() * 300), 15, "square", 0.006);
             if (e.key === 'Enter') { playBeep(700, 60, "square", 0.012); processInput(input.value.trim()); input.value = ''; }
         });
 
-        setInterval(updateNetwork, 400);
         setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleString(); }, 1000);
         document.addEventListener('DOMContentLoaded', showInitialHint);
     </script>
