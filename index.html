@@ -13,14 +13,26 @@
             --bg: #000;
         }
         * { box-sizing: border-box; transition: all 0.3s ease; }
-        body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var(--bg); color: #fff; font-family: 'Orbitron', sans-serif; overflow: hidden; }
+        body, html { 
+            margin: 0; padding: 0; height: 100vh; width: 100vw; 
+            background: var(--bg); color: #fff; font-family: 'Orbitron', sans-serif; 
+            overflow: hidden; 
+        }
+
+        @keyframes shake {
+            0% { transform: translate(2px, 2px); }
+            25% { transform: translate(-2px, -2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, 2px); }
+            100% { transform: translate(2px, 2px); }
+        }
+        .overload-active { animation: shake 0.1s infinite !important; }
 
         .citadel-background { position: fixed; inset: 0; z-index: -1; }
         .energy-beam { position: absolute; left: 50%; width: 1px; height: 100%; background: var(--c-blue); box-shadow: 0 0 15px var(--c-blue); opacity: 0.1; }
 
         .terminal-master-frame { display: flex; flex-direction: column; height: 100vh; padding: 0 40px; position: relative; z-index: 10; }
         .top-system-hud { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; }
-        
         .hud-box {
             border: 2px solid var(--c-blue); padding: 10px 30px; color: var(--c-blue);
             font-family: 'JetBrains Mono'; font-size: 0.85rem; font-weight: bold;
@@ -59,23 +71,23 @@
         .console-input-area { display: flex; padding: 10px; border-top: 1px solid rgba(0, 212, 255, 0.1); background: #000; }
         #console-input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: 'JetBrains Mono'; flex: 1; }
 
-        .console-help-bar { padding: 10px; background: #000; display: flex; gap: 5px; }
+        .console-help-bar { padding: 10px; background: #000; display: flex; flex-wrap: wrap; gap: 5px; }
         .cmd-btn { background: none; border: 1px solid #222; color: var(--c-blue); font-size: 0.6rem; padding: 3px 10px; cursor: pointer; font-family: 'JetBrains Mono'; }
 
         .network-hud-box { margin-top: 20px; padding: 15px; background: rgba(0, 8, 15, 0.6); border: 1px solid rgba(0, 212, 255, 0.1); }
         .mini-charts-grid { display: flex; align-items: flex-end; gap: 5px; height: 50px; margin-bottom: 10px; }
         .chart-column { flex: 1; background: rgba(255, 255, 255, 0.02); position: relative; height: 100%; }
-        .chart-bar { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); height: 10%; transition: height 0.4s; }
+        .chart-bar { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); height: 10%; transition: height 0.1s; }
 
         .v-bar { height: 150px; width: 2px; background: #111; position: relative; margin: 10px auto; }
-        .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 10px var(--c-blue); }
+        .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-blue); box-shadow: 0 0 10px var(--c-blue); transition: height 0.2s; }
     </style>
 </head>
 <body id="main-body">
 
-    <div class="citadel-background"><div class="energy-beam"></div></div>
+    <div class="citadel-background"><div class="energy-beam" id="bg-beam"></div></div>
 
-    <div class="terminal-master-frame">
+    <div class="terminal-master-frame" id="frame-master">
         <header class="top-system-hud">
             <div class="hud-box">LOC: SECTOR_17 // NEXUS_CMD</div>
             <div class="hud-box right" id="live-clock">17.01.2026 // 00:00:00</div>
@@ -90,7 +102,7 @@
 
             <section class="main-monolith">
                 <div class="lambda-background">λ</div>
-                <h1 class="giant-header">CSS <span>SERVER</span></h1>
+                <h1 class="giant-header" id="main-logo">CSS <span>SERVER</span></h1>
                 <div class="industrial-hazard"></div>
                 <p id="lock-msg" style="font-size: 0.7rem; color: #ff9d00; letter-spacing: 2px;">DEPLOYMENT_LOCKED: RUN STEAMCMD</p>
                 
@@ -114,8 +126,12 @@
                     </div>
                     <div class="console-help-bar">
                         <button class="cmd-btn" onclick="setCmd('status')">status</button>
-                        <button class="cmd-btn" onclick="setCmd('version')">version</button>
+                        <button class="cmd-btn" onclick="setCmd('scan')">scan</button>
+                        <button class="cmd-btn" onclick="setCmd('boost')">boost</button>
+                        <button class="cmd-btn" onclick="setCmd('overload')">overload</button>
                         <button class="cmd-btn" onclick="setCmd('matrix')">matrix</button>
+                        <button class="cmd-btn" onclick="setCmd('theme orange')">orange</button>
+                        <button class="cmd-btn" onclick="setCmd('theme stealth')">stealth</button>
                         <button class="cmd-btn" onclick="setCmd('reset')">reset</button>
                         <button class="cmd-btn" onclick="setCmd('clear')">clear</button>
                     </div>
@@ -145,7 +161,7 @@
         const logStream = document.getElementById('log-stream');
         const downloadZone = document.getElementById('download-zone');
         const lockMsg = document.getElementById('lock-msg');
-        let audioCtx, chargeOsc, isDeployed = false;
+        let audioCtx, chargeOsc, isDeployed = false, isBoosted = false;
 
         function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         function playBeep(f, d) {
@@ -161,18 +177,17 @@
         function stopChargeSound() { if(chargeOsc) { try { chargeOsc.stop(); } catch(e){} chargeOsc = null; } }
 
         function showInitialHint() {
-            const hint = document.createElement('div');
-            hint.innerHTML = `
+            logStream.innerHTML = `
                 <span style="color: #00d4ff;">[SYSTEM]: DEPLOYMENT_LOCKED.</span><br>
                 <span style="color: #00d4ff;">[ACTION]: Run SteamCMD to fetch binaries.</span><br>
-                <span style="color: #ff9d00;">[CMD]: </span><span class="clickable-cmd" style="color: #ff9d00; cursor: pointer; text-decoration: underline;" onclick="setCmd('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>
+                <span style="color: #ff9d00;">[CMD]: </span><span style="color: #ff9d00; cursor: pointer; text-decoration: underline;" onclick="setCmd('steamcmd')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>
             `;
-            logStream.appendChild(hint);
         }
 
         function setCmd(name) {
             playBeep(900, 40);
             if (name === 'clear') { logStream.innerHTML = ''; showInitialHint(); }
+            else if (name === 'steamcmd') { processInput('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit'); }
             else { processInput(name); }
         }
 
@@ -180,100 +195,124 @@
             if (!val) return;
             playBeep(1200, 20);
             const line = document.createElement('div');
-            line.style.color = "#fff";
-            line.innerText = `> ${val}`;
+            line.style.color = "#fff"; line.innerText = `> ${val}`;
             logStream.appendChild(line);
+            
             const cmd = val.toLowerCase().trim();
-            if (cmd.includes('steamcmd')) { simulateDownload(); } 
-            else { handleBaseCommands(cmd); }
+            
+            if (cmd.includes('steamcmd')) simulateDownload();
+            else if (cmd === 'scan') runScan();
+            else if (cmd === 'boost') runBoost();
+            else if (cmd === 'overload') runOverload();
+            else if (cmd.startsWith('theme')) applyTheme(cmd.split(' ')[1]);
+            else if (cmd === 'matrix') applyTheme('matrix');
+            else if (cmd === 'reset') applyTheme('default');
+            else if (cmd === 'status') {
+                logStream.innerHTML += `<div style="color:var(--c-orange)">--- SERVER STATUS ---<br>Uptime: ACTIVE<br>Security: Valve<br>Author: Maxim Melnikov<br>----------------------</div>`;
+            } 
+            else if (cmd === 'version') {
+                logStream.innerHTML += `<div style="color:var(--c-blue)">CSS_SERVER_ENGINE [v94.0.Final]<br>Author: Maxim Melnikov</div>`;
+            }
+            else {
+                logStream.innerHTML += `<div style="color:#ff4444">ERROR: UNKNOWN_PROTOCOL</div>`;
+            }
             logStream.scrollTop = logStream.scrollHeight;
         }
 
-        function handleBaseCommands(cmd) {
-            let res = "";
-            let color = "#00d4ff";
-            if (cmd === 'status') {
-                res = `<span style="color:var(--c-orange)">--- SERVER STATUS ---</span><br>Uptime: ACTIVE<br>Security: Valve<br>Author: Maxim Melnikov<br><span style="color:var(--c-orange)">----------------------</span>`;
-            } else if (cmd === 'version') {
-                res = "CSS_CORE_V94_FINAL BY MAXIM MELNIKOV";
-            } else if (cmd === 'matrix') {
-                document.documentElement.style.setProperty('--c-blue', '#00ff41');
-                res = "THEME: MATRIX PROTOCOL ACTIVATED";
-            } else if (cmd === 'reset') {
-                document.documentElement.style.setProperty('--c-blue', '#00d4ff');
-                res = "THEME: DEFAULT RESTORED";
-            } else {
-                res = "ERROR: UNKNOWN_PROTOCOL";
-                color = "#ff4444";
-            }
-            const s = document.createElement('div');
-            s.style.color = color;
-            s.innerHTML = res;
-            logStream.appendChild(s);
+        function runScan() {
+            let i = 0;
+            const interval = setInterval(() => {
+                const l = document.createElement('div');
+                l.style.fontSize = '0.6rem';
+                l.innerText = `CHECKING SECTOR 0x${Math.random().toString(16).substr(2,6).toUpperCase()} ... OK`;
+                logStream.appendChild(l);
+                logStream.scrollTop = logStream.scrollHeight;
+                if(i++ > 15) {
+                    clearInterval(interval);
+                    logStream.innerHTML += `<div style="color:var(--c-blue)">[SCAN COMPLETED]: ALL SECTORS NOMINAL.</div>`;
+                    playBeep(600, 200);
+                }
+            }, 60);
+        }
+
+        function runBoost() {
+            isBoosted = true;
+            logStream.innerHTML += `<div style="color:#fff; background: var(--c-blue); padding: 5px;">SYSTEM BOOST INITIATED...</div>`;
+            setTimeout(() => { isBoosted = false; }, 5000);
+        }
+
+        function runOverload() {
+            const frame = document.getElementById('frame-master');
+            frame.classList.add('overload-active');
+            const oldColor = document.documentElement.style.getPropertyValue('--c-blue');
+            document.documentElement.style.setProperty('--c-blue', '#ff0000');
+            playBeep(100, 1000);
+            setTimeout(() => { 
+                frame.classList.remove('overload-active');
+                document.documentElement.style.setProperty('--c-blue', oldColor || '#00d4ff');
+            }, 2000);
+        }
+
+        function applyTheme(type) {
+            const root = document.documentElement;
+            const beam = document.getElementById('bg-beam');
+            root.style.setProperty('--bg', '#000');
+            beam.style.display = 'block';
+
+            if(type === 'orange') { root.style.setProperty('--c-blue', '#ff9d00'); }
+            else if(type === 'matrix') { root.style.setProperty('--c-blue', '#00ff41'); }
+            else if(type === 'stealth') {
+                root.style.setProperty('--c-blue', '#114411');
+                root.style.setProperty('--bg', '#050505');
+                beam.style.display = 'none';
+            } else { root.style.setProperty('--c-blue', '#00d4ff'); }
+            logStream.innerHTML += `<div style="color:var(--c-blue)">THEME UPDATED: ${type.toUpperCase()}</div>`;
         }
 
         function simulateDownload() {
             const steps = [
                 { text: "Connecting to Steam Public...", delay: 500 },
-                { text: "Logged in OK", delay: 1000 },
-                { text: "Updating App 232330...", delay: 1500 },
-                { text: "<span style='color: #fff;'>[ 10%]</span> Downloading...", delay: 2000 },
-                { text: "<span style='color: #fff;'>[ 40%]</span> Extracting binaries...", delay: 3000 },
-                { text: "<span style='color: #fff;'>[ 80%]</span> Applying REVEmu patches...", delay: 4000 },
-                { text: "<span style='color: #fff;'>[100%]</span> Success! Build finalized.", delay: 5000 },
-                { text: "Quitting SteamCMD...", delay: 5500 }
+                { text: "Logged in OK", delay: 1200 },
+                { text: "<span style='color:#fff'>[ 20%]</span> Downloading binaries...", delay: 2000 },
+                { text: "<span style='color:#fff'>[ 65%]</span> Applying RevEmu patches...", delay: 3500 },
+                { text: "<span style='color:#fff'>[100%]</span> Success! Build finalized.", delay: 5000 }
             ];
-
-            steps.forEach((step, i) => {
-                setTimeout(() => {
-                    playBeep(800 + (i*100), 30);
-                    const l = document.createElement('div');
-                    l.style.color = "#ff9d00";
-                    l.innerHTML = step.text;
-                    logStream.appendChild(l);
-                    logStream.scrollTop = logStream.scrollHeight;
-
-                    if (i === steps.length - 1) {
-                        isDeployed = true;
-                        downloadZone.classList.add('visible-btn');
-                        if(lockMsg) lockMsg.innerText = "ENGINEER: MAXIM MELNIKOV // SERVER: READY";
-                    }
-                }, step.delay);
-            });
+            steps.forEach((s, i) => setTimeout(() => {
+                const l = document.createElement('div'); l.style.color = "var(--c-orange)";
+                l.innerHTML = s.text; logStream.appendChild(l);
+                playBeep(800 + (i*100), 30);
+                if(i === steps.length - 1) { 
+                    downloadZone.classList.add('visible-btn');
+                    lockMsg.innerText = "ENGINEER: MAXIM MELNIKOV // SERVER: READY";
+                    isDeployed = true;
+                }
+                logStream.scrollTop = logStream.scrollHeight;
+            }, s.delay));
         }
 
-        function updateNetwork() {
-            const conn = navigator.connection || {};
-            let speed = conn.downlink || (Math.random() * 50 + 20); 
-            const speedEl = document.getElementById('rx-val');
-            if(speedEl) speedEl.innerText = speed.toFixed(2) + " Mbps";
-
+        function updateUI() {
+            const speed = isBoosted ? (90 + Math.random()*10) : (Math.random() * 50 + 20);
+            document.getElementById('rx-val').innerText = speed.toFixed(2) + " Mbps";
             for (let i = 1; i <= 6; i++) {
                 const bar = document.getElementById(`bar-${i}`);
-                if (bar) {
-                    let h = (Math.random() * 80) + 10;
-                    bar.style.height = h + "%";
-                    bar.style.background = h > 70 ? "var(--c-orange)" : "var(--c-blue)";
-                }
+                let h = isBoosted ? (85 + Math.random() * 15) : (Math.random() * 80 + 10);
+                bar.style.height = h + "%";
+                bar.style.background = h > 85 ? "#ff4444" : (h > 60 ? "var(--c-orange)" : "var(--c-blue)");
             }
-            document.querySelectorAll('.v-fill').forEach(f => f.style.height = Math.random()*100 + "%");
+            document.getElementById('g-cpu').style.height = (isBoosted ? 95 : Math.random()*100) + "%";
+            document.getElementById('g-mem').style.height = (isBoosted ? 40 : Math.random()*100) + "%";
+            document.getElementById('g-net').style.height = (isBoosted ? 98 : Math.random()*100) + "%";
         }
 
-        setInterval(updateNetwork, 400);
-        setInterval(() => {
-            const clock = document.getElementById('live-clock');
-            if(clock) clock.innerText = new Date().toLocaleString();
-        }, 1000);
-
+        setInterval(updateUI, 400);
+        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleString(); }, 1000);
+        
         input.addEventListener('keydown', (e) => {
             playBeep(1100, 10);
-            if (e.key === 'Enter') {
-                processInput(input.value.trim());
-                input.value = '';
-            }
+            if (e.key === 'Enter') { processInput(input.value); input.value = ''; }
         });
 
-        document.addEventListener('DOMContentLoaded', showInitialHint);
+        window.onload = showInitialHint;
     </script>
 </body>
 </html>
