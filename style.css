@@ -32,7 +32,6 @@ body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var
 
 .download-zone { margin-top: 25px; display: none; flex-direction: column; align-items: center; gap: 15px; }
 .visible-btn { display: flex !important; animation: fadeIn 0.8s; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
 
 .btn-overwatch { 
     display: inline-block; padding: 15px 30px; text-decoration: none; font-weight: 900; 
@@ -40,7 +39,7 @@ body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var
     font-size: 0.9rem; letter-spacing: 2px;
 }
 .btn-overwatch:hover { background: var(--c-blue); color: #000; box-shadow: 0 0 30px var(--c-blue); }
-.sub-dl { border-color: var(--c-orange); color: var(--c-orange); font-size: 0.7rem; padding: 10px; }
+.sub-dl { border-color: var(--c-orange); color: var(--c-orange); font-size: 0.75rem; padding: 10px; }
 .sub-dl:hover { background: var(--c-orange); color: #000; box-shadow: 0 0 30px var(--c-orange); }
 
 .right-panel { display: flex; flex-direction: column; gap: 10px; height: 100%; justify-content: center; }
