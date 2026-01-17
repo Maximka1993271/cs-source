@@ -12,13 +12,13 @@
             --c-orange: #ff9d00; 
             --c-matrix: #00ff41; 
             --bg: #000; 
-            --glow: 0 0 10px rgba(0, 212, 255, 0.5);
+            --glow: 0 0 15px rgba(0, 212, 255, 0.6);
+            --glow-o: 0 0 15px rgba(255, 157, 0, 0.6);
         }
-        * { box-sizing: border-box; transition: all 0.4s; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
         body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var(--bg); color: #fff; font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        .matrix-global { --c-main: var(--c-matrix) !important; --glow: 0 0 10px rgba(0, 255, 65, 0.5); }
-        .matrix-global .giant-header span { color: var(--c-matrix) !important; }
+        .matrix-global { --c-main: var(--c-matrix) !important; --glow: 0 0 15px rgba(0, 255, 65, 0.6); }
 
         body::before {
             content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
@@ -27,77 +27,61 @@
         }
 
         .terminal-master-frame { display: flex; flex-direction: column; height: 100vh; padding: 0 40px; position: relative; z-index: 10; }
-        
-        /* ВЕРХНЯЯ ПАНЕЛЬ КАК НА ФОТО */
-        .top-system-hud { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 0; 
-            font-family: 'JetBrains Mono'; 
-            font-size: 0.8rem;
-        }
+        .top-system-hud { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; }
         
         .hud-box {
-            border: 2px solid var(--c-main);
-            padding: 8px 25px;
-            position: relative;
-            box-shadow: var(--glow);
-            clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%); /* Технологичный скос */
-            color: var(--c-main);
-            text-shadow: var(--glow);
+            border: 2px solid var(--c-main); padding: 10px 30px; color: var(--c-main);
+            font-family: 'JetBrains Mono'; font-size: 0.85rem; font-weight: bold;
+            text-shadow: var(--glow); box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.2), var(--glow);
+            clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%);
         }
 
-        .hud-box.right {
-            clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%, 0% 50%);
-            text-align: right;
-        }
+        .hud-box.right { clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%, 0% 50%); text-align: right; }
 
         .panoramic-viewport { flex: 1; display: grid; grid-template-columns: 120px 1fr 420px; align-items: center; gap: 30px; }
 
-        /* ГРАФИКИ СЛЕВА */
-        .v-bar { height: 100px; width: 6px; background: #111; position: relative; margin: 5px auto; border-radius: 3px; border: 1px solid #222; }
+        .v-bar { height: 110px; width: 8px; background: #111; position: relative; margin: 10px auto; border: 1px solid #333; }
         .v-fill { position: absolute; bottom: 0; width: 100%; background: var(--c-main); box-shadow: var(--glow); }
 
         .main-monolith { text-align: center; }
-        .giant-header { font-family: 'Syncopate'; font-size: 6.5rem; margin: 0; letter-spacing: -5px; line-height: 1; }
+        .giant-header { font-family: 'Syncopate'; font-size: 7rem; margin: 0; letter-spacing: -5px; line-height: 1; }
         .giant-header span { color: var(--c-orange); }
         
-        /* КНОПКА СКАЧИВАНИЯ */
-        .btn-overwatch { 
-            display: inline-block; padding: 25px 50px; border: 2px solid var(--c-main); color: #fff; 
-            text-decoration: none; margin-top: 30px; cursor: pointer;
-            font-size: 2rem; font-weight: 900; letter-spacing: 5px;
-            visibility: hidden; opacity: 0; 
-            box-shadow: var(--glow);
-            background: rgba(0, 212, 255, 0.05);
-        }
-        .btn-overwatch.visible-btn { visibility: visible; opacity: 1; }
-        .btn-overwatch:hover { background: var(--c-main); color: #000; box-shadow: 0 0 50px var(--c-main); }
+        /* НОВАЯ СЕКЦИЯ СКАЧИВАНИЯ */
+        .download-zone { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 15px; visibility: hidden; opacity: 0; transform: translateY(20px); }
+        .download-zone.visible-btn { visibility: visible; opacity: 1; transform: translateY(0); }
 
-        /* КОНСОЛЬ */
-        .terminal-wrapper { height: 380px; background: rgba(0, 5, 10, 0.9); border: 1px solid var(--c-main); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--glow); }
-        .log-terminal { flex: 1; overflow-y: auto; padding: 15px; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--c-main); scrollbar-width: none; line-height: 1.5; }
-        .console-input-area { display: flex; padding: 10px; border-top: 1px solid rgba(0, 212, 255, 0.2); background: #000; }
+        .btn-style { 
+            display: inline-block; padding: 18px 40px; text-decoration: none; font-weight: 900; 
+            letter-spacing: 3px; font-size: 1.4rem; cursor: pointer; border: 2px solid;
+            background: rgba(0,0,0,0.6); text-transform: uppercase; width: 450px;
+        }
+
+        .btn-core { border-color: var(--c-main); color: #fff; box-shadow: var(--glow); }
+        .btn-core:hover { background: var(--c-main); color: #000; box-shadow: 0 0 40px var(--c-main); }
+
+        .btn-plugins { border-color: var(--c-orange); color: #fff; box-shadow: var(--glow-o); font-size: 1.1rem; }
+        .btn-plugins:hover { background: var(--c-orange); color: #000; box-shadow: 0 0 40px var(--c-orange); }
+
+        .terminal-wrapper { height: 400px; background: rgba(0, 5, 10, 0.95); border: 1px solid var(--c-main); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--glow); }
+        .log-terminal { flex: 1; overflow-y: auto; padding: 20px; font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--c-main); scrollbar-width: none; line-height: 1.6; }
+        .console-input-area { display: flex; padding: 12px; border-top: 1px solid rgba(0, 212, 255, 0.3); background: #000; }
         #console-input { background: none; border: none; color: #fff; width: 100%; outline: none; font-family: 'JetBrains Mono'; flex: 1; }
         
-        .console-help-bar { padding: 8px; background: #000; border-top: 1px solid rgba(255,255,255,0.05); }
-        .cmd-btn { background: none; border: 1px solid #222; color: var(--c-main); font-size: 0.6rem; padding: 4px 10px; cursor: pointer; margin-right: 5px; font-family: 'JetBrains Mono'; }
-        .cmd-btn:hover { border-color: var(--c-main); box-shadow: var(--glow); }
+        .console-help-bar { padding: 10px; background: #000; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; }
+        .cmd-btn { background: none; border: 1px solid #333; color: var(--c-main); font-size: 0.65rem; padding: 5px 12px; cursor: pointer; font-family: 'JetBrains Mono'; }
 
-        /* ИНТЕРНЕТ */
-        .network-hud-box { margin-top: 20px; padding: 15px; background: rgba(0, 8, 15, 0.6); border: 1px solid var(--c-main); box-shadow: var(--glow); }
-        .mini-charts-grid { display: flex; align-items: flex-end; gap: 5px; height: 50px; margin-bottom: 10px; }
-        .chart-bar { flex: 1; background: var(--c-orange); min-height: 5px; }
-        .matrix-global .chart-bar { background: var(--c-matrix); }
-        .clickable-cmd { color: var(--c-orange); cursor: pointer; text-decoration: underline; }
+        .network-hud-box { margin-top: 25px; padding: 15px; background: rgba(0, 8, 15, 0.8); border: 1px solid var(--c-main); box-shadow: var(--glow); }
+        .mini-charts-grid { display: flex; align-items: flex-end; gap: 4px; height: 60px; margin-bottom: 12px; }
+        .chart-bar { flex: 1; background: var(--c-orange); min-height: 4px; }
+        .clickable-cmd { color: var(--c-orange); cursor: pointer; text-decoration: underline; font-weight: bold; }
     </style>
 </head>
 <body id="main-body">
 
     <div class="terminal-master-frame">
         <header class="top-system-hud">
-            <div class="hud-box">LOCATION: SECTOR_17 // NEXUS</div>
+            <div class="hud-box">LOC: SECTOR_17 // NEXUS_CMD</div>
             <div class="hud-box right" id="live-clock">17.01.2026 // 00:00:00</div>
         </header>
 
@@ -109,18 +93,25 @@
             </aside>
 
             <section class="main-monolith">
-                <h1 class="giant-header">CSS <span>CORE</span></h1>
-                <p style="font-size: 0.7rem; color: #555;">AUTHOR: MAXIM MELNIKOV</p>
-                <a id="download-btn" href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" 
-                   class="btn-overwatch" onmouseenter="startChargeSound()" onmouseleave="stopChargeSound()">DOWNLOAD</a>
+                <h1 class="giant-header">CSS <span>SERVER</span></h1>
+                <p style="font-size: 0.8rem; color: #666; letter-spacing: 3px;">ENGINEER: MAXIM MELNIKOV</p>
+                
+                <div id="download-zone" class="download-zone">
+                    <a href="https://github.com/Maximka1993271/cs-source/releases/download/CSS_Server_v93_NoSteam_.exe/CSS_Server_v94_NoSteam_Final.exe" 
+                       class="btn-style btn-core" onmouseenter="startChargeSound(450)" onmouseleave="stopChargeSound()">DOWNLOAD CSS SERVER v94</a>
+                    
+                    <a href="#" class="btn-style btn-plugins" onmouseenter="startChargeSound(750)" onmouseleave="stopChargeSound()">
+                        DOWNLOAD SOURCEMOD PLUGINS
+                    </a>
+                </div>
             </section>
 
             <aside class="side-panel right-panel">
                 <div class="terminal-wrapper">
                     <div class="log-terminal" id="log-stream"></div>
                     <div class="console-input-area">
-                        <span style="color: var(--c-main); margin-right: 10px;">></span>
-                        <input type="text" id="console-input" placeholder="COMMAND..." autocomplete="off">
+                        <span style="color: var(--c-main); margin-right: 12px; font-weight: bold;">></span>
+                        <input type="text" id="console-input" placeholder="SYSTEM COMMAND..." autocomplete="off">
                     </div>
                     <div class="console-help-bar">
                         <button class="cmd-btn" onclick="setCmd('status')">status</button>
@@ -133,14 +124,14 @@
 
                 <div class="network-hud-box">
                     <div class="mini-charts-grid" id="net-grid">
-                        <div class="chart-bar" style="height:40%"></div>
-                        <div class="chart-bar" style="height:80%"></div>
-                        <div class="chart-bar" style="height:50%"></div>
-                        <div class="chart-bar" style="height:90%"></div>
+                        <div class="chart-bar" style="height:30%"></div>
+                        <div class="chart-bar" style="height:70%"></div>
+                        <div class="chart-bar" style="height:45%"></div>
+                        <div class="chart-bar" style="height:85%"></div>
                     </div>
-                    <div style="font-size: 0.6rem; display: flex; justify-content: space-between; font-family: 'JetBrains Mono';">
-                        <div style="color: var(--c-main);">RX: <span id="rx-val" style="color:#fff;">0.00 Mbps</span></div>
-                        <div style="color: var(--c-orange);">TX: ACTIVE</div>
+                    <div style="font-size: 0.7rem; display: flex; justify-content: space-between; font-family: 'JetBrains Mono';">
+                        <div style="color: var(--c-main);">DL: <span id="rx-val">0.00 Mbps</span></div>
+                        <div style="color: var(--c-orange); font-weight: bold;">UPLINK: OK</div>
                     </div>
                 </div>
             </aside>
@@ -150,7 +141,7 @@
     <script>
         const input = document.getElementById('console-input');
         const logStream = document.getElementById('log-stream');
-        const downloadBtn = document.getElementById('download-btn');
+        const downloadZone = document.getElementById('download-zone');
         const mainBody = document.getElementById('main-body');
         let audioCtx, chargeOsc;
 
@@ -160,56 +151,45 @@
             o.type = "square"; o.frequency.value = f; g.gain.value = 0.005;
             o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d/1000);
         }
-        function startChargeSound() {
+        function startChargeSound(freq) {
             initAudio(); chargeOsc = audioCtx.createOscillator(); const g = audioCtx.createGain();
-            chargeOsc.frequency.value = 100; chargeOsc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 1.5);
+            chargeOsc.frequency.value = 100; chargeOsc.frequency.exponentialRampToValueAtTime(freq, audioCtx.currentTime + 1.2);
             g.gain.value = 0.01; chargeOsc.connect(g); g.connect(audioCtx.destination); chargeOsc.start();
         }
         function stopChargeSound() { if(chargeOsc) { chargeOsc.stop(); chargeOsc = null; } }
 
         function showInitialHint() {
-            logStream.innerHTML = `
-                <span style="color: var(--c-main);">[SYSTEM]: DEPLOYMENT_LOCKED.</span><br>
-                <span style="color: var(--c-main);">[ACTION]: Run SteamCMD protocol.</span><br>
-                <span>[CMD]:&nbsp;</span><span class="clickable-cmd" onclick="setCmd('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>
-            `;
+            logStream.innerHTML = `<span style="color: var(--c-main); font-weight: bold;">[SYSTEM]: DEPLOYMENT_LOCKED.</span><br><span style="color: var(--c-main);">[ACTION]: Run SteamCMD protocol.</span><br><span>[CMD]:&nbsp;</span><span class="clickable-cmd" onclick="setCmd('steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit')">steamcmd +login anonymous +force_install_dir ../css_ds +app_update 232330 +quit</span>`;
         }
 
         function setCmd(name) {
-            playBeep(800, 30);
+            playBeep(900, 40);
             if (name === 'clear') { logStream.innerHTML = ''; showInitialHint(); }
             else if (name === 'reset') { location.reload(); }
             else { processInput(name); }
         }
 
         function processInput(val) {
-            const line = document.createElement('div'); 
-            line.innerHTML = `<span style="color:#fff;">> ${val}</span>`;
+            const line = document.createElement('div'); line.innerHTML = `<span style="color:#fff;">> ${val}</span>`;
             logStream.appendChild(line);
             const cmd = val.toLowerCase().trim();
             
             if (cmd.includes('steamcmd')) {
                 const steps = [
                     { t: "Connecting to Steam...", c: "var(--c-orange)" },
-                    { t: "Logged in OK", c: "var(--c-orange)" },
-                    { t: "[ 10%] Downloading package...", c: "var(--c-orange)" },
                     { t: "[ 80%] Injecting RevEmu Layer...", c: "#fff" },
                     { t: "[ 95%] RevEmu Emulator Integrated.", c: "var(--c-matrix)" },
                     { t: "[100%] Success! Build finalized.", c: "var(--c-main)" }
                 ];
                 steps.forEach((s, i) => setTimeout(() => {
-                    const l = document.createElement('div'); 
-                    l.innerText = s.t; l.style.color = s.c;
+                    const l = document.createElement('div'); l.innerText = s.t; l.style.color = s.c;
                     logStream.appendChild(l); 
-                    if(i === steps.length - 1) downloadBtn.classList.add('visible-btn');
+                    if(i === steps.length - 1) downloadZone.classList.add('visible-btn');
                     logStream.scrollTop = logStream.scrollHeight;
-                }, i * 600));
+                }, i * 650));
             } 
             else if (cmd === 'matrix') {
                 mainBody.classList.toggle('matrix-global');
-                const info = document.createElement('div');
-                info.innerText = "[SYSTEM]: MATRIX_MODE_TOGGLED";
-                logStream.appendChild(info);
             }
             else if (cmd === 'status') {
                 const s = document.createElement('div');
@@ -225,7 +205,7 @@
         }
 
         input.addEventListener('keydown', (e) => {
-            playBeep(1200, 10);
+            playBeep(1100, 10);
             if (e.key === 'Enter') { processInput(input.value); input.value = ''; }
         });
 
@@ -233,7 +213,7 @@
             document.getElementById('g-cpu').style.height = (Math.random()*100) + "%";
             document.getElementById('g-mem').style.height = (Math.random()*100) + "%";
             document.getElementById('g-net').style.height = (Math.random()*100) + "%";
-            document.getElementById('rx-val').innerText = (Math.random()*80 + 20).toFixed(2) + " Mbps";
+            document.getElementById('rx-val').innerText = (Math.random()*150 + 50).toFixed(2) + " Mbps";
             document.querySelectorAll('.chart-bar').forEach(b => b.style.height = (Math.random()*100) + "%");
             document.getElementById('live-clock').innerText = new Date().toLocaleString();
         }, 800);
