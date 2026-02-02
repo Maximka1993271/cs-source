@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Repository | Maximka1993271</title>
+    <style>
+        :root {
+            --bg: #0f172a; --card: #1e293b; --text: #f8fafc;
+            --accent: #38bdf8; --desc: #94a3b8;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif; background-color: var(--bg);
+            color: var(--text); margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .lang-switcher { margin-bottom: 20px; }
+        .lang-btn {
+            background: var(--card); color: white; border: 1px solid var(--accent);
+            padding: 5px 15px; cursor: pointer; border-radius: 5px; margin: 0 5px;
+            transition: 0.3s;
+        }
+        .lang-btn.active { background: var(--accent); color: var(--bg); }
+        .lang-btn:hover { border-color: white; }
+        
+        .container { max-width: 800px; width: 100%; }
+        .search-box {
+            width: 100%; padding: 12px; margin-bottom: 20px;
+            border-radius: 8px; border: 1px solid var(--desc);
+            background: var(--card); color: white; outline: none;
+        }
+        .search-box:focus { border-color: var(--accent); }
+
+        details {
+            background: var(--card); margin-bottom: 10px; padding: 15px;
+            border-radius: 8px; border: 1px solid transparent; transition: 0.2s;
+        }
+        details:hover { border-color: var(--accent); }
+        summary { font-weight: bold; font-size: 1.2rem; cursor: pointer; outline: none; }
+        .plugin-desc { margin-top: 10px; color: var(--desc); line-height: 1.5; }
+        .btn-download {
+            display: inline-block; margin-top: 10px; padding: 8px 16px;
+            background: var(--accent); color: var(--bg);
+            text-decoration: none; border-radius: 5px; font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn-download:hover { opacity: 0.8; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="setLang('uk')">UA</button>
+        <button class="lang-btn" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+
+    <h1 id="main-title">Мої Плагіни SourceMod</h1>
+    <p id="main-sub" style="color: var(--desc)">Усі плагіни підтримують автооновлення через SteamWorks</p>
+
+    <div class="container">
+        <input type="text" id="searchInput" class="search-box" placeholder="Пошук...">
+        <div id="pluginList"></div>
+    </div>
+
+    <script>
+        const translations = {
+            uk: { title: "Мої Плагіни SourceMod", sub: "Усі плагіни підтримують автооновлення", search: "Пошук за назвою...", dl: "Завантажити .smx" },
+            ru: { title: "Мои Плагины SourceMod", sub: "Все плагины поддерживают автообновление", search: "Поиск по названию...", dl: "Скачать .smx" },
+            en: { title: "My SourceMod Plugins", sub: "All plugins support auto-updates", search: "Search by name...", dl: "Download .smx" }
+        };
+
+		const plugins = [
+			{ name: "Awp tracers", file: "awp_tracers.smx", desc: { uk: "Додає видимі трасери (лінії) після пострілу з AWP.", ru: "Добавляет видимые трассеры после выстрела из AWP.", en: "Adds visible tracers after AWP shot." }},
+			{ name: "Bomb Events", file: "bomb_events.smx", desc: { uk: "Сповіщення про початок встановлення, скасування, закладку та розмінування.", ru: "Уведомления о начале установки, отмены, закладке и разминировании.", en: "Notifications for bomb planting, cancelling, and defusing." }},
+			{ name: "Bot Ping", file: "bot_ping.smx", desc: { uk: "Видаляє приставку «BOT» і змінює пінг ботам.", ru: "Убирает приставку «BOT» и меняет пинг ботам.", en: "Removes BOT tag and changes bot ping." }},
+			{ name: "C4 effects", file: "c4_effects.smx", desc: { uk: "Світіння бомби та звуковий таймер перед вибухом.", ru: "Свечение бомбы и звуковой таймер перед взрывом.", en: "C4 glow effects and countdown timer." }},
+			{ name: "Check Steam Online", file: "check_steam_online.smx", desc: { uk: "Перевірка статусу Steam гравців у реальному часі.", ru: "Проверка статуса Steam игроков в реальном времени.", en: "Real-time Steam status check for players." }},
+			{ name: "Colored Smoke", file: "colored_smoke.smx", desc: { uk: "Фарбує дим від гранат у різні кольори.", ru: "Красит дым от гранат в разные цвета.", en: "Changes grenade smoke to different colors." }},
+			{ name: "Connect Announce", file: "connect_announce.smx", desc: { uk: "Сповіщає про підключення гравців.", ru: "Оповещает о подключении игроков.", en: "Announces player connections." }},
+			{ name: "Console motd", file: "console_motd.smx", desc: { uk: "Виводить вітальне повідомлення або правила прямо в консоль гравця.", ru: "Выводит приветствие или правила прямо в консоль игрока.", en: "Displays welcome message or rules in player console." }},
+			{ name: "CSS Gore", file: "css_gore.smx", desc: { uk: "Ефекти крові та часток при влучаннях.", ru: "Эффекты крови и частиц при попаданиях.", en: "Blood and gore particles on hits." }},
+			{ name: "Dissolve", file: "dissolve.smx", desc: { uk: "Ефект розчинення тіл загиблих гравців.", ru: "Эффект растворения тел погибших игроков.", en: "Dissolve effect for dead player bodies." }},
+			{ name: "Flashlight", file: "flashlight.smx", desc: { uk: "Класичний ліхтарик на клавішу F.", ru: "Классический фонарик на клавишу F.", en: "Classic flashlight triggered by F key." }},
+			{ name: "Grenade Trails", file: "grenade_trails.smx", desc: { uk: "Кольоровий шлейф за гранатами, що летять.", ru: "Цветной шлейф за летящими гранатами.", en: "Colored trails behind flying grenades." }},
+			{ name: "Grenades Messages", file: "grenades_messages.smx", desc: { uk: "Інформує в чаті про тип кинутої гранати.", ru: "Информирует в чате о типе брошенной гранаты.", en: "Informs chat about the type of grenade thrown." }},
+			{ name: "Hostage Down", file: "hostage_down.smx", desc: { uk: "Сповіщення про стан заручників.", ru: "Уведомления о состоянии заложников.", en: "Notifications about hostage status." }},
+			{ name: "IP Blocker", file: "ip_blocker.smx", desc: { uk: "Блокує рекламу IP-адрес інших серверів у чаті.", ru: "Блокирует рекламу IP-адресов других серверов в чате.", en: "Blocks IP advertisements in chat." }},
+			{ name: "Killer Info & Distance", file: "killer_info.smx", desc: { uk: "Показує нік вбивці, його HP та дистанцію.", ru: "Показывает ник убийцы, его HP и дистанцию.", en: "Shows killer's name, HP, and distance." }},
+			{ name: "Knife kill bonus", file: "knife_kill_bonus.smx", desc: { uk: "Нараховує грошовий або ігровий бонус за вбивство ножем.", ru: "Начисляет денежный или игровой бонус за убийство ножом.", en: "Gives a money or game bonus for knife kills." }},
+			{ name: "Mani Show Damage", file: "mani_show_damage.smx", desc: { uk: "Відображає шкоду в цифрах.", ru: "Отображает урон в цифрах.", en: "Displays damage in numbers." }},
+			{ name: "Medic", file: "medic.smx", desc: { uk: "Команда !medic для виклику лікування.", ru: "Команда !medic для вызова лечения.", en: "Command !medic for healing." }},
+			{ name: "Most Destructive", file: "most_destructive.smx", desc: { uk: "Виводить найкращого гравця раунду за шкодою.", ru: "Выводит лучшего игрока раунда по урону.", en: "Shows the best player of the round by damage." }},
+			{ name: "NoBlock", file: "noblock.smx", desc: { uk: "Проходження крізь союзників.", ru: "Прохождение сквозь союзников.", en: "Pass through teammates." }},
+			{ name: "Panel", file: "panel.smx", desc: { uk: "Інфо-панелі з правилами та командами.", ru: "Инфо-панели с правилами и командами.", en: "Info panels with rules and commands." }},
+			{ name: "Prop Interaction", file: "prop_interaction.smx", desc: { uk: "Покращена взаємодія з фізичними об'єктами на карті.", ru: "Улучшенное взаимодействие с физическими объектами на карте.", en: "Enhanced interaction with physics props." }},
+			{ name: "ProtectCMDS", file: "protectcmds.smx", desc: { uk: "Захист сервера від спаму консольними командами та крашів.", ru: "Защита сервера от спама консольными командами и крашей.", en: "Server protection from command spam and crashes." }},
+			{ name: "Quick Defuse", file: "quick_defuse.smx", desc: { uk: "Міні-гра при розмінуванні бомби.", ru: "Мини-игра при разминировании бомбы.", en: "Mini-game while defusing the bomb." }},
+			{ name: "Real Time", file: "real_time.smx", desc: { uk: "Відображення поточної дати та реального часу.", ru: "Отображение текущей даты и реального времени.", en: "Displaying current date and real-world time." }},
+			{ name: "ResetScore", file: "resetscore.smx", desc: { uk: "Команда !rs для скидання статистики.", ru: "Команда !rs для сброса статистики.", en: "Command !rs to reset your score." }},
+			{ name: "Show damage", file: "show_damage.smx", desc: { uk: "Показує кількість нанесеної шкоди в реальному часі.", ru: "Показывает количество нанесенного урона в реальном времени.", en: "Shows amount of damage dealt in real-time." }},
+			{ name: "SM Plugins Block", file: "sm_plugins_block.smx", desc: { uk: "Приховує список плагінів від гравців.", ru: "Скрывает список плагинов от игроков.", en: "Hides plugin list from players." }},
+			{ name: "Spawn Effect", file: "spawn_effect.smx", desc: { uk: "Візуальний ефект при появі гравця на початку раунду.", ru: "Визуальный эффект при появлении игрока в начале раунда.", en: "Visual effect when a player spawns at round start." }},
+			{ name: "Welcome Message", file: "welcome_message.smx", desc: { uk: "Привітання при вході на сервер.", ru: "Приветствие при входе на сервер.", en: "Welcome message on server join." }},
+			{ name: "Welcome Sound", file: "welcome_sound.smx", desc: { uk: "Звук привітання після завантаження.", ru: "Звук приветствия после загрузки.", en: "Welcome sound after loading." }},
+			{ name: "Updater", file: "updater.smx", desc: { uk: "Система автоматичного оновлення плагінів.", ru: "Система автоматического обновления плагинов.", en: "Automatic plugin update system." }},
+			{ name: "Team Join Message", file: "team_join_message.smx", desc: { uk: "Сповіщення про перехід між командами.", ru: "Оповещение о переходе между командами.", en: "Notification for team changes." }}
+		];
+
+        let currentLang = 'uk';
+
+        function render() {
+            const list = document.getElementById('pluginList');
+            const t = translations[currentLang];
+            document.getElementById('main-title').innerText = t.title;
+            document.getElementById('main-sub').innerText = t.sub;
+            document.getElementById('searchInput').placeholder = t.search;
+
+            list.innerHTML = plugins.map(p => `
+                <details class="plugin-item">
+                    <summary>${p.name}</summary>
+                    <div class="plugin-desc">
+                        ${p.desc[currentLang]}<br>
+                        <a href="https://raw.githubusercontent.com/Maximka1993271/cs-source/main/plugins/${p.file}" class="btn-download">${t.dl}</a>
+                    </div>
+                </details>
+            `).join('');
+        }
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase() === lang);
+            });
+            render();
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            document.querySelectorAll('.plugin-item').forEach(item => {
+                let text = item.querySelector('summary').innerText.toLowerCase();
+                item.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+
+        render();
+    </script>
+</body>
+</html>
