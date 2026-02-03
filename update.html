@@ -2,28 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Plugin Sync Portal v2.2.0</title>
+    <title>Server Sync Dashboard | v2.2.0</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f1f5f9; padding: 40px; }
-        .card { max-width: 800px; margin: auto; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; }
-        .header { padding: 20px; background: #1e293b; display: flex; justify-content: space-between; }
-        .status { color: #22c55e; font-weight: bold; }
-        .console { background: #000; padding: 20px; font-family: monospace; font-size: 13px; color: #94a3b8; }
-        .cmd { color: #38bdf8; }
+        :root {
+            --bg: #020617;
+            --card: #0f172a;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --text: #f1f5f9;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 50px; }
+        .card { background: var(--card); border: 1px solid #1e293b; border-radius: 16px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; }
+        .status-bar { background: #1e293b; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .content { padding: 30px; }
+        .repo-status { background: #000; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.9rem; line-height: 1.6; border: 1px solid #334155; }
+        .sync-active { color: var(--success); font-weight: bold; text-transform: uppercase; font-size: 0.75rem; border: 1px solid var(--success); padding: 2px 8px; border-radius: 4px; }
+        .path { color: var(--accent); }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="header">
-            <span>CORE UPDATER v2.2.0</span>
-            <span class="status">● PATH DEBUG ACTIVE</span>
+        <div class="status-bar">
+            <span style="font-weight: bold; letter-spacing: 1px;">CORE v2.2.0</span>
+            <span class="sync-active">Online & Synced</span>
         </div>
-        <div class="console">
-            <div><span class="cmd">server@css:~$</span> sm_plugins_download</div>
-            <div>[Updater] Initializing secure stream to GitHub...</div>
-            <div style="color: #facc15;">[Debug] Target Path: D:\css_ds\cstrike\addons\sourcemod\plugins\</div>
-            <hr style="border: 0; border-top: 1px dashed #334155; margin: 10px 0;">
-            <div style="color: #22c55e;">>> Syncing 34 binary files... DONE.</div>
+        <div class="content">
+            <h3 style="margin-top: 0;">GitHub Environment: <span style="color: var(--success);">Optimized</span></h3>
+            <div class="repo-status">
+                <div>[System] Checking <span class="path">Maximka1993271/cs-source</span>...</div>
+                <div>[System] /plugins/ directory validated.</div>
+                <div>[System] 34 binaries identified.</div>
+                <div style="color: var(--accent);">[System] Native IO bridge ready.</div>
+            </div>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 20px; text-align: center;">
+                All plugins are now managed via the automated sync engine.
+            </p>
         </div>
     </div>
 </body>
