@@ -1,6 +1,7 @@
 {
   "version": "1.4.0",
   "files": [
+    "test_download.smx"
     "awp_tracers.smx",
     "bomb_events.smx",
     "bot_ping.smx",
@@ -36,6 +37,7 @@
     "welcome_sound.smx"
   ]
 }
+
 
 
 
