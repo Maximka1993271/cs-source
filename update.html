@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Plugin Fix v2.1.2</title>
+    <title>Manifest Control</title>
     <style>
-        body { font-family: sans-serif; background: #020617; color: #fff; padding: 30px; }
-        .fix-box { border: 2px solid #ef4444; padding: 20px; border-radius: 12px; background: #450a0a; }
-        .path { color: #facc15; font-family: monospace; }
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; }
+        .json-viewer { background: #1e293b; border: 1px solid #38bdf8; padding: 20px; border-radius: 8px; font-family: monospace; position: relative; }
+        .version-tag { position: absolute; top: 10px; right: 10px; background: #38bdf8; color: #0f172a; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+        .file-count { color: #4ade80; margin-top: 10px; display: block; }
     </style>
 </head>
 <body>
-    <div class="fix-box">
-        <h3>System Path Fix Applied</h3>
-        <p>Using Windows-native slashes: <span class="path">plugins \ file.smx</span></p>
-        <p>Status: Ready to overwrite 34 files in <span class="path">D:\css_ds\...</span></p>
+    <div class="json-viewer">
+        <span class="version-tag">v2.1.6</span>
+        <h3 style="margin-top:0; color: #38bdf8;">Манифест синхронизации</h3>
+        <code>{ "version": "2.1.6", "files": [ ... ] }</code>
+        <span class="file-count">✓ 34 плагина готовы к деплою</span>
     </div>
 </body>
 </html>
