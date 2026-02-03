@@ -22,7 +22,7 @@
             <h2>System Auto-Update (SourceMod Updater) <span class="status-tag">Active v1.4.3</span></h2>
             <p class="info">This configuration is used by <code>updater.smx</code> to synchronize the server with the GitHub repository.</p>
             
-            <h3>Current manifest (version.json / key-value)</h3>
+            <h3>Current manifest (34 Plugins)</h3>
             <pre>
 "Updater"
 {
@@ -73,7 +73,6 @@
             </pre>
 
             <h3>Core Plugin Source (English)</h3>
-            <p class="info">Compile this code with <code>SteamWorks.inc</code> to enable the sync system.</p>
             <pre>
 #include &lt;sourcemod&gt;
 #include &lt;SteamWorks&gt;
@@ -98,7 +97,7 @@ public Plugin myinfo = {
 };
 
 public void OnPluginStart() {
-    RegAdminCmd("sm_plugins_download", Command_SyncAll, ADMFLAG_ROOT, "Start the sync process");
+    RegAdminCmd("sm_plugins_download", Command_SyncAll, ADMFLAG_ROOT);
     g_hDownloadQueue = new ArrayList(PLATFORM_MAX_PATH);
 }
 
@@ -120,15 +119,12 @@ public void OnConfigReceived(Handle hRequest, bool bFailure, bool bRequestSucces
     if (bRequestSuccessful && eStatusCode == k_EHTTPStatusCode200OK) {
         int iSize;
         SteamWorks_GetHTTPResponseBodySize(hRequest, iSize);
-
         if (iSize > 0) {
             char[] sBody = new char[iSize + 1]; 
             SteamWorks_GetHTTPResponseBodyData(hRequest, sBody, iSize);
             sBody[iSize] = '\0'; 
-
             g_hDownloadQueue.Clear();
             g_iActiveIndex = 0;
-
             int currentPos = 0;
             char sFile[PLATFORM_MAX_PATH];
             while ((currentPos = ExtractFileName(sBody, currentPos, sFile, sizeof(sFile))) != -1) {
@@ -136,9 +132,8 @@ public void OnConfigReceived(Handle hRequest, bool bFailure, bool bRequestSucces
                     g_hDownloadQueue.PushString(sFile);
                 }
             }
-
             if (g_hDownloadQueue.Length > 0) {
-                PrintToServer("[Updater] Found %d files. Starting download...", g_hDownloadQueue.Length);
+                PrintToServer("[Updater] Found %d files. Starting...", g_hDownloadQueue.Length);
                 DownloadNext();
             }
         }
@@ -152,21 +147,16 @@ void DownloadNext() {
         ServerCommand("sm plugins reload updater");
         return;
     }
-
     char sName[PLATFORM_MAX_PATH], sUrl[512], sLoc[PLATFORM_MAX_PATH];
     g_hDownloadQueue.GetString(g_iActiveIndex, sName, sizeof(sName));
-    
     Format(sUrl, sizeof(sUrl), "%s%s", URL_PLUGINS_BASE, sName);
     BuildPath(Path_SM, sLoc, sizeof(sLoc), "plugins/%s", sName);
-    
     Handle hReq = SteamWorks_CreateHTTPRequest(k_EHTTPMethodGET, sUrl);
     if (!SteamWorks_WriteHTTPResponseBodyToFile(hReq, sLoc)) {
-        PrintToServer("[Updater] WARNING: Cannot write to %s (File potentially locked).", sName);
+        PrintToServer("[Updater] WARNING: File %s is locked by OS.", sName);
     }
-    
     SteamWorks_SetHTTPCallbacks(hReq, OnFileDownloaded);
     SteamWorks_SendHTTPRequest(hReq);
-    
     PrintToServer("[%d/%d] Downloading: %s", g_iActiveIndex + 1, g_hDownloadQueue.Length, sName);
 }
 
