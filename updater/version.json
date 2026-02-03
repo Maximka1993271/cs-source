@@ -1,5 +1,5 @@
 {
-  "version": "2.1.7",
+  "version": "2.1.8",
   "files": [
     "test_download.smx",
     "awp_tracers.smx",
@@ -38,3 +38,4 @@
   ]
 
 }
+
