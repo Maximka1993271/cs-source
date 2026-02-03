@@ -1,5 +1,5 @@
 {
-  "version": "3.6.7",
+  "version": "3.7.0",
   "files": [
     "test_download.smx", "awp_tracers.smx", "bomb_events.smx", "bot_ping.smx",
     "c4_effects.smx", "check_steam_online.smx", "colored_smoke.smx", "connect_announce.smx",
@@ -13,6 +13,7 @@
   ]
 
 }
+
 
 
 
