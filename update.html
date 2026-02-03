@@ -2,40 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Management Dashboard v2.2.0</title>
+    <title>Debug Console v2.2.0</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f1f5f9; padding: 40px; }
-        .status-container { max-width: 600px; margin: auto; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; }
-        .step { display: flex; align-items: center; margin-bottom: 20px; }
-        .step-icon { width: 24px; height: 24px; border-radius: 50%; background: #22c55e; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #020617; }
-        .step-text { font-size: 1rem; color: #94a3b8; }
-        .step-text b { color: #38bdf8; }
-        .live-badge { display: inline-block; padding: 4px 12px; background: rgba(34, 197, 94, 0.1); color: #22c55e; border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid #22c55e; }
+        .debug-card { max-width: 600px; margin: auto; background: #0f172a; border: 1px solid #ef4444; border-radius: 12px; padding: 25px; }
+        .error-title { color: #ef4444; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; }
+        .fix-list { background: #000; padding: 15px; border-radius: 8px; font-family: monospace; color: #94a3b8; }
+        .highlight { color: #facc15; }
     </style>
 </head>
 <body>
-    <div class="status-container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h2 style="margin:0;">Final Deployment</h2>
-            <span class="live-badge">SYSTEM STABLE</span>
+    <div class="debug-card">
+        <div class="error-title">Error: Unable to open file</div>
+        <p>This means the file exists but is <span class="highlight">invalid</span> or <span class="highlight">locked</span>.</p>
+        <div class="fix-list">
+            <div>1. Check file size (should be > 2KB)</div>
+            <div>2. Open with Notepad to check for "404 Not Found"</div>
+            <div>3. Unblock file in Windows Properties</div>
+            <div>4. Wait 10 min for GitHub Cache refresh</div>
         </div>
-        
-        <div class="step">
-            <div class="step-icon">1</div>
-            <div class="step-text">GitHub Structure: <b>Verified & Clean</b></div>
-        </div>
-        <div class="step">
-            <div class="step-icon">2</div>
-            <div class="step-text">Core Engine: <b>v2.2.0 (Path Debug Ready)</b></div>
-        </div>
-        <div class="step">
-            <div class="step-icon">3</div>
-            <div class="step-text">Auto-Refresh: <b>Integrated</b></div>
-        </div>
-
-        <p style="text-align: center; margin-top: 30px; font-size: 0.8rem; color: #475569;">
-            Everything is ready. Run the download command to complete the sync.
-        </p>
     </div>
 </body>
 </html>
