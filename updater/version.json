@@ -1,6 +1,38 @@
 {
-  "version": "1.3.1"
+  "version": "1.3.1",
+  "files": [
+    "awp_tracers.smx",
+    "bomb_events.smx",
+    "bot_ping.smx",
+    "c4_effects.smx",
+    "check_steam_online.smx",
+    "colored_smoke.smx",
+    "connect_announce.smx",
+    "console_motd.smx",
+    "css_gore.smx",
+    "dissolve_fade.smx",
+    "dissolve_fire.smx",
+    "flashlight.smx",
+    "grenades_messages.smx",
+    "hostage_down.smx",
+    "ip_blocker.smx",
+    "killer_info_distance.smx",
+    "knife_kill_bonus.smx",
+    "mani_show_damage.smx",
+    "medic.smx",
+    "most_destructive.smx",
+    "noblock.smx",
+    "panel.smx",
+    "prop_interaction.smx",
+    "protectcmds.smx",
+    "quick_defuse.smx",
+    "real_time.smx",
+    "resetscore.smx",
+    "show_damage.smx",
+    "spawn_effect.smx",
+    "team_join_message.smx",
+    "updater.smx",
+    "welcome_message.smx",
+    "welcome_sound.smx"
+  ]
 }
-
-
-
