@@ -2,31 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ULTRA Sync Dashboard v3.0.0</title>
+    <title>ULTRA Sync v3.1.0</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f8fafc; padding: 40px; display: flex; flex-direction: column; align-items: center; }
-        .card { background: #0f172a; border: 2px solid #22c55e; border-radius: 16px; padding: 30px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .header { text-align: center; border-bottom: 1px solid #1e293b; padding-bottom: 20px; margin-bottom: 20px; }
-        .version-badge { background: #22c55e; color: #020617; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 12px; }
-        .terminal { background: #000; border-radius: 8px; padding: 15px; font-family: 'Consolas', monospace; font-size: 13px; color: #38bdf8; line-height: 1.6; }
-        .status-ok { color: #22c55e; }
+        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f8fafc; padding: 40px; }
+        .card { max-width: 500px; margin: auto; background: #0f172a; border: 2px solid #38bdf8; border-radius: 12px; padding: 25px; }
+        .step { margin-bottom: 15px; padding: 10px; border-left: 3px solid #facc15; background: #1e293b; }
+        .cmd { color: #facc15; font-family: monospace; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="header">
-            <h2 style="margin: 0;">CORE SYSTEM</h2>
-            <span class="version-badge">v3.0.0 ULTRA</span>
+        <h2 style="color:#38bdf8; margin-top:0;">FILES DOWNLOADED!</h2>
+        <p>34 files are on your disk, but SourceMod is not activating them.</p>
+        <div class="step">
+            <b>STEP 1:</b> Run manual test<br>
+            <span class="cmd">sm plugins load noblock</span>
         </div>
-        <div class="terminal">
-            <div>> STATUS: <span class="status-ok">READY</span></div>
-            <div>> REPO: Maximka1993271/cs-source</div>
-            <div>> TARGET: /addons/sourcemod/plugins/</div>
-            <div style="margin-top: 10px; color: #facc15;">CMD: sm_plugins_download</div>
+        <div class="step">
+            <b>STEP 2:</b> Check file sizes<br>
+            If files are 1KB, they are empty.
         </div>
-        <p style="text-align: center; font-size: 13px; color: #94a3b8; margin-top: 20px;">
-            Ensure the server has administrative write permissions.
-        </p>
     </div>
 </body>
 </html>
