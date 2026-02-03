@@ -82,7 +82,8 @@
 
 #define PLUGIN_VERSION "1.4.3"
 
-#define URL_VERSION "http://cdn.jsdelivr.net/gh/Maximka1993271/cs-source@main/updater/version.json"
+// Using direct Raw link to avoid CDN cache issues
+#define URL_VERSION "https://raw.githubusercontent.com/Maximka1993271/cs-source/main/updater/version.json"
 #define URL_PLUGINS_BASE "http://cdn.jsdelivr.net/gh/Maximka1993271/cs-source@main/plugins/"
 
 ArrayList g_hDownloadQueue;
@@ -91,7 +92,7 @@ int g_iActiveIndex = 0;
 public Plugin myinfo = {
     name = "Ultimate Mass Updater",
     author = "Maxim Melnikov",
-    description = "Syncs plugins using fixed Buffer/Size logic",
+    description = "Syncs plugins using direct RAW link to bypass cache",
     version = PLUGIN_VERSION,
     url = "https://github.com/Maximka1993271/cs-source"
 };
@@ -110,7 +111,7 @@ public Action Command_SyncAll(int client, int args) {
         SteamWorks_SetHTTPRequestHeaderValue(hReq, "User-Agent", "SourceMod-Updater");
         SteamWorks_SetHTTPCallbacks(hReq, OnConfigReceived);
         SteamWorks_SendHTTPRequest(hReq);
-        PrintToServer("[Updater] Starting sync v%s...", PLUGIN_VERSION);
+        PrintToServer("[Updater] Requesting manifest from GitHub Raw...");
     }
     return Plugin_Handled;
 }
@@ -123,8 +124,10 @@ public void OnConfigReceived(Handle hRequest, bool bFailure, bool bRequestSucces
             char[] sBody = new char[iSize + 1]; 
             SteamWorks_GetHTTPResponseBodyData(hRequest, sBody, iSize);
             sBody[iSize] = '\0'; 
+            
             g_hDownloadQueue.Clear();
             g_iActiveIndex = 0;
+            
             int currentPos = 0;
             char sFile[PLATFORM_MAX_PATH];
             while ((currentPos = ExtractFileName(sBody, currentPos, sFile, sizeof(sFile))) != -1) {
@@ -132,29 +135,39 @@ public void OnConfigReceived(Handle hRequest, bool bFailure, bool bRequestSucces
                     g_hDownloadQueue.PushString(sFile);
                 }
             }
+            
             if (g_hDownloadQueue.Length > 0) {
-                PrintToServer("[Updater] Found %d files. Starting...", g_hDownloadQueue.Length);
+                PrintToServer("[Updater] Data received: %d bytes.", iSize);
+                PrintToServer("[Updater] Found %d plugins. Starting...", g_hDownloadQueue.Length);
                 DownloadNext();
             }
         }
+    } else {
+        PrintToServer("[Updater] Failed to get manifest. Error Code: %d", eStatusCode);
     }
     delete hRequest;
 }
 
 void DownloadNext() {
     if (g_iActiveIndex >= g_hDownloadQueue.Length) {
+        PrintToServer("[Updater] ***************************************");
         PrintToServer("[Updater] SYNC COMPLETE!");
+        PrintToServer("[Updater] ***************************************");
         ServerCommand("sm plugins reload updater");
         return;
     }
+    
     char sName[PLATFORM_MAX_PATH], sUrl[512], sLoc[PLATFORM_MAX_PATH];
     g_hDownloadQueue.GetString(g_iActiveIndex, sName, sizeof(sName));
+    
     Format(sUrl, sizeof(sUrl), "%s%s", URL_PLUGINS_BASE, sName);
     BuildPath(Path_SM, sLoc, sizeof(sLoc), "plugins/%s", sName);
+    
     Handle hReq = SteamWorks_CreateHTTPRequest(k_EHTTPMethodGET, sUrl);
     if (!SteamWorks_WriteHTTPResponseBodyToFile(hReq, sLoc)) {
         PrintToServer("[Updater] WARNING: File %s is locked by OS.", sName);
     }
+    
     SteamWorks_SetHTTPCallbacks(hReq, OnFileDownloaded);
     SteamWorks_SendHTTPRequest(hReq);
     PrintToServer("[%d/%d] Downloading: %s", g_iActiveIndex + 1, g_hDownloadQueue.Length, sName);
