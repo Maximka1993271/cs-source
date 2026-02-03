@@ -2,25 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Debug Console v2.2.0</title>
+    <title>ULTRA Sync Dashboard v3.0.0</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f1f5f9; padding: 40px; }
-        .debug-card { max-width: 600px; margin: auto; background: #0f172a; border: 1px solid #ef4444; border-radius: 12px; padding: 25px; }
-        .error-title { color: #ef4444; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; }
-        .fix-list { background: #000; padding: 15px; border-radius: 8px; font-family: monospace; color: #94a3b8; }
-        .highlight { color: #facc15; }
+        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f8fafc; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        .card { background: #0f172a; border: 2px solid #22c55e; border-radius: 16px; padding: 30px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .header { text-align: center; border-bottom: 1px solid #1e293b; padding-bottom: 20px; margin-bottom: 20px; }
+        .version-badge { background: #22c55e; color: #020617; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 12px; }
+        .terminal { background: #000; border-radius: 8px; padding: 15px; font-family: 'Consolas', monospace; font-size: 13px; color: #38bdf8; line-height: 1.6; }
+        .status-ok { color: #22c55e; }
     </style>
 </head>
 <body>
-    <div class="debug-card">
-        <div class="error-title">Error: Unable to open file</div>
-        <p>This means the file exists but is <span class="highlight">invalid</span> or <span class="highlight">locked</span>.</p>
-        <div class="fix-list">
-            <div>1. Check file size (should be > 2KB)</div>
-            <div>2. Open with Notepad to check for "404 Not Found"</div>
-            <div>3. Unblock file in Windows Properties</div>
-            <div>4. Wait 10 min for GitHub Cache refresh</div>
+    <div class="card">
+        <div class="header">
+            <h2 style="margin: 0;">CORE SYSTEM</h2>
+            <span class="version-badge">v3.0.0 ULTRA</span>
         </div>
+        <div class="terminal">
+            <div>> STATUS: <span class="status-ok">READY</span></div>
+            <div>> REPO: Maximka1993271/cs-source</div>
+            <div>> TARGET: /addons/sourcemod/plugins/</div>
+            <div style="margin-top: 10px; color: #facc15;">CMD: sm_plugins_download</div>
+        </div>
+        <p style="text-align: center; font-size: 13px; color: #94a3b8; margin-top: 20px;">
+            Ensure the server has administrative write permissions.
+        </p>
     </div>
 </body>
 </html>
