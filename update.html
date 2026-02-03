@@ -1,29 +1,35 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Updater Config | Maximka1993271</title>
+    <title>Plugin Update Center | Maximka1993271</title>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 40px; }
-        .config-box { background: #1e293b; padding: 20px; border-radius: 8px; border: 1px solid #38bdf8; }
-        h2 { color: #38bdf8; margin-top: 0; }
-        pre { color: #accent; background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; line-height: 1.5; }
-        .info { color: #94a3b8; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; padding: 40px; line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .config-box { background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #38bdf8; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); margin-bottom: 30px; }
+        h2 { color: #38bdf8; margin-top: 0; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        h3 { color: #7dd3fc; margin-top: 25px; }
+        pre { background: #000; padding: 20px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; border: 1px solid #1e293b; color: #e2e8f0; }
+        .info { color: #94a3b8; font-size: 1.1em; margin-bottom: 20px; }
+        .status-tag { display: inline-block; background: #0369a1; color: #f0f9ff; padding: 2px 10px; border-radius: 4px; font-size: 0.8em; vertical-align: middle; margin-left: 10px; }
+        code { color: #38bdf8; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="config-box">
-        <h2>Система Автооновлення (SourceMod Updater)</h2>
-        <p class="info">Цей файл використовується плагіном <strong>updater.smx</strong> для перевірки нових версій.</p>
-        
-        <pre>
+    <div class="container">
+        <div class="config-box">
+            <h2>System Auto-Update (SourceMod Updater) <span class="status-tag">Active v1.4.3</span></h2>
+            <p class="info">This configuration is used by <code>updater.smx</code> to synchronize the server with the GitHub repository.</p>
+            
+            <h3>Current manifest (version.json / key-value)</h3>
+            <pre>
 "Updater"
 {
     "Information"
     {
-        "Version"   "1.0.8"
-        "Notes"     "Full sync enabled for 34 plugins"
+        "Version"   "1.4.3"
+        "Notes"     "Full sync enabled for 34 plugins. Fixed Buffer/Size logic."
     }
 
     "Files"
@@ -64,7 +70,127 @@
         "Plugin" "https://raw.githubusercontent.com/Maximka1993271/cs-source/main/plugins/sm_skin_chooser.smx"
     }
 }
-        </pre>
+            </pre>
+
+            <h3>Core Plugin Source (English)</h3>
+            <p class="info">Compile this code with <code>SteamWorks.inc</code> to enable the sync system.</p>
+            <pre>
+#include &lt;sourcemod&gt;
+#include &lt;SteamWorks&gt;
+
+#pragma semicolon 1
+#pragma newdecls required
+
+#define PLUGIN_VERSION "1.4.3"
+
+#define URL_VERSION "http://cdn.jsdelivr.net/gh/Maximka1993271/cs-source@main/updater/version.json"
+#define URL_PLUGINS_BASE "http://cdn.jsdelivr.net/gh/Maximka1993271/cs-source@main/plugins/"
+
+ArrayList g_hDownloadQueue;
+int g_iActiveIndex = 0;
+
+public Plugin myinfo = {
+    name = "Ultimate Mass Updater",
+    author = "Maxim Melnikov",
+    description = "Syncs plugins using fixed Buffer/Size logic",
+    version = PLUGIN_VERSION,
+    url = "https://github.com/Maximka1993271/cs-source"
+};
+
+public void OnPluginStart() {
+    RegAdminCmd("sm_plugins_download", Command_SyncAll, ADMFLAG_ROOT, "Start the sync process");
+    g_hDownloadQueue = new ArrayList(PLATFORM_MAX_PATH);
+}
+
+public Action Command_SyncAll(int client, int args) {
+    char sUrl[512];
+    Format(sUrl, sizeof(sUrl), "%s?t=%d", URL_VERSION, GetTime());
+    
+    Handle hReq = SteamWorks_CreateHTTPRequest(k_EHTTPMethodGET, sUrl);
+    if (hReq != INVALID_HANDLE) {
+        SteamWorks_SetHTTPRequestHeaderValue(hReq, "User-Agent", "SourceMod-Updater");
+        SteamWorks_SetHTTPCallbacks(hReq, OnConfigReceived);
+        SteamWorks_SendHTTPRequest(hReq);
+        PrintToServer("[Updater] Starting sync v%s...", PLUGIN_VERSION);
+    }
+    return Plugin_Handled;
+}
+
+public void OnConfigReceived(Handle hRequest, bool bFailure, bool bRequestSuccessful, EHTTPStatusCode eStatusCode) {
+    if (bRequestSuccessful && eStatusCode == k_EHTTPStatusCode200OK) {
+        int iSize;
+        SteamWorks_GetHTTPResponseBodySize(hRequest, iSize);
+
+        if (iSize > 0) {
+            char[] sBody = new char[iSize + 1]; 
+            SteamWorks_GetHTTPResponseBodyData(hRequest, sBody, iSize);
+            sBody[iSize] = '\0'; 
+
+            g_hDownloadQueue.Clear();
+            g_iActiveIndex = 0;
+
+            int currentPos = 0;
+            char sFile[PLATFORM_MAX_PATH];
+            while ((currentPos = ExtractFileName(sBody, currentPos, sFile, sizeof(sFile))) != -1) {
+                if (StrContains(sFile, ".smx", false) != -1 && StrContains(sFile, "version", false) == -1) {
+                    g_hDownloadQueue.PushString(sFile);
+                }
+            }
+
+            if (g_hDownloadQueue.Length > 0) {
+                PrintToServer("[Updater] Found %d files. Starting download...", g_hDownloadQueue.Length);
+                DownloadNext();
+            }
+        }
+    }
+    delete hRequest;
+}
+
+void DownloadNext() {
+    if (g_iActiveIndex >= g_hDownloadQueue.Length) {
+        PrintToServer("[Updater] SYNC COMPLETE!");
+        ServerCommand("sm plugins reload updater");
+        return;
+    }
+
+    char sName[PLATFORM_MAX_PATH], sUrl[512], sLoc[PLATFORM_MAX_PATH];
+    g_hDownloadQueue.GetString(g_iActiveIndex, sName, sizeof(sName));
+    
+    Format(sUrl, sizeof(sUrl), "%s%s", URL_PLUGINS_BASE, sName);
+    BuildPath(Path_SM, sLoc, sizeof(sLoc), "plugins/%s", sName);
+    
+    Handle hReq = SteamWorks_CreateHTTPRequest(k_EHTTPMethodGET, sUrl);
+    if (!SteamWorks_WriteHTTPResponseBodyToFile(hReq, sLoc)) {
+        PrintToServer("[Updater] WARNING: Cannot write to %s (File potentially locked).", sName);
+    }
+    
+    SteamWorks_SetHTTPCallbacks(hReq, OnFileDownloaded);
+    SteamWorks_SendHTTPRequest(hReq);
+    
+    PrintToServer("[%d/%d] Downloading: %s", g_iActiveIndex + 1, g_hDownloadQueue.Length, sName);
+}
+
+public void OnFileDownloaded(Handle hRequest, bool bFailure, bool bRequestSuccessful, EHTTPStatusCode eStatusCode) {
+    g_iActiveIndex++;
+    DownloadNext();
+    delete hRequest;
+}
+
+int ExtractFileName(const char[] text, int start, char[] buffer, int maxlen) {
+    int first = -1;
+    for (int i = start; text[i] != '\0'; i++) {
+        if (text[i] == '"') {
+            if (first == -1) first = i;
+            else {
+                strcopy(buffer, (i - first < maxlen) ? i - first : maxlen, text[first + 1]);
+                return i + 1;
+            }
+        }
+    }
+    return -1;
+}
+            </pre>
+        </div>
     </div>
 
 </body>
