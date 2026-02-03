@@ -1,21 +1,193 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Manifest Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Sync Dashboard | v2.1.9</title>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; }
-        .json-viewer { background: #1e293b; border: 1px solid #38bdf8; padding: 20px; border-radius: 8px; font-family: monospace; position: relative; }
-        .version-tag { position: absolute; top: 10px; right: 10px; background: #38bdf8; color: #0f172a; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-        .file-count { color: #4ade80; margin-top: 10px; display: block; }
+        :root {
+            --bg-color: #020617;
+            --card-bg: #0f172a;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f172a, #1e293b);
+            padding: 20px 30px;
+            border-bottom: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid var(--accent-green);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .terminal {
+            background: #000;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #d1d5db;
+            border: 1px solid #334155;
+        }
+
+        .cmd { color: var(--accent-blue); }
+        .success { color: var(--accent-green); }
+        .warning { color: #facc15; }
+        .error { color: var(--accent-red); }
+
+        .footer {
+            padding: 20px 30px;
+            background: rgba(15, 23, 42, 0.5);
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
     </style>
 </head>
 <body>
-    <div class="json-viewer">
-        <span class="version-tag">v2.1.6</span>
-        <h3 style="margin-top:0; color: #38bdf8;">Манифест синхронизации</h3>
-        <code>{ "version": "2.1.6", "files": [ ... ] }</code>
-        <span class="file-count">✓ 34 плагина готовы к деплою</span>
+
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1>SYSTEM SYNC</h1>
+            <div class="status-badge">
+                <span class="pulse"></span> LIVE
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value">2.1.9</span>
+                    <span class="stat-label">Core Version</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">34</span>
+                    <span class="stat-label">Plugins Monitored</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">OK</span>
+                    <span class="stat-label">Memory Heap</span>
+                </div>
+            </div>
+
+            <div class="terminal">
+                <div><span class="cmd">system@sourcemod:~$</span> sm_plugins_download</div>
+                <div class="warning">[Updater] Establishing GitHub secure connection...</div>
+                <div>[Updater] Manifest fetched: <span class="success">version.json confirmed</span></div>
+                <hr style="border: 0; border-top: 1px dashed #334155; margin: 10px 0;">
+                <div><span class="success">>> [1/34] Downloading: test_download.smx ... OK</span></div>
+                <div><span class="success">>> [2/34] Downloading: awp_tracers.smx ... OK</span></div>
+                <div><span class="success">>> [3/34] Downloading: bomb_events.smx ... OK</span></div>
+                <div style="opacity: 0.5;">... parallelizing remaining threads ...</div>
+                <div class="success">[Updater] SYNC COMPLETE. All files written to disk.</div>
+                <br>
+                <div><span class="cmd">system@sourcemod:~$</span> sm plugins refresh</div>
+                <div class="success">[SM] The plugin list has been refreshed and reloaded.</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Developed by Maxim Melnikov &bull; 2026 Native IO Engine
+        </div>
     </div>
+</div>
+
 </body>
 </html>
