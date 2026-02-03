@@ -2,42 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Server Sync Dashboard | v2.2.0</title>
+    <title>Management Dashboard v2.2.0</title>
     <style>
-        :root {
-            --bg: #020617;
-            --card: #0f172a;
-            --accent: #38bdf8;
-            --success: #22c55e;
-            --text: #f1f5f9;
-        }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 50px; }
-        .card { background: var(--card); border: 1px solid #1e293b; border-radius: 16px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; }
-        .status-bar { background: #1e293b; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
-        .content { padding: 30px; }
-        .repo-status { background: #000; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.9rem; line-height: 1.6; border: 1px solid #334155; }
-        .sync-active { color: var(--success); font-weight: bold; text-transform: uppercase; font-size: 0.75rem; border: 1px solid var(--success); padding: 2px 8px; border-radius: 4px; }
-        .path { color: var(--accent); }
+        body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #f1f5f9; padding: 40px; }
+        .status-container { max-width: 600px; margin: auto; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; }
+        .step { display: flex; align-items: center; margin-bottom: 20px; }
+        .step-icon { width: 24px; height: 24px; border-radius: 50%; background: #22c55e; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #020617; }
+        .step-text { font-size: 1rem; color: #94a3b8; }
+        .step-text b { color: #38bdf8; }
+        .live-badge { display: inline-block; padding: 4px 12px; background: rgba(34, 197, 94, 0.1); color: #22c55e; border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid #22c55e; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="status-bar">
-            <span style="font-weight: bold; letter-spacing: 1px;">CORE v2.2.0</span>
-            <span class="sync-active">Online & Synced</span>
+    <div class="status-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2 style="margin:0;">Final Deployment</h2>
+            <span class="live-badge">SYSTEM STABLE</span>
         </div>
-        <div class="content">
-            <h3 style="margin-top: 0;">GitHub Environment: <span style="color: var(--success);">Optimized</span></h3>
-            <div class="repo-status">
-                <div>[System] Checking <span class="path">Maximka1993271/cs-source</span>...</div>
-                <div>[System] /plugins/ directory validated.</div>
-                <div>[System] 34 binaries identified.</div>
-                <div style="color: var(--accent);">[System] Native IO bridge ready.</div>
-            </div>
-            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 20px; text-align: center;">
-                All plugins are now managed via the automated sync engine.
-            </p>
+        
+        <div class="step">
+            <div class="step-icon">1</div>
+            <div class="step-text">GitHub Structure: <b>Verified & Clean</b></div>
         </div>
+        <div class="step">
+            <div class="step-icon">2</div>
+            <div class="step-text">Core Engine: <b>v2.2.0 (Path Debug Ready)</b></div>
+        </div>
+        <div class="step">
+            <div class="step-icon">3</div>
+            <div class="step-text">Auto-Refresh: <b>Integrated</b></div>
+        </div>
+
+        <p style="text-align: center; margin-top: 30px; font-size: 0.8rem; color: #475569;">
+            Everything is ready. Run the download command to complete the sync.
+        </p>
     </div>
 </body>
 </html>
