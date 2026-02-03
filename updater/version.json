@@ -1,5 +1,5 @@
 {
-  "version": "1.5.9.1",
+  "version": "1.6.1",
   "files": [
     "test_download.smx",
     "awp_tracers.smx",
@@ -37,6 +37,7 @@
     "welcome_sound.smx"
   ]
 }
+
 
 
 
