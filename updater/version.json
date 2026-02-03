@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "files": [
     "test_download.smx", "awp_tracers.smx", "bomb_events.smx", "bot_ping.smx",
     "c4_effects.smx", "check_steam_online.smx", "colored_smoke.smx", "connect_announce.smx",
@@ -11,4 +11,5 @@
     "show_damage.smx", "spawn_effect.smx", "team_join_message.smx", "updater.smx",
     "welcome_message.smx", "welcome_sound.smx"
   ]
+
 }
