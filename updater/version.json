@@ -1,5 +1,5 @@
 {
-  "version": "3.7.6",
+  "version": "3.8.0",
   "plugins": [
     "awp_tracers.smx",
     "bomb_events.smx",
@@ -36,3 +36,4 @@
     "welcome_sound.smx"
   ]
 }
+
