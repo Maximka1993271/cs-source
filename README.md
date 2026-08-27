@@ -6,22 +6,22 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Maximka1993271/iron-sentinel/releases">
+  <a href="https://github.com/Maximka1993271/cs-source/releases">
     <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge&logo=github" alt="Version"/>
   </a>
-  <a href="LICENSE">
+  <a href="https://github.com/Maximka1993271/cs-source/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-GPLv3-green.svg?style=for-the-badge" alt="License"/>
   </a>
-  <a href="https://github.com/Maximka1993271/iron-sentinel/releases">
-    <img src="https://img.shields.io/github/downloads/Maximka1993271/iron-sentinel/total.svg?style=for-the-badge&logo=github" alt="Downloads"/>
+  <a href="https://github.com/Maximka1993271/cs-source/releases">
+    <img src="https://img.shields.io/github/downloads/Maximka1993271/cs-source/total.svg?style=for-the-badge&logo=github" alt="Downloads"/>
   </a>
-  <a href="https://github.com/Maximka1993271/iron-sentinel">
+  <a href="https://github.com/Maximka1993271/cs-source">
     <img src="https://img.shields.io/badge/Open%20Source-✅-brightgreen.svg?style=for-the-badge" alt="Open Source"/>
   </a>
-  <a href="https://github.com/Maximka1993271/iron-sentinel">
+  <a href="https://github.com/Maximka1993271/cs-source">
     <img src="https://img.shields.io/badge/Last%20Commit-2026--08--27-blue.svg?style=for-the-badge&logo=github" alt="Last Commit"/>
   </a>
-  <a href="https://github.com/Maximka1993271/iron-sentinel">
+  <a href="https://github.com/Maximka1993271/cs-source">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&logo=github" alt="PRs Welcome"/>
   </a>
 </p>
@@ -38,7 +38,7 @@
 > **🚨 ВНИМАНИЕ: Это ЕДИНСТВЕННЫЙ официальный канал распространения IRON SENTINEL.**
 >
 > Античит публикуется **ТОЛЬКО на GitHub** в этом репозитории:
-> **[https://github.com/Maximka1993271/iron-sentinel](https://github.com/Maximka1993271/iron-sentinel)**
+> **[https://github.com/Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**
 >
 > **Я НЕ выкладываю этот античит на:**
 > - ❌ AlliedModders
@@ -48,6 +48,12 @@
 > **Если вы найдёте этот античит где-то ещё — это НЕ оригинальная версия и может содержать вредоносный код.**
 >
 > **Всегда скачивайте только из официального репозитория GitHub!**
+
+---
+
+## 📦 Скачать
+
+### ⬇️ [Скачать IRON SENTINEL v1.0.0](https://github.com/Maximka1993271/cs-source/releases/download/v1.0.0/Iron.Sentinel.Core.v1.0.0.zip)
 
 ---
 
@@ -308,14 +314,7 @@ GitHub
 <p align="center"> <b>🛡️ IRON SENTINEL — Защита активирована!</b><br/> <b>Made with ❤️</b><br/> <b>Maxim Melnikov</b> — <a href="https://github.com/Maximka1993271">@Maximka1993271</a> </p><p align="center"> <sub>IRON SENTINEL v1.0.0 — 27 August 2026</sub><br/> <sub>🔓 Open Source — полностью открытый код</sub> </p> ```
 ✅ Что изменено
 Что было	Что стало
-Скриншоты	🗑️ Удалены
-Информация об эквалайзере	🗑️ Удалена
-Информация о SoundForge	🗑️ Удалена
-Бейджи для браузеров	🗑️ Удалены
-Добавлена информация об античите	✅
-23 модуля	✅
-85+ настроек	✅
-Команды	✅
-Сравнение с другими античитами	✅
-Инструкция по установке	✅
+Maximka1993271/iron-sentinel	Maximka1993271/cs-source
+Нет ссылки на скачивание	Добавлена кнопка скачивания
+Нет ссылки на релиз	Исправлены все ссылки
 Готово! 🎉
