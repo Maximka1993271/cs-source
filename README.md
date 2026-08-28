@@ -39,7 +39,7 @@
 
 |                       | Ссылка                                                                                                                                                                |
 | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ⬇️ **Скачать v1.1.2** | **[Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip](https://github.com/Maximka1993271/cs-source/releases/download/v1.0.0/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip)** |
+| ⬇️ **Скачать v1.1.2** | **[Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip]([https://github.com/Maximka1993271/cs-source/releases/download/v1.0.0/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip))** |
 | 🏷️ **Все релизы**    | **[GitHub Releases](https://github.com/Maximka1993271/cs-source/releases)**                                                                                           |
 | 💻 **Исходный код**   | **[Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**                                                                                           |
 | 📜 **Лицензия**       | **[GPLv3](https://github.com/Maximka1993271/cs-source/blob/main/LICENSE)**                                                                                            |
