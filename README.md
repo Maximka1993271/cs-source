@@ -44,7 +44,7 @@
 | 💻 **Исходный код**   | **[Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**                                                                                          |
 | 📜 **Лицензия**       | **[GPLv3](https://github.com/Maximka1993271/cs-source/blob/main/LICENSE)**                                                                                           |
 
-> **v1.1.2 Build & Runtime Fixes** — исправления компиляции и запуска, включая `is_aimbot`, `is_wallhack`, `is_antismoke`, `is_banlist` и `is_core`.
+> **v1.1.2 Build & Runtime Fixes** - исправления компиляции и запуска, включая `is_aimbot`, `is_wallhack`, `is_antismoke`, `is_banlist` и `is_core`.
 >
 > Для применения изменений из исходников необходимо пересобрать соответствующие `.sp` в `.smx` с помощью `spcomp`.
 
@@ -63,7 +63,7 @@
 > * ❌ SourceMod плагины
 > * ❌ Другие сайты, файлообменники или социальные сети
 >
-> **Если вы найдёте этот античит где-то ещё — это НЕ оригинальная версия и может содержать вредоносный код.**
+> **Если вы найдёте этот античит где-то ещё - это НЕ оригинальная версия и может содержать вредоносный код.**
 >
 > **Всегда скачивайте только из официального репозитория GitHub!**
 
@@ -702,11 +702,11 @@ addons/sourcemod/logs/errors_*.txt
 
 # 🙏 Благодарности
 
-* **SourceMod Dev Team** — за SourceMod
-* **Metamod:Source Team** — за Metamod:Source
-* **SMAC Development Team** — за идеи и методы античита
-* **Little Anti-Cheat (Lilac)** — за идеи модулей
-* **AntiDLL** — за концепцию DLL Detection
+* **SourceMod Dev Team** - за SourceMod
+* **Metamod:Source Team** - за Metamod:Source
+* **SMAC Development Team** - за идеи и методы античита
+* **Little Anti-Cheat (Lilac)** - за идеи модулей
+* **AntiDLL** - за концепцию DLL Detection
 
 Iron Sentinel является самостоятельным проектом и не является официальным продуктом перечисленных проектов.
 
