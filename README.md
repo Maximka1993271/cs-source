@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Maximka1993271/cs-source/releases/download/v1.0.0/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip">
+  <a href="https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip">
     <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20DOWNLOAD-v1.1.2-2ea44f?style=for-the-badge&logo=github" alt="Download Iron Sentinel v1.1.2"/>
   </a>
   <a href="https://github.com/Maximka1993271/cs-source/releases">
@@ -37,12 +37,12 @@
 
 ## 🚀 Быстрый старт
 
-|                       | Ссылка                                                                                                                                                                |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ⬇️ **Скачать v1.1.2** | **[Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip]([[https://github.com/Maximka1993271/cs-source/releases/download/v1.0.0/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip)](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip)** |
-| 🏷️ **Все релизы**    | **[GitHub Releases](https://github.com/Maximka1993271/cs-source/releases)**                                                                                           |
-| 💻 **Исходный код**   | **[Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**                                                                                           |
-| 📜 **Лицензия**       | **[GPLv3](https://github.com/Maximka1993271/cs-source/blob/main/LICENSE)**                                                                                            |
+|                       | Ссылка                                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ⬇️ **Скачать v1.1.2** | **[Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip)** |
+| 🏷️ **Все релизы**    | **[GitHub Releases](https://github.com/Maximka1993271/cs-source/releases)**                                                                                          |
+| 💻 **Исходный код**   | **[Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**                                                                                          |
+| 📜 **Лицензия**       | **[GPLv3](https://github.com/Maximka1993271/cs-source/blob/main/LICENSE)**                                                                                           |
 
 > **v1.1.2 Build & Runtime Fixes** — исправления компиляции и запуска, включая `is_aimbot`, `is_wallhack`, `is_antismoke`, `is_banlist` и `is_core`.
 >
