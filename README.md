@@ -2,7 +2,8 @@
 
 <p align="center">
   <b>Полный античит для Counter-Strike: Source</b><br/>
-  <b>23 модуля • 86 настроек • SQLite/MySQL • 30+ языков</b>
+  <b>23 модуля • 86 настроек • SQLite/MySQL • 30+ языков</b><br/>
+  <b>v1.1.2 • Build & Runtime Fixes • Cross-Map Stability</b>
 </p>
 
 <p align="center">
@@ -30,11 +31,12 @@
 </p>
 
 <p align="center">
-  <b>🛡️ Защита сервера • ⚡ Производительность • 🔒 Локальный анализ • 🗄️ SQLite/MySQL</b>
+  <b>🛡️ Защита сервера • ⚡ Производительность • 🔄 Cross-Map Safe • 🗄️ SQLite/MySQL</b>
 </p>
 
 <p align="center">
   <b>⭐ Техническая оценка: 4.5/5 • 9.0/10</b><br/>
+  <sub>v1.1.2: 23/23 SourcePawn modules compiled with 0 errors / 0 warnings in the audited build.</sub><br/>
   <sub>Оценка отражает текущее техническое состояние проекта и не является официальным рейтингом GitHub.</sub>
 </p>
 
@@ -55,18 +57,20 @@
 
 ### ✅ Что нового в v1.1.2
 
-* 🔧 Исправлены известные compile/runtime ошибки SourcePawn 1.12.
-* 🧠 `is_aimbot` — кольцевой буфер истории углов без временного `history[][]` в горячем пути.
-* 👁️ `is_wallhack` — bounded trace budget, ранние проверки и метрики нагрузки.
-* ⚡ `is_speedhack` — кэширование порогов и снижение лишних вычислений.
-* 💨 `is_antismoke` — spatial grid и безопасная перестройка индексов после удаления smoke.
-* 📦 `is_banlist` — повторный парсинг только при изменении файлов.
-* 🧩 `is_core` — безопасный `client = 0` и защита ранних native/ConVar обращений.
-* 🗄️ `is_database` — авто-переподключение, backoff и защита от устаревших SQL callbacks.
-* 🔄 Улучшена очистка состояния при disconnect/reconnect и reuse client slot.
-* 🛡️ Fail-safe логика снижает риск ложных банов при неполном runtime state.
-* 🧪 Добавлены regression/unit tests и benchmark-проверки.
-* 🤖 Добавлен GitHub Actions CI/CD для проверки и сборки проекта.
+* 🔧 Исправлены compile/runtime ошибки SourcePawn 1.12.
+* 🧠 `is_aimbot` — постоянный ring buffer истории углов без временного массива в hot path.
+* 👁️ `is_wallhack` — bounded trace budget, ранние выходы, runtime metrics и безопасный map-change lifecycle.
+* ⚡ `is_speedhack` — кэширование порогов/velocity checks, reset peak-state и исправление cross-map timing.
+* 💨 `is_antismoke` — spatial grid и безопасное восстановление индексов после удаления smoke.
+* 📦 `is_banlist` — mtime cache: неизменившиеся списки не парсятся повторно.
+* 🧩 `is_core` — безопасный `client = 0`, ранняя ConVar/native safety.
+* 🗄️ `is_database` — auto-reconnect `5 → 10 → 20 → 40 → 60s`, health-check и stale-callback protection.
+* 🔄 Исправлен client-slot reuse во всех критичных stateful-модулях.
+* 🗺️ Исправлен критический AntiSpam bug при смене карты: `GetGameTime()` заменён на monotonic timing + map-transition IP recognition.
+* ⏱️ Исправлен lifecycle persistent timers, которые могли исчезать после `changelevel`.
+* 🛡️ Fail-safe обработка снижает риск ложных наказаний и startup exceptions.
+* 🧪 Добавлены regression tests для cross-map timing и client-slot reuse.
+* 🤖 Добавлен/исправлен GitHub Actions CI/CD и strict build pipeline.
 
 ---
 
@@ -472,13 +476,7 @@ addons/sourcemod/configs/admin_overrides.cfg
 addons/sourcemod/configs/databases.cfg
 ```
 
-Файлы с расширением:
-
-```text
-.example
-```
-
-являются только шаблонами и автоматически SourceMod не загружаются.
+Production-релиз не содержит файлов `.example`.
 
 ---
 
@@ -593,7 +591,7 @@ tools/compile_strict_windows.bat
 
 Проект содержит автоматические regression/unit проверки и benchmark-тесты для критичных частей античита.
 
-Проверяются 23 исходных модуля, версия `1.1.2`, `Author: Maxim Melnikov`, обязательные include/dependency checks, 86 настроек `is_config.cfg` и отсутствие `.example` в production package.
+Проверяются 23 исходных модуля, версия `1.1.2`, `Author: Maxim Melnikov`, обязательные include/dependency checks, 86 настроек `is_config.cfg` и отсутствие `.example` в production package. В последнем аудите добавлены regression cases для cross-map timing, timer lifecycle, database reconnect и client-slot reuse.
 
 ### 🤖 CI/CD
 
@@ -718,7 +716,7 @@ addons/sourcemod/logs/errors_*.txt
 * отчёт аудита
 * информацию об исправлениях
 
-Production package не содержит `.example` файлов, фиктивных SteamID или тестовых паролей.
+Production package не содержит `.example` файлов, фиктивных SteamID или тестовых паролей. Личные пути разработчика из build scripts удалены.
 
 ### 🧾 Source Metadata
 
@@ -739,55 +737,232 @@ Author: Maxim Melnikov
 
 ---
 
-# 📜 История исправлений
+# 📜 Release Notes
 
 ## v1.1.2
 
-### Runtime fixes
+Текущий production-релиз объединяет compile, runtime, reliability, performance и QA исправления.
 
-* исправлена инициализация `ArrayList` в `is_antismoke`;
-* исправлена обработка `client = 0` в `is_core`;
-* исправлен стартовый вызов `ReloadCaches()` в `is_banlist`;
-* исключены startup exceptions;
-* улучшена безопасная работа database callbacks;
-* добавлена защита от обращения к невалидным client index;
-* улучшена очистка runtime-состояния.
+Ключевые изменения:
 
-### Compile fixes
+- 23/23 SourcePawn modules rebuilt.
+- 0 compiler errors / 0 warnings in the audited build.
+- Cross-map AntiSpam timing fix.
+- Persistent timer lifecycle fixes.
+- Client-slot reuse protection.
+- Database auto-reconnect and stale callback protection.
+- 86/86 synchronized CVAR.
+- EN/RU configuration documentation.
+- Aimbot ring-buffer optimization.
+- Wallhack trace budget and metrics.
+- AntiSmoke spatial grid.
+- Banlist mtime cache.
+- RCON duplicate-hook protection.
+- Graceful AntiDLL degradation.
+- Regression and benchmark coverage.
+- Strict build and GitHub Actions CI/CD.
 
-* исправлен `undefined symbol "iSnaps"` в `is_aimbot`;
-* исправлен `undefined symbol "fMaxSnap"` в `is_aimbot`;
-* исправлен `error 008` в `is_wallhack`;
-* убран warning `g_bLogging` в `is_antismoke`.
-
-### Stability
-
-* добавлена fail-safe обработка;
-* уменьшена вероятность ложных банов;
-* улучшена обработка серверных событий;
-* исправлен порядок инициализации отдельных модулей.
 
 ---
 
-## v1.1.1
+# 🗺️ Cross-Map Reliability
 
-* исправлены проблемы компиляции нескольких модулей;
-* улучшена совместимость с SourcePawn 1.12;
-* исправлены runtime-инициализации;
-* добавлены инструкции автоматической компиляции.
+После тестирования на реальном CS:S сервере был обнаружен критический сценарий:
+
+```text
+Map A
+  ↓
+changelevel
+  ↓
+Source re-runs the connection lifecycle
+  ↓
+GetGameTime() starts again near 0
+  ↓
+старый reconnect timestamp выглядит "слишком свежим"
+  ↓
+игрок получает ложный AntiSpam kick
+```
+
+В `is_antispam` проблема исправлена двумя независимыми механизмами:
+
+- persistent reconnect timing переведён на `GetTickedTime()`;
+- `OnMapEnd()` сохраняет IP игроков, которые легитимно находились в игре, а следующий map-transition reconnect распознаётся отдельно.
+
+При этом обычный быстрый reconnect внутри одной карты по-прежнему проходит через AntiSpam.
+
+Аналогичный аудит времени проведён в:
+
+```text
+is_ping
+is_backtrack
+is_aimbot
+is_eyetest
+is_macro
+is_speedhack
+```
+
+Map-local `GetGameTime()` оставлен только там, где он действительно относится к текущей карте.
 
 ---
 
-## v1.0.0
+# ⏱️ Timer & Handle Reliability
 
-Первоначальный релиз:
+Проверен lifecycle persistent timers во всех 23 модулях.
 
-* 23 защитных модуля;
-* централизованный конфиг;
-* админ-система;
-* SQLite/MySQL;
-* логирование;
-* мультиязычные переводы.
+Исправлены таймеры, которые могли молча погибать после `changelevel` из-за `TIMER_FLAG_NO_MAPCHANGE`, в том числе:
+
+```text
+is_wallhack
+is_database
+is_banlist
+is_speedhack
+is_autotrigger
+is_eyetest
+is_cvars
+```
+
+Дополнительно проверены:
+
+```text
+CreateTimer()
+CreateDataTimer()
+KillTimer()
+OnMapStart()
+OnMapEnd()
+OnPluginEnd()
+```
+
+Цель:
+
+```text
+map change
+→ no stale handle
+→ no lost persistent loop
+→ no invalid callback
+```
+
+---
+
+# 👤 Client Slot Safety
+
+Проведён аудит всех state-массивов `[MAXPLAYERS + 1]`.
+
+Проверен сценарий:
+
+```text
+Player A → slot 5
+disconnect
+Player B → slot 5
+```
+
+Исправлены реальные случаи наследования состояния в:
+
+```text
+is_ping
+is_antispam
+is_spinhack
+```
+
+и повторно проверены:
+
+```text
+is_aimbot
+is_aimlock
+is_speedhack
+is_macro
+is_nolerp
+is_database
+```
+
+---
+
+# 🗄️ Database Reliability
+
+`is_database` поддерживает:
+
+```text
+SQLite
+MySQL / MariaDB
+```
+
+При потере соединения используется backoff:
+
+```text
+5 → 10 → 20 → 40 → 60 seconds
+```
+
+Защита включает:
+
+- отсутствие duplicate reconnect timers;
+- health-check;
+- generation/token protection;
+- игнорирование stale callbacks;
+- безопасный client-slot lifecycle;
+- корректную работу при map change и plugin reload.
+
+Для одного сервера рекомендуется SQLite.
+
+---
+
+# ⚙️ Configuration Integrity
+
+Финальный аудит `CreateConVar()` и `is_config.cfg`:
+
+```text
+86 / 86 CVAR
+Missing: 0
+Extra: 0
+Duplicates: 0
+Default mismatches: 0
+Bounds mismatches: 0
+```
+
+`is_config.cfg` содержит EN/RU документацию.
+
+Это означает, что runtime defaults и production configuration не должны зависеть от случайного порядка загрузки модулей.
+
+---
+
+# 🧪 Verification Status
+
+Подтверждено:
+
+```text
+23 / 23 SourcePawn modules compiled
+0 errors
+0 warnings
+23 / 23 current .smx binaries
+86 / 86 CVAR synchronized
+0 .example files in production package
+```
+
+В последнем аудите добавлены regression cases для cross-map timing, client-slot reuse и timer lifecycle.
+
+> **Runtime CS:S status:** статический аудит и компиляция не заменяют длительное тестирование на живом сервере. После установки рекомендуется отдельно проверить `changelevel`, reconnect/disconnect, DB reconnect и plugin reload.
+
+---
+
+# 🔐 Security & Production Hygiene
+
+- `admins.cfg` использует авторизованный SteamID `STEAM_0:1:97711058`.
+- Удалены hardcoded developer-machine paths из build scripts.
+- Production configuration не содержит реальные DB/API/RCON secrets.
+- Optional AntiDLL dependency работает в limited mode без падения остальных модулей.
+- `.example`, `.pyc` и `__pycache__` не входят в production package.
+
+---
+
+# 📦 Release Asset
+
+Официальный архив:
+
+```text
+Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip
+```
+
+[⬇️ Скачать Iron Sentinel v1.1.2](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip)
+
+[🏷️ GitHub Releases](https://github.com/Maximka1993271/cs-source/releases)
 
 ---
 
