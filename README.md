@@ -1,5 +1,3 @@
-<div align="center">
-
 # 🛡️ Iron Sentinel Core v1.1.2
 
 <p align="center">
@@ -633,29 +631,60 @@ addons/sourcemod/plugins/
 
 После запуска сервера выполните:
 
-А для проверки отдельных модулей:
+```text
+sm plugins list
+meta list
+```
 
+Для быстрой проверки именно Iron Sentinel в Windows-консоли сервера:
+
+```text
+sm plugins list | findstr /I "Iron Sentinel"
+```
+
+Проверьте, что основные модули имеют статус `running`:
+
+```text
+is_core
+is_antismoke
+is_banlist
+is_database
+```
+
+### Проверка команд модулей
+
+```text
 sm cmds is_core
 sm cmds is_antismoke
 sm cmds is_banlist
 sm cmds is_database
+```
 
-Для состояния:
+### Проверка состояния
 
+```text
 is_status
 is_antismoke_status
 is_banlist_status
 is_db_status
+```
 
-И после смены карты снова:
+Для отдельных детекторов:
 
+```text
+is_aimbot_status
+is_speed_status
+is_wallhack_status
+is_rcon_status
+```
+
+После смены карты повторите:
+
+```text
 sm plugins list
 is_status
 is_db_status
-
-Самая полезная команда для одной быстрой проверки всего античита:
-
-sm plugins list | findstr /I "Iron Sentinel"
+```
 
 Также рекомендуется проверить:
 
@@ -663,12 +692,14 @@ sm plugins list | findstr /I "Iron Sentinel"
 addons/sourcemod/logs/
 ```
 
-на отсутствие:
+на отсутствие критических ошибок:
 
 ```text
 Invalid Handle
 Invalid client index
+Invalid convar handle
 Plugin startup error
+Exception reported
 ```
 
 ---
