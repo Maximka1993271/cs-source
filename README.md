@@ -35,12 +35,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Maximka1993271/cs-source/actions/workflows/ci.yml">
-    <img src="https://github.com/Maximka1993271/cs-source/actions/workflows/ci.yml/badge.svg" alt="CI Status"/>
-  </a>
-</p>
-
-<p align="center">
   <b>🛡️ Защита сервера • ⚡ Производительность • 🔒 Локальный анализ • 🗄️ SQLite/MySQL</b>
 </p>
 
@@ -180,6 +174,7 @@
 ```text
 error 017: undefined symbol "iSnaps"
 error 017: undefined symbol "fMaxSnap"
+```
 
 Причина:
 
@@ -187,177 +182,236 @@ error 017: undefined symbol "fMaxSnap"
 
 Исправлено на актуальные переменные:
 
-sourcepawn
+```sourcepawn
 HandleAimbotDetection(client, snaps, maxSnap, fDistance);
-is_wallhack.sp
+```
+
+---
+
+## `is_wallhack.sp`
+
 Исправлена ошибка SourcePawn:
 
-text
+```text
 error 008: must be a constant expression
+```
+
 Проблемный код использовал runtime-значения внутри initializer массива:
 
-sourcepawn
+```sourcepawn
 float top[3] = {
     center[0],
     center[1],
     g_vTargetPos[entity][2] + g_vMaxs[entity][2]
 };
+```
+
 Исправлено на пошаговое заполнение массива:
 
-sourcepawn
+```sourcepawn
 float top[3];
 top[0] = center[0];
 top[1] = center[1];
 top[2] = g_vTargetPos[entity][2] + g_vMaxs[entity][2];
+```
+
 Это совместимо с компилятором SourcePawn 1.12.
 
-is_antismoke.sp
+---
+
+## `is_antismoke.sp`
+
 Исправлена критическая ошибка запуска:
 
-text
+```text
 Exception reported: Invalid Handle 0
 ArrayList.Length.get
-Причина
-ArrayList использовался внутри OnSettingsChanged() раньше, чем создавался.
+```
 
-Исправление
-Теперь необходимые структуры данных создаются до первого вызова обработки настроек.
+### Причина
 
-Дополнительно удалён неиспользуемый g_bLogging, который вызывал:
+`ArrayList` использовался внутри `OnSettingsChanged()` раньше, чем создавался.
 
-text
+### Исправление
+
+Теперь необходимые структуры данных создаются **до первого вызова обработки настроек**.
+
+Дополнительно удалён неиспользуемый `g_bLogging`, который вызывал:
+
+```text
 warning 204: symbol is assigned a value that is never used
-is_banlist.sp
+```
+
+---
+
+## `is_banlist.sp`
+
 Исправлена ошибка запуска:
 
-text
+```text
 Exception reported: Invalid client index 0
-Причина
+```
+
+### Причина
+
 При загрузке бан-листов на старте сервера:
 
-text
+```text
 ReloadCaches()
+```
+
 вызывал:
 
-text
+```text
 IS_LogAction()
-с client = 0.
+```
+
+с `client = 0`.
 
 На старте сервера это нормальный системный контекст, а не игровой клиент.
 
-Исправление
-client = 0 теперь безопасно обрабатывается как:
+### Исправление
 
-text
+`client = 0` теперь безопасно обрабатывается как:
+
+```text
 SERVER / SYSTEM
-и не вызывает ThrowNativeError.
+```
 
-Это также предотвращает падение/выгрузку is_banlist.smx при старте.
+и не вызывает `ThrowNativeError`.
 
-is_core.sp
-Улучшена обработка client во внутренних API.
+Это также предотвращает падение/выгрузку `is_banlist.smx` при старте.
+
+---
+
+## `is_core.sp`
+
+Улучшена обработка `client` во внутренних API.
 
 Теперь логирование корректно работает для:
 
-text
+```text
 client = 0
+```
+
 когда действие выполняется сервером, базовым таймером, database callback или другим системным процессом.
 
 Для реального игрового клиента по-прежнему выполняется проверка валидности индекса.
 
-🛡️ Fail-Safe архитектура
+---
+
+# 🛡️ Fail-Safe архитектура
+
 Iron Sentinel не должен создавать ложный бан из-за ошибки самого сервера.
 
 Поэтому в новой версии применяется принцип:
 
-text
+```text
 сомнение → логирование/счётчик
 ошибка состояния → пропуск проверки
 подтверждённое нарушение → действие
+```
+
 Ошибки handles, отсутствующий клиент, неполностью инициализированный модуль или временно недоступные данные не должны автоматически считаться читом.
 
-⚡ Производительность
+---
+
+# ⚡ Производительность
+
 В версии 1.1.x проведена оптимизация:
 
-повторное получение одинаковых данных сокращено;
-
-тяжёлые операции выполняются только при необходимости;
-
-временные данные кэшируются;
-
-очищаются состояния отключившихся игроков;
-
-исключены ненужные обращения к API;
-
-исключена работа с неинициализированными handles;
-
-database callbacks не должны блокировать игровой поток;
-
-внутренние проверки выполняются только для валидных игроков.
+* повторное получение одинаковых данных сокращено;
+* тяжёлые операции выполняются только при необходимости;
+* временные данные кэшируются;
+* очищаются состояния отключившихся игроков;
+* исключены ненужные обращения к API;
+* исключена работа с неинициализированными handles;
+* database callbacks не должны блокировать игровой поток;
+* внутренние проверки выполняются только для валидных игроков.
 
 Основная цель:
 
-минимальная нагрузка на tick loop без снижения стабильности сервера.
+**минимальная нагрузка на tick loop без снижения стабильности сервера.**
 
-🧠 Кэширование
+---
+
+# 🧠 Кэширование
+
 Для часто используемых данных используется внутренний cache.
 
 Кэш применяется там, где повторное обращение к данным не имеет смысла выполнять каждый tick или callback.
 
 При изменении конфигурации или отключении игрока соответствующее состояние очищается/перезагружается.
 
-🚀 Оптимизация v1.1.2
-is_aimbot
-История углов хранится в постоянном кольцевом буфере с актуальным индексом. В горячем пути OnPlayerRunCmd / AnalyzeAngles не создаётся временный массив истории на каждый вызов.
+## 🚀 Оптимизация v1.1.2
 
-is_wallhack
+### `is_aimbot`
+
+История углов хранится в постоянном кольцевом буфере с актуальным индексом. В горячем пути `OnPlayerRunCmd` / `AnalyzeAngles` не создаётся временный массив истории на каждый вызов.
+
+### `is_wallhack`
+
 Трассировки ограничиваются bounded budget. Добавлены ранние проверки и runtime-метрики trace-window, включая количество проверок и пропущенных операций.
 
-is_speedhack
+### `is_speedhack`
+
 Сокращены повторные обращения и вычисления порогов скорости. Runtime и peak state корректно сбрасываются при reuse client slot.
 
-is_antismoke
-Добавлено пространственное кэширование/grid. После удаления smoke индексы безопасно перестраиваются, поэтому ArrayList не используется с устаревшими индексами.
+### `is_antismoke`
 
-is_banlist
+Добавлено пространственное кэширование/grid. После удаления smoke индексы безопасно перестраиваются, поэтому `ArrayList` не используется с устаревшими индексами.
+
+### `is_banlist`
+
 Добавлена проверка времени изменения файлов: неизменившиеся бан-листы не парсятся повторно.
 
-is_core
+### `is_core`
+
 Оптимизирован горячий путь логирования и уменьшены лишние проверки/форматирование строк.
 
-🚫 Ложные срабатывания
+---
+
+# 🚫 Ложные срабатывания
+
 Некоторые детекторы специально работают консервативно.
 
 Например:
 
-Anti-Smoke
-Сам факт нахождения игрока в smoke не является доказательством чита.
+### Anti-Smoke
 
-Anti-Flash
+Сам факт нахождения игрока в smoke **не является доказательством чита**.
+
+### Anti-Flash
+
 Сам факт получения flash не является доказательством использования anti-flash.
 
-Macro
+### Macro
+
 Одиночное быстрое нажатие не считается макросом. Анализируются повторяющиеся подозрительные последовательности.
 
-NoLerp
+### NoLerp
+
 Одного подозрительного значения недостаточно для автоматического наказания.
 
-Backtrack
+### Backtrack
+
 Подозрительное backtrack-поведение не должно автоматически приводить к бану без дополнительного подтверждения.
 
-📋 Требования
-Counter-Strike: Source
+---
 
-SourceMod 1.12.0.7251 или новее
+# 📋 Требования
 
-Metamod:Source 1.12.x
+* **Counter-Strike: Source**
+* **SourceMod 1.12.0.7251 или новее**
+* **Metamod:Source 1.12.x**
+* SDKHooks из состава SourceMod
+* Для DLL Detection требуется совместимое AntiDLL/SDK-расширение
 
-SDKHooks из состава SourceMod
+---
 
-Для DLL Detection требуется совместимое AntiDLL/SDK-расширение
+# 📁 Основные файлы
 
-📁 Основные файлы
-text
+```text
 addons/sourcemod/plugins/
 ├── is_core.smx
 ├── is_commands.smx
@@ -382,9 +436,11 @@ addons/sourcemod/plugins/
 ├── is_anglepatch.smx
 ├── is_dll.smx
 └── is_database.smx
+```
+
 Исходный код:
 
-text
+```text
 addons/sourcemod/scripting/
 ├── is_core.sp
 ├── is_commands.sp
@@ -409,372 +465,437 @@ addons/sourcemod/scripting/
 ├── is_anglepatch.sp
 ├── is_dll.sp
 └── is_database.sp
-⚙️ Конфигурация
+```
+
+---
+
+# ⚙️ Конфигурация
+
 Основной конфиг:
 
-text
+```text
 addons/sourcemod/configs/is_config.cfg
+```
+
 Дополнительные SourceMod-конфиги:
 
-text
+```text
 addons/sourcemod/configs/admins.cfg
 addons/sourcemod/configs/admin_groups.cfg
 addons/sourcemod/configs/admin_overrides.cfg
 addons/sourcemod/configs/databases.cfg
+```
+
 Файлы с расширением:
 
-text
+```text
 .example
+```
+
 являются только шаблонами и автоматически SourceMod не загружаются.
 
-👑 Администратор
+---
+
+# 👑 Администратор
+
 Пример администратора:
 
-text
+```text
 "STEAM_0:1:97711058" "99:z"
+```
+
 Расшифровка:
 
-text
+```text
 99 = immunity level
 z  = root
+```
+
 Администратор имеет полный набор прав SourceMod и высокий уровень иммунитета.
 
-🗄️ Database
+---
+
+# 🗄️ Database
+
 Iron Sentinel поддерживает:
 
-text
+```text
 SQLite
 MySQL / MariaDB
+```
+
 Для одного сервера рекомендуется SQLite:
 
-text
+```text
 is_anticheat_sqlite
+```
+
 SQLite не требует отдельного SQL-сервера.
 
 База хранится в каталоге SourceMod:
 
-text
+```text
 addons/sourcemod/data/sqlite/
-🔄 Автоматическое восстановление
-При временной потере SQL-соединения is_database автоматически выполняет повторное подключение с backoff:
+```
 
-text
+### 🔄 Автоматическое восстановление
+
+При временной потере SQL-соединения `is_database` автоматически выполняет повторное подключение с backoff:
+
+```text
 5 → 10 → 20 → 40 → 60 секунд
+```
+
 После восстановления создаётся новое поколение database state, а устаревшие callbacks игнорируются. Это предотвращает использование недействительного соединения или старого состояния игрока.
 
-Важно
+### Важно
+
 Если на сервере уже существует:
 
-text
+```text
 addons/sourcemod/configs/databases.cfg
+```
+
 не заменяйте его полностью.
 
 Добавляйте конфигурацию Iron Sentinel в существующий блок:
 
-text
+```text
 "Databases"
 {
     ...
 }
+```
+
 чтобы не потерять базы других плагинов.
 
-🔨 Компиляция
-После изменения .sp необходимо пересобрать соответствующий .smx.
+---
+
+# 🔨 Компиляция
+
+После изменения `.sp` необходимо пересобрать соответствующий `.smx`.
 
 Для Windows можно использовать:
 
-text
+```text
 tools/compile_all_windows.bat
+```
+
 или:
 
-text
+```text
 tools/compile_runtime_fix_windows.bat
+```
+
 Компилятор:
 
-text
+```text
 spcomp.exe
+```
+
 должен соответствовать используемой версии SourceMod.
 
 Для строгой проверки без предупреждений:
 
-text
+```text
 tools/compile_strict_windows.bat
-Строгий режим считает любой warning ошибкой сборки.
+```
 
-🧪 Regression tests
+Строгий режим считает любой `warning` ошибкой сборки.
+
+### 🧪 Regression tests
+
 Проект содержит автоматические regression/unit проверки и benchmark-тесты для критичных частей античита.
 
-Проверяются 23 исходных модуля, версия 1.1.2, Author: Maxim Melnikov, обязательные include/dependency checks, 86 настроек is_config.cfg и отсутствие .example в production package.
+Проверяются 23 исходных модуля, версия `1.1.2`, `Author: Maxim Melnikov`, обязательные include/dependency checks, 86 настроек `is_config.cfg` и отсутствие `.example` в production package.
 
-🤖 CI/CD
+### 🤖 CI/CD
+
 GitHub Actions выполняет статическую проверку, regression tests, строгую сборку SourcePawn и подготовку production release package.
 
-⚠️ Важное замечание о .smx
-Исходники .sp являются основным исправленным кодом.
+---
 
-Если архив содержит старые .smx, созданные до последних изменений, их необходимо перекомпилировать из актуальных .sp.
+# ⚠️ Важное замечание о `.smx`
 
-Нельзя считать старый .smx эквивалентным исправленному исходнику только потому, что файл имеет то же имя.
+Исходники `.sp` являются основным исправленным кодом.
 
-После компиляции необходимо заменить соответствующий .smx в:
+Если архив содержит старые `.smx`, созданные до последних изменений, их необходимо **перекомпилировать** из актуальных `.sp`.
 
-text
+Нельзя считать старый `.smx` эквивалентным исправленному исходнику только потому, что файл имеет то же имя.
+
+После компиляции необходимо заменить соответствующий `.smx` в:
+
+```text
 addons/sourcemod/plugins/
-🧪 Проверка после установки
+```
+
+---
+
+# 🧪 Проверка после установки
+
 После запуска сервера выполните:
 
-text
+```text
 sm plugins list
 meta list
+```
+
 Для быстрой проверки именно Iron Sentinel в Windows-консоли сервера:
 
-text
+```text
 sm plugins list | findstr /I "Iron Sentinel"
-Проверьте, что основные модули имеют статус running:
+```
 
-text
+Проверьте, что основные модули имеют статус `running`:
+
+```text
 is_core
 is_antismoke
 is_banlist
 is_database
-Проверка команд модулей
-text
+```
+
+### Проверка команд модулей
+
+```text
 sm cmds is_core
 sm cmds is_antismoke
 sm cmds is_banlist
 sm cmds is_database
-Проверка состояния
-text
+```
+
+### Проверка состояния
+
+```text
 is_status
 is_antismoke_status
 is_banlist_status
 is_db_status
+```
+
 Для отдельных детекторов:
 
-text
+```text
 is_aimbot_status
 is_speed_status
 is_wallhack_status
 is_rcon_status
+```
+
 После смены карты повторите:
 
-text
+```text
 sm plugins list
 is_status
 is_db_status
+```
+
 Также рекомендуется проверить:
 
-text
+```text
 addons/sourcemod/logs/
+```
+
 на отсутствие критических ошибок:
 
-text
+```text
 Invalid Handle
 Invalid client index
 Invalid convar handle
 Plugin startup error
 Exception reported
-🔍 Ожидаемые сообщения
+```
+
+---
+
+# 🔍 Ожидаемые сообщения
+
 При штатном запуске возможны обычные системные сообщения Source:
 
-text
+```text
 Connection to Steam servers successful.
 VAC secure mode is activated.
 Server is hibernating
+```
+
 Они не являются ошибками Iron Sentinel.
 
 Если DLL Detection не имеет соответствующего расширения, возможно:
 
-text
+```text
 [IRON SENTINEL] AntiDLL extension not found. DLL detection in limited mode.
+```
+
 В этом случае остальные модули продолжают работать.
 
-📊 Диагностика
+---
+
+# 📊 Диагностика
+
 Если плагин не загрузился, сначала проверить:
 
-text
+```text
 addons/sourcemod/logs/
 addons/sourcemod/scripting/
 addons/sourcemod/plugins/
 addons/metamod/
+```
+
 и выполнить:
 
-text
+```text
 sm plugins list
 meta list
+```
+
 После этого проверить ошибки в:
 
-text
+```text
 addons/sourcemod/logs/errors_*.txt
-📦 Содержание исходного релиза
-Релиз содержит:
-
-23 .sp
-
-соответствующие .smx из сборочного комплекта
-
-include-файлы
-
-translations
-
-production-конфигурация
-
-скрипты компиляции
-
-документацию
-
-отчёт аудита
-
-информацию об исправлениях
-
-Production package не содержит .example файлов, фиктивных SteamID или тестовых паролей.
-
-🧾 Source Metadata
-Все 23 .sp приведены к единому профилю:
-
-text
-Version: 1.1.2
-Author: Maxim Melnikov
-Дополнительно исправлены остаточные compile/runtime проблемы:
-
-is_database.sp — устранён вызов отсутствующего IS_VALID_CLIENT(); client validation выполняется локально.
-
-is_wallhack.sp — добавлено и корректно инициализируется g_fWindowStartedAt.
-
-is_core.sp — защищены ранние обращения к ConVar до полной инициализации.
-
-is_banlist.sp — стартовый ReloadCaches() не зависит от ещё неготового Core.
-
-исправлена очистка состояния для повторного использования client slot.
-
-📜 История исправлений
-v1.1.2
-Runtime fixes
-исправлена инициализация ArrayList в is_antismoke;
-
-исправлена обработка client = 0 в is_core;
-
-исправлен стартовый вызов ReloadCaches() в is_banlist;
-
-исключены startup exceptions;
-
-улучшена безопасная работа database callbacks;
-
-добавлена защита от обращения к невалидным client index;
-
-улучшена очистка runtime-состояния.
-
-Compile fixes
-исправлен undefined symbol "iSnaps" в is_aimbot;
-
-исправлен undefined symbol "fMaxSnap" в is_aimbot;
-
-исправлен error 008 в is_wallhack;
-
-убран warning g_bLogging в is_antismoke.
-
-исправлен undefined symbol "IS_VALID_CLIENT" в is_database.
-
-исправлен undefined symbol "g_fWindowStartedAt" в is_wallhack.
-
-исправлена ранняя работа с неинициализированным ConVar в is_core.
-
-Stability
-добавлена fail-safe обработка;
-
-уменьшена вероятность ложных банов;
-
-улучшена обработка серверных событий;
-
-исправлен порядок инициализации отдельных модулей.
-
-Performance
-is_aimbot — ring buffer истории углов без временного history[][] в hot path;
-
-is_wallhack — bounded trace budget, ранние выходы и runtime metrics;
-
-is_speedhack — кэширование порогов и снижение повторных вычислений;
-
-is_antismoke — spatial grid с безопасной перестройкой индексов;
-
-is_banlist — mtime-based cache invalidation;
-
-is_core — уменьшение лишнего форматирования и API work.
-
-Database / QA
-автоматическое восстановление SQL-соединения с backoff 5 → 10 → 20 → 40 → 60 сек;
-
-защита от stale database callbacks после переподключения;
-
-regression/unit tests и benchmark checks;
-
-strict SourcePawn build, где warning считается ошибкой;
-
-GitHub Actions CI/CD для проверки проекта и подготовки release package.
-
-v1.1.1
-исправлены проблемы компиляции нескольких модулей;
-
-улучшена совместимость с SourcePawn 1.12;
-
-исправлены runtime-инициализации;
-
-добавлены инструкции автоматической компиляции.
-
-v1.0.0
-Первоначальный релиз:
-
-23 защитных модуля;
-
-централизованный конфиг;
-
-админ-система;
-
-SQLite/MySQL;
-
-логирование;
-
-мультиязычные переводы.
-
-📝 Лицензия
-GPLv3
-
-🙏 Благодарности
-SourceMod Dev Team — за SourceMod
-
-Metamod:Source Team — за Metamod:Source
-
-SMAC Development Team — за идеи и методы античита
-
-Little Anti-Cheat (Lilac) — за идеи модулей
-
-AntiDLL — за концепцию DLL Detection
-
-Iron Sentinel является самостоятельным проектом и не является официальным продуктом перечисленных проектов.
-
-📞 Контакты
-GitHub:
-https://github.com/Maximka1993271
-
-Автор:
-Maxim Melnikov
-
-🛡️ IRON SENTINEL
-Protection active.
-
-text
-[IRON SENTINEL] Core initialized.
-[IRON SENTINEL] Protection modules loaded.
-text
+```
 
 ---
 
-## Что изменилось:
+# 📦 Содержание исходного релиза
 
-✅ **Добавлен новый блок** (после бейджей):
-```markdown
-<p align="center">
-  <a href="https://github.com/Maximka1993271/cs-source/actions/workflows/ci.yml">
-    <img src="https://github.com/Maximka1993271/cs-source/actions/workflows/ci.yml/badge.svg" alt="CI Status"/>
-  </a>
-</p>
+Релиз содержит:
+
+* 23 `.sp`
+* соответствующие `.smx` из сборочного комплекта
+* include-файлы
+* translations
+* production-конфигурация
+* скрипты компиляции
+* документацию
+* отчёт аудита
+* информацию об исправлениях
+
+Production package не содержит `.example` файлов, фиктивных SteamID или тестовых паролей.
+
+### 🧾 Source Metadata
+
+Все 23 `.sp` приведены к единому профилю:
+
+```text
+Version: 1.1.2
+Author: Maxim Melnikov
+```
+
+Дополнительно исправлены остаточные compile/runtime проблемы:
+
+* `is_database.sp` — устранён вызов отсутствующего `IS_VALID_CLIENT()`; client validation выполняется локально.
+* `is_wallhack.sp` — добавлено и корректно инициализируется `g_fWindowStartedAt`.
+* `is_core.sp` — защищены ранние обращения к ConVar до полной инициализации.
+* `is_banlist.sp` — стартовый `ReloadCaches()` не зависит от ещё неготового Core.
+* исправлена очистка состояния для повторного использования client slot.
+
+---
+
+# 📜 История исправлений
+
+## v1.1.2
+
+### Runtime fixes
+
+* исправлена инициализация `ArrayList` в `is_antismoke`;
+* исправлена обработка `client = 0` в `is_core`;
+* исправлен стартовый вызов `ReloadCaches()` в `is_banlist`;
+* исключены startup exceptions;
+* улучшена безопасная работа database callbacks;
+* добавлена защита от обращения к невалидным client index;
+* улучшена очистка runtime-состояния.
+
+### Compile fixes
+
+* исправлен `undefined symbol "iSnaps"` в `is_aimbot`;
+* исправлен `undefined symbol "fMaxSnap"` в `is_aimbot`;
+* исправлен `error 008` в `is_wallhack`;
+* убран warning `g_bLogging` в `is_antismoke`.
+* исправлен `undefined symbol "IS_VALID_CLIENT"` в `is_database`.
+* исправлен `undefined symbol "g_fWindowStartedAt"` в `is_wallhack`.
+* исправлена ранняя работа с неинициализированным ConVar в `is_core`.
+
+### Stability
+
+* добавлена fail-safe обработка;
+* уменьшена вероятность ложных банов;
+* улучшена обработка серверных событий;
+* исправлен порядок инициализации отдельных модулей.
+
+### Performance
+
+* `is_aimbot` — ring buffer истории углов без временного `history[][]` в hot path;
+* `is_wallhack` — bounded trace budget, ранние выходы и runtime metrics;
+* `is_speedhack` — кэширование порогов и снижение повторных вычислений;
+* `is_antismoke` — spatial grid с безопасной перестройкой индексов;
+* `is_banlist` — mtime-based cache invalidation;
+* `is_core` — уменьшение лишнего форматирования и API work.
+
+### Database / QA
+
+* автоматическое восстановление SQL-соединения с backoff `5 → 10 → 20 → 40 → 60 сек`;
+* защита от stale database callbacks после переподключения;
+* regression/unit tests и benchmark checks;
+* strict SourcePawn build, где `warning` считается ошибкой;
+* GitHub Actions CI/CD для проверки проекта и подготовки release package.
+
+---
+
+## v1.1.1
+
+* исправлены проблемы компиляции нескольких модулей;
+* улучшена совместимость с SourcePawn 1.12;
+* исправлены runtime-инициализации;
+* добавлены инструкции автоматической компиляции.
+
+---
+
+## v1.0.0
+
+Первоначальный релиз:
+
+* 23 защитных модуля;
+* централизованный конфиг;
+* админ-система;
+* SQLite/MySQL;
+* логирование;
+* мультиязычные переводы.
+
+---
+
+# 📝 Лицензия
+
+**GPLv3**
+
+---
+
+# 🙏 Благодарности
+
+* **SourceMod Dev Team** — за SourceMod
+* **Metamod:Source Team** — за Metamod:Source
+* **SMAC Development Team** — за идеи и методы античита
+* **Little Anti-Cheat (Lilac)** — за идеи модулей
+* **AntiDLL** — за концепцию DLL Detection
+
+Iron Sentinel является самостоятельным проектом и не является официальным продуктом перечисленных проектов.
+
+---
+
+# 📞 Контакты
+
+**GitHub:**
+https://github.com/Maximka1993271
+
+**Автор:**
+Maxim Melnikov
+
+---
+
+# 🛡️ IRON SENTINEL
+
+**Protection active.**
+
+```text
+[IRON SENTINEL] Core initialized.
+[IRON SENTINEL] Protection modules loaded.
+```
