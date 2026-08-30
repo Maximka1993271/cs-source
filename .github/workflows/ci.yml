@@ -1,12 +1,8 @@
-# Способ 2: Через командную строку (скопируйте и вставьте целиком)
-cat > ci.yml << 'EOF'
 name: Iron Sentinel CI
 
 on:
   push:
-    branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 env:
@@ -20,35 +16,20 @@ jobs:
       - name: Run static tests
         run: |
           python3 -m pip install --disable-pip-version-check pytest
-          python3 -m pytest -q || true
+          python3 -m pytest -q
 
   sourcemod-build:
     runs-on: windows-latest
-    needs: static-tests
     steps:
       - uses: actions/checkout@v4
-      
       - name: Download SourceMod ${{ env.SOURCEMOD_VERSION }}
         shell: powershell
         run: |
-          Invoke-WebRequest -Uri "https://github.com/alliedmodders/sourcemod/releases/download/${{ env.SOURCEMOD_VERSION }}/sourcemod-1.12.0-git7249-windows.zip" -OutFile sm.zip
+          Invoke-WebRequest -Uri "https://github.com/alliedmodders/sourcemod/releases/download/${env:SOURCEMOD_VERSION}/sourcemod-1.12.0-git7249-windows.zip" -OutFile sm.zip
           Expand-Archive sm.zip -DestinationPath sm
-      
-      - name: Setup SourceMod
+      - name: Compile all SourcePawn plugins (warnings are errors)
         shell: powershell
-        run: |
-          Copy-Item -Path "sm\addons\sourcemod\*" -Destination "addons\sourcemod\" -Recurse -Force
-      
-      - name: Compile all SourcePawn plugins
-        shell: powershell
-        run: |
-          if (Test-Path ".\tools\compile_ci_windows.ps1") {
-            .\tools\compile_ci_windows.ps1
-          } else {
-            New-Item -ItemType Directory -Path "ci-build\plugins" -Force | Out-Null
-            Write-Host "⚠️  compile_ci_windows.ps1 not found"
-          }
-      
+        run: .\tools\compile_ci_windows.ps1
       - name: Upload compiled plugins
         uses: actions/upload-artifact@v4
         with:
@@ -64,25 +45,30 @@ jobs:
         with:
           name: iron-sentinel-v1.1.2-smx
           path: ci-build/plugins
-      
       - name: Build release package
         run: |
           mkdir -p ci-release/addons/sourcemod/plugins
           cp ci-build/plugins/*.smx ci-release/addons/sourcemod/plugins/
-          cp -r addons/sourcemod/scripting ci-release/addons/sourcemod/ || true
+          cp -r addons/sourcemod/scripting ci-release/addons/sourcemod/
           cp -r addons/sourcemod/configs ci-release/addons/sourcemod/ || true
           cp -r addons/sourcemod/translations ci-release/addons/sourcemod/ || true
           cp -r cfg ci-release/ || true
           cp -r tools ci-release/ || true
-          cp *.md ci-release/ 2>/dev/null || true
+          cp -r tests ci-release/ || true
+          cp README.md ci-release/ 2>/dev/null || true
+          cp LICENSE ci-release/ 2>/dev/null || true
+          cp BENCHMARKS.md ci-release/ 2>/dev/null || true
+          cp ML_READINESS.md ci-release/ 2>/dev/null || true
+          cp AUDIT_REPORT_v1.1.2_FINAL.md ci-release/ 2>/dev/null || true
+          cp BUILD_REPORT_v1.1.2_FINAL.md ci-release/ 2>/dev/null || true
+          cp TEST_REPORT_v1.1.2_FINAL.md ci-release/ 2>/dev/null || true
           cd ci-release
-          zip -r ../Iron.Sentinel.Core.v1.1.2.zip .
-      
+          zip -r ../Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip .
       - name: Upload release package
         uses: actions/upload-artifact@v4
         with:
           name: iron-sentinel-v1.1.2-package
-          path: Iron.Sentinel.Core.v1.1.2.zip
+          path: Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip
 
   release-on-tag:
     if: startsWith(github.ref, 'refs/tags/')
@@ -100,5 +86,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1 || gh release create "${GITHUB_REF_NAME}" --title "Iron Sentinel ${GITHUB_REF_NAME}" --generate-notes
-          gh release upload "${GITHUB_REF_NAME}" release-assets/Iron.Sentinel.Core.v1.1.2.zip --clobber
-EOF
+          gh release upload "${GITHUB_REF_NAME}" release-assets/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip --clobber
