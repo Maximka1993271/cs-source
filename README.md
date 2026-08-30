@@ -1,13 +1,13 @@
-# 🛡️ IRON SENTINEL
+# 🛡️ IRON SENTINEL CORE
 
 <p align="center">
   <b>Полный античит для Counter-Strike: Source</b><br/>
   <b>23 модуля • 86 настроек • SQLite/MySQL • 30+ языков</b><br/>
-  <b>Production-oriented • Fail-safe • Optimized for 20+ players</b>
+  <b>v1.1.2 • Build, Runtime & Reliability • Fail-safe • Optimized for 20+ players</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip">
+  <a href="https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.Core.v1.1.2.zip">
     <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20DOWNLOAD-v1.1.2-2ea44f?style=for-the-badge&logo=github" alt="Download Iron Sentinel v1.1.2"/>
   </a>
   <a href="https://github.com/Maximka1993271/cs-source/releases">
@@ -35,7 +35,7 @@
 </p>
 
 <p align="center">
-  <b>⭐ Техническая оценка: 4.1/5 • 8.2/10</b><br/>
+  <b>⭐ Техническая оценка: 3.8/5 • 7.6/10</b><br/>
   <sub>Оценка отражает текущее техническое состояние проекта и не является официальным рейтингом GitHub.</sub>
 </p>
 
@@ -43,14 +43,14 @@
 
 ## 🚀 Быстрый старт
 
-|                       | Ссылка                                                                                                                                                               |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ⬇️ **Скачать v1.1.2** | **[Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.v1.1.2.Build.Runtime.Fixes.zip)** |
-| 🏷️ **Все релизы**    | **[GitHub Releases](https://github.com/Maximka1993271/cs-source/releases)**                                                                                          |
-| 💻 **Исходный код**   | **[Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**                                                                                          |
-| 📜 **Лицензия**       | **[GPLv3](https://github.com/Maximka1993271/cs-source/blob/main/LICENSE)**                                                                                           |
+|                       | Ссылка                                                                                                                                 |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| ⬇️ **Скачать v1.1.2** | **[Iron.Sentinel.Core.v1.1.2.zip](https://github.com/Maximka1993271/cs-source/releases/download/1.1.2/Iron.Sentinel.Core.v1.1.2.zip)** |
+| 🏷️ **Все релизы**    | **[GitHub Releases](https://github.com/Maximka1993271/cs-source/releases)**                                                            |
+| 💻 **Исходный код**   | **[Maximka1993271/cs-source](https://github.com/Maximka1993271/cs-source)**                                                            |
+| 📜 **Лицензия**       | **[GPLv3](https://github.com/Maximka1993271/cs-source/blob/main/LICENSE)**                                                             |
 
-> **v1.1.2 Build & Runtime Fixes** — исправления компиляции и запуска, включая `is_aimbot`, `is_wallhack`, `is_antismoke`, `is_banlist` и `is_core`.
+> **v1.1.2 Build, Runtime & Reliability** — исправления компиляции, запуска, cross-map timing, timer lifecycle, client-slot reuse, database recovery, security и производительности.
 >
 > Для применения изменений из исходников необходимо пересобрать соответствующие `.sp` в `.smx` с помощью `spcomp`.
 
@@ -71,11 +71,12 @@
 * 👤 Исправлено наследование state между разными игроками при reuse одного client slot.
 * 🔄 `is_ping`, `is_backtrack`, `is_eyetest`, `is_macro` и `is_speedhack` дополнительно проверены на cross-map timing issues.
 * 🛡️ Fail-safe логика снижает риск ложных банов при неполном runtime state.
-* 🧪 Добавлены regression/unit tests для cross-map timing, timer lifecycle и client-slot reuse.
-* 🤖 Добавлен GitHub Actions CI/CD для проверки и сборки проекта.
+* 🧪 Расширены regression/property tests для cross-map timing, timer lifecycle, client-slot reuse и boundary cases.
+* 🤖 GitHub Actions CI/CD проверяет исходники, строгую сборку, тесты и packaging.
 * 🧩 Исправлены последние compile regressions в `is_database.sp` и `is_wallhack.sp`.
 * 🔒 Исправлена ранняя обработка ConVar в `is_core.sp`.
 * ✅ Все 23 `.sp` приведены к `Version: 1.1.2` и `Author: Maxim Melnikov`.
+* ✅ Последний глубокий аудит: **23/23 compiled, 0 errors, 0 warnings, 35/35 tests passed**.
 
 ---
 
