@@ -631,24 +631,29 @@ addons/sourcemod/plugins/
 
 После запуска сервера выполните:
 
-```text
+А для проверки отдельных модулей:
+
+sm cmds is_core
+sm cmds is_antismoke
+sm cmds is_banlist
+sm cmds is_database
+
+Для состояния:
+
+is_status
+is_antismoke_status
+is_banlist_status
+is_db_status
+
+И после смены карты снова:
+
 sm plugins list
-```
+is_status
+is_db_status
 
-Проверьте, что модули:
+Самая полезная команда для одной быстрой проверки всего античита:
 
-```text
-is_core
-is_antismoke
-is_banlist
-is_database
-```
-
-имеют статус:
-
-```text
-running
-```
+sm plugins list | findstr /I "Iron Sentinel"
 
 Также рекомендуется проверить:
 
