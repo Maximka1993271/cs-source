@@ -1,4 +1,6 @@
-# 🛡️ IRON SENTINEL CORE
+<div align="center">
+
+# 🛡️ Iron Sentinel Core v1.1.2
 
 <p align="center">
   <b>Полный античит для Counter-Strike: Source</b><br/>
