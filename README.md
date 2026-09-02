@@ -66,7 +66,7 @@
 * ✅ Исправлены известные ошибки компиляции SourcePawn 1.12.
 * ✅ Исправлены startup exceptions и проблемы с `client = 0`.
 * ✅ Исправлены persistent timer lifecycle issues после `changelevel`.
-* ✅ Исправлен critical AntiSpam cross-map reconnect bug.
+* ⚠️ Cross-map AntiSpam logic усилена; live-тест после `changelevel` выявил дополнительный edge case, который ещё требует исправления.
 * ✅ Улучшен client-slot state reset.
 * ✅ Улучшена Database reconnect/recovery architecture.
 * ✅ `is_aimbot` использует оптимизированную angle-history ring buffer.
@@ -77,8 +77,65 @@
 * ✅ Добавлен отдельный `is_ml` module.
 * ✅ ML model validation и checksum verification.
 * ✅ ML runtime loader исправлен и проверен на реальном CS:S сервере.
-* ✅ Все основные runtime path работают в fail-safe режиме.
-* ✅ Расширены regression/property tests.
+* ✅ Основные runtime paths используют fail-safe обработку; известный live cross-map edge case указан ниже.
+* ✅ Regression/property tests расширены и проходят без ошибок в аудированном дереве.
+
+---
+
+# 🧪 Live Server Verification
+
+Последняя проверка выполнена на реальном Counter-Strike: Source сервере с:
+
+```text
+SourceMod: 1.12.0.7251
+SourcePawn Engine: 1.12.0.7251
+```
+
+### ML
+
+Подтверждено:
+
+```text
+model_valid=1
+model_version=1.0.0-synthetic
+schema=1
+features=7
+checksum=1504619244
+```
+
+Модель успешно загружается и после включения:
+
+```text
+is_ml_enabled 1
+```
+
+реально выполняет inference:
+
+```text
+inferences=1
+```
+
+То есть ML-путь подтверждён не только статическим тестом, но и live runtime.
+
+### ⚠️ Известный live runtime edge case
+
+Во время последнего `changelevel` сервер снова воспроизвёл:
+
+```text
+[AntiCheat] Please wait 7 seconds before reconnecting.
+```
+
+Это означает, что автоматические regression/property tests не покрывают весь реальный reconnect lifecycle CS:S.
+
+Поэтому cross-map AntiSpam сейчас следует считать:
+
+```text
+Static audit:        ✅
+Regression tests:    ✅
+Live map-change:     ⚠️ additional edge case detected
+```
+
+Это не скрытая ошибка документации: факт подтверждён реальным серверным логом и требует отдельного runtime-патча перед тем, как называть cross-map reconnect полностью закрытым.
 
 ---
 
@@ -322,9 +379,11 @@ Spatial grid вместо полного перебора всех `players × s
 
 ---
 
-# 🗺️ Cross-Map Protection
+# 🗺️ Cross-Map & Reconnect Protection
 
-Исправлен критический сценарий:
+Iron Sentinel использует monotonic timing (`GetTickedTime()`) для persistent reconnect/cooldown state и отдельную обработку map-transition state.
+
+Целевой сценарий:
 
 ```text
 Map A
@@ -333,21 +392,27 @@ changelevel
   ↓
 Map B
   ↓
-reconnect
+legitimate reconnect
 ```
 
-Легитимный reconnect после смены карты не должен автоматически считаться connection spam.
+Должен отличаться от обычного быстрого reconnect внутри одной карты.
 
-Также проверяются:
+### Текущее состояние
 
 ```text
-client state
-timers
-timestamps
-trace state
-ML state
-database state
+Monotonic reconnect clock      ✅
+Client-slot state reset        ✅
+Transition-state tracking      ✅
+Same-map reconnect protection  ✅
+Live changelevel regression    ⚠️
 ```
+
+На последнем live-тесте после `changelevel` всё ещё был воспроизведён AntiSpam kick с задержкой reconnect.
+
+Поэтому данная подсистема **не помечается как полностью закрытая** до исправления и повторной проверки на живом сервере.
+
+Остальные модули не следует отключать глобально ради обхода этого edge case.
+
 
 ---
 
@@ -605,7 +670,7 @@ NaN / Inf handling
 Последний зафиксированный regression result:
 
 ```text
-59 passed
+71 passed
 0 failed
 ```
 
@@ -688,7 +753,7 @@ Author: Maxim Melnikov
 * ✅ Core startup/ConVar protection.
 * ✅ Client-slot state reset.
 * ✅ Timer lifecycle fixes.
-* ✅ Cross-map AntiSpam fix.
+* ⚠️ Cross-map AntiSpam hardening; live `changelevel` edge case remains under investigation.
 
 ### Performance
 
@@ -728,6 +793,50 @@ Author: Maxim Melnikov
 * ✅ Database callback hardening.
 * ✅ Model validation.
 * ✅ Fail-safe runtime behaviour.
+
+---
+
+# 🟢 Release Health
+
+```text
+BUILD / SOURCE
+✅ 24 SourcePawn modules
+✅ SourcePawn 1.12 compatibility
+✅ 93 CVAR (86 core + 7 ML)
+
+ML
+✅ Model loading
+✅ model_valid=1
+✅ Checksum validation
+✅ Live inference observed
+✅ is_ml_status
+✅ is_ml_reload
+
+SECURITY
+✅ Client validation
+✅ Client-slot isolation
+✅ Model integrity checks
+✅ Fail-safe runtime handling
+✅ Database callback hardening
+
+PERFORMANCE
+✅ Aimbot ring buffer
+✅ Wallhack bounded trace budget
+✅ AntiSmoke spatial grid
+✅ Speedhack threshold caching
+✅ Banlist cache invalidation
+
+QA
+✅ Regression/property suite: 71/71
+✅ ML tests: 21/21
+⚠️ Live cross-map AntiSpam edge case remains
+
+RUNTIME
+✅ ML verified on live server
+⚠️ Full cross-map/reconnect lifecycle requires one more live fix + retest
+```
+
+> **Важно:** `✅` означает подтверждённую возможность или проверку. `⚠️` означает конкретный известный live runtime edge case, который не скрывается документацией.
 
 ---
 
