@@ -17,8 +17,8 @@
   <a href="https://github.com/Maximka1993271/cs-source/releases">
     <img src="https://img.shields.io/badge/Releases-GitHub-1f6feb?style=for-the-badge&logo=github" alt="GitHub Releases"/>
   </a>
-  <a href="https://github.com/Maximka1993271/cs-source">
-    <img src="https://img.shields.io/badge/SourceMod-1.12.x-blue?style=for-the-badge" alt="SourceMod 1.12.x"/>
+  <a href="https://github.com/Maximka1993271/cs-source/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-GPLv3-green.svg?style=for-the-badge&logo=opensourceinitiative" alt="GPLv3"/>
   </a>
 </p>
 
@@ -32,13 +32,13 @@
   <a href="https://github.com/Maximka1993271/cs-source">
     <img src="https://img.shields.io/badge/SQLite%20%2F%20MySQL-supported-success?style=flat-square" alt="SQLite / MySQL"/>
   </a>
-  <a href="https://github.com/Maximka1993271/cs-source/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-GPLv3-green?style=flat-square" alt="GPLv3"/>
+  <a href="https://github.com/Maximka1993271/cs-source">
+    <img src="https://img.shields.io/badge/ML-assisted-available-success?style=flat-square" alt="ML Assisted"/>
   </a>
 </p>
 
 <p align="center">
-  <b>🛡️ Server Protection • ⚡ Optimized Hot Paths • 👁️ Visibility Analysis • 🤖 ML Signal • 🗄️ Database Recovery</b>
+  <b>🛡️ Защита сервера • ⚡ Производительность • 👁️ Visibility / Trace Analysis • 🤖 ML • 🗄️ Database</b>
 </p>
 
 <p align="center">
@@ -63,47 +63,204 @@
 
 # 🆕 Что нового в v1.1.2
 
-### 🔧 Build / Compilation
+* ✅ Исправлены известные ошибки компиляции SourcePawn 1.12.
+* ✅ Исправлены startup exceptions и проблемы с `client = 0`.
+* ✅ Исправлены persistent timer lifecycle issues после `changelevel`.
+* ✅ Исправлен critical AntiSpam cross-map reconnect bug.
+* ✅ Улучшен client-slot state reset.
+* ✅ Улучшена Database reconnect/recovery architecture.
+* ✅ `is_aimbot` использует оптимизированную angle-history ring buffer.
+* ✅ `is_wallhack` использует bounded trace budget и visibility metrics.
+* ✅ `is_antismoke` использует spatial grid.
+* ✅ `is_speedhack` использует кэширование speed thresholds.
+* ✅ `is_banlist` использует cache invalidation по времени изменения файлов.
+* ✅ Добавлен отдельный `is_ml` module.
+* ✅ ML model validation и checksum verification.
+* ✅ ML runtime loader исправлен и проверен на реальном CS:S сервере.
+* ✅ Все основные runtime path работают в fail-safe режиме.
+* ✅ Расширены regression/property tests.
 
-* ✅ Исправлены ошибки `iSnaps` и `fMaxSnap` в `is_aimbot`.
-* ✅ Исправлен runtime array initializer в `is_wallhack`.
-* ✅ Исправлена ссылка на отсутствующий `IS_VALID_CLIENT` в `is_database`.
-* ✅ Добавлена корректная инициализация `g_fWindowStartedAt`.
-* ✅ Удалено неиспользуемое состояние `g_bLogging` из `is_antismoke`.
-* ✅ Исправлены дополнительные SourcePawn 1.12 compatibility issues.
-* ✅ Исправлено использование неподдерживаемого `Max()` в `is_wallhack`.
+---
 
-### 🛡️ Runtime / Stability
+# 🏆 Сравнение с другими SourceMod Anti-Cheat
 
-* ✅ Исправлен `Invalid Handle 0` в `is_antismoke`.
-* ✅ Исправлен `Invalid client index 0` при загрузке `is_banlist`.
-* ✅ Усилена server/system context обработка в `is_core`.
-* ✅ Улучшена очистка client state.
-* ✅ Исправлены stale states при reuse client slot.
-* ✅ Исправлен timer lifecycle после смены карты.
-* ✅ Улучшена обработка late load / reload / disconnect / reconnect.
+Iron Sentinel разрабатывался как более современная расширенная система поверх классического rule-based подхода.
 
-### 🗺️ Cross-Map
+Ниже — сравнение по **архитектурным возможностям**, а не заявление о том, что один античит обнаруживает абсолютно каждый чит лучше другого.
 
-Исправлен критический AntiSpam timing bug:
+| Возможность                          | 🛡️ Iron Sentinel | 🔹 SMAC | 🔹 Lilac | 🔹 Kigen's AC |
+| ------------------------------------ | :---------------: | :-----: | :------: | :-----------: |
+| Модульная архитектура                |         ✅         |    ✅    |     ✅    |       ✅       |
+| Aimbot Detection                     |         ✅         |    ✅    |     ✅    |       ⚠️      |
+| Aimlock Detection                    |         ✅         |    ⚠️   |     ✅    |       ❌       |
+| Angle Detection                      |         ✅         |    ✅    |     ✅    |       ❌       |
+| Wallhack / Visibility                |         ✅         |    ⚠️   |    ⚠️    |       ❌       |
+| Ray / Trace Analysis                 |         ✅         |    ❌    |     ❌    |       ❌       |
+| Bounded Trace Budget                 |         ✅         |    ❌    |     ❌    |       ❌       |
+| Anti-Smoke                           |         ✅         |    ❌    |     ❌    |       ❌       |
+| Anti-Flash                           |         ✅         |    ❌    |     ❌    |       ❌       |
+| Speedhack Detection                  |         ✅         |    ⚠️   |    ⚠️    |       ❌       |
+| Macro Detection                      |         ✅         |    ✅    |     ✅    |       ❌       |
+| NoLerp / Interpolation               |         ✅         |    ✅    |     ✅    |       ❌       |
+| Backtrack Detection / Telemetry      |         ✅         |    ⚠️   |     ✅    |       ❌       |
+| AntiSpam / Reconnect Protection      |         ✅         |    ⚠️   |    ⚠️    |       ✅       |
+| Client-slot state protection         |         ✅         |    ⚠️   |    ⚠️    |       ⚠️      |
+| Cross-map timing protection          |         ✅         |    ⚠️   |    ⚠️    |       ⚠️      |
+| Persistent timer lifecycle hardening |         ✅         |    ⚠️   |    ⚠️    |       ⚠️      |
+| SQLite                               |         ✅         |    ⚠️   |     ✅    |       ❌       |
+| MySQL / MariaDB                      |         ✅         |    ⚠️   |     ✅    |       ❌       |
+| Automatic DB reconnect               |         ✅         |    ⚠️   |    ⚠️    |       ❌       |
+| Fail-safe runtime handling           |         ✅         |    ⚠️   |    ⚠️    |       ⚠️      |
+| Model integrity validation           |         ✅         |    ❌    |     ❌    |       ❌       |
+| Local ML-assisted signal             |         ✅         |    ❌    |     ❌    |       ❌       |
+| Regression / property testing        |         ✅         |    ⚠️   |    ⚠️    |       ❌       |
+| CI/CD                                |         ✅         |    ⚠️   |     ✅    |       ❌       |
+
+### 🟢 В чём основное отличие Iron Sentinel
 
 ```text
-Map A
-  ↓
-changelevel
-  ↓
-Map B
-  ↓
-legitimate reconnect
-  ↓
-не считается connection spam
+23 classical detection modules
+                +
+runtime hardening
+                +
+visibility / trace analysis
+                +
+database infrastructure
+                +
+optional ML signal
+                ↓
+        Iron Sentinel Core
 ```
 
-Persistent timing переведён на monotonic clock там, где `GetGameTime()` мог приводить к неправильным результатам после смены карты.
+### ✅ Сильные стороны архитектуры
 
-### 👁️ Wallhack / Visibility
+* ✅ **24 модуля**, включая отдельный `is_ml`.
+* ✅ **93 CVAR** для детальной настройки.
+* ✅ **Visibility / trace analysis** с ограниченным бюджетом.
+* ✅ **Fail-safe** обработка runtime-ошибок.
+* ✅ **Cross-map / client-slot** защита состояния.
+* ✅ **SQLite / MySQL / MariaDB**.
+* ✅ **Automatic database reconnect**.
+* ✅ **Локальный ML inference**.
+* ✅ **Проверка checksum и целостности модели**.
+* ✅ **Regression/property testing**.
+* ✅ **GitHub Actions CI/CD**.
 
-`is_wallhack` использует bounded trace budget, cache, ранние проверки и runtime metrics.
+> ⚠️ Это архитектурное сравнение. Оно не является независимым benchmark'ом detection accuracy, CPU usage или false-positive rate.
+
+---
+
+# 🛡️ Detection Philosophy
+
+Iron Sentinel не рассматривает единичное событие как автоматическое доказательство чита.
+
+```text
+наблюдение
+    ↓
+счётчик / evidence
+    ↓
+дополнительные признаки
+    ↓
+подтверждение
+    ↓
+действие
+```
+
+При ошибке runtime:
+
+```text
+invalid state
+    ↓
+safe fallback
+    ↓
+проверка пропускается
+```
+
+Это позволяет снижать риск ложных срабатываний.
+
+---
+
+# 🤖 ML-Assisted Detection
+
+`is_ml` является дополнительным модулем.
+
+```text
+23 classical modules
+        +
+is_ml
+        =
+24 modules
+```
+
+Текущая модель:
+
+```text
+Model version: 1.0.0-synthetic
+Schema version: 1
+Feature count: 7
+Checksum: 1504619244
+```
+
+На реальном CS:S сервере подтверждена загрузка:
+
+```text
+[ML] Model loaded: version=1.0.0-synthetic schema=1 features=7 checksum=1504619244 (verified)
+```
+
+Также подтверждено:
+
+```text
+model_valid=1
+```
+
+### ML Commands
+
+```text
+is_ml_status
+is_ml_reload
+```
+
+### Debug
+
+```text
+is_ml_debug 1
+```
+
+После диагностики:
+
+```text
+is_ml_debug 0
+```
+
+### Enable
+
+```text
+is_ml_enabled 1
+```
+
+### Recommended ML settings
+
+```text
+is_ml_confidence 0.5
+is_ml_threshold 0.75
+is_ml_sample_interval 5.0
+is_ml_log 1
+is_ml_debug 0
+```
+
+> ML является дополнительным сигналом. Один ML score не должен быть единственным основанием для автоматического наказания.
+
+---
+
+# 👁️ Wallhack / Ray Tracing
+
+`is_wallhack` использует visibility analysis с bounded trace budget.
+
+Статус:
+
+```text
+is_wallhack_status
+```
 
 Отслеживаются:
 
@@ -117,508 +274,80 @@ window timing
 trace utilization
 ```
 
-При ошибке или недостатке runtime-информации используется fail-open подход.
-
-### 💨 Anti-Smoke
-
-* ✅ Spatial grid.
-* ✅ Безопасная работа с динамическими smoke.
-* ✅ Защита от устаревших индексов.
-* ✅ Оптимизация количества `players × smokes` проверок.
-
-### 🎯 Aimbot
-
-* ✅ Persistent angle ring buffer.
-* ✅ Убрано создание временной истории в hot path.
-* ✅ Улучшен reset состояния.
-* ✅ Более консервативная оценка подозрительных снапов.
-
-### ⚡ Speedhack
-
-* ✅ Кэширование порогов скорости.
-* ✅ Снижение повторных вычислений.
-* ✅ Исправлен reset peak state.
-* ✅ Улучшен timer lifecycle.
-
-### 🗄️ Database
-
-* ✅ SQLite.
-* ✅ MySQL / MariaDB.
-* ✅ Async callbacks.
-* ✅ Automatic reconnect.
-* ✅ Retry backoff:
+Принцип:
 
 ```text
-5 → 10 → 20 → 40 → 60 секунд
+cheap validation
+      ↓
+cache
+      ↓
+early exit
+      ↓
+trace
+      ↓
+visibility evidence
 ```
 
-* ✅ Защита от stale callbacks.
-* ✅ Health checks.
-* ✅ Безопасный `client = 0` server context.
-
-### 🤖 Machine Learning
-
-В релиз добавлен отдельный необязательный модуль:
-
-```text
-is_ml.smx
-```
-
-Архитектура:
-
-```text
-23 classical detectors
-        +
-1 ML signal module
-        ↓
-24 total modules
-```
-
-ML работает локально и не требует Python, HTTP API или внешнего сервера во время игры.
-
-Текущая модель:
-
-```text
-Model version: 1.0.0-synthetic
-Schema version: 1
-Features: 7
-Checksum: 1504619244
-```
-
-### ✅ Live ML verification
-
-На реальном Counter-Strike: Source сервере подтверждена успешная загрузка модели:
-
-```text
-[ML] Model loaded: version=1.0.0-synthetic schema=1 features=7 checksum=1504619244 (verified)
-```
-
-Также подтверждено:
-
-```text
-model_valid=1
-```
-
-и успешный reload модели через:
-
-```text
-is_ml_reload
-```
+Это позволяет ограничивать дорогие trace-операции на серверах с большим количеством игроков.
 
 ---
 
-# 🛡️ Fail-Safe Architecture
+# ⚡ Performance
 
-Iron Sentinel придерживается принципа:
+Основные оптимизации:
 
-```text
-подозрение
-    ↓
-счётчик / наблюдение
-    ↓
-дополнительные признаки
-    ↓
-подтверждение
-    ↓
-действие
-```
+### `is_aimbot`
 
-Ошибки runtime-состояния:
+Persistent ring buffer без создания временного массива истории в hot path.
 
-```text
-invalid client
-invalid entity
-invalid handle
-missing optional dependency
-unavailable data
-```
+### `is_wallhack`
 
-не должны автоматически превращаться в бан.
+Bounded trace budget, cache, early exits и trace metrics.
 
-Для ML:
+### `is_antismoke`
 
-```text
-invalid model
-    ↓
-ML disabled
-    ↓
-23 classical modules continue
-```
+Spatial grid вместо полного перебора всех `players × smokes`.
+
+### `is_speedhack`
+
+Кэширование speed thresholds и сокращение повторных velocity calculations.
+
+### `is_banlist`
+
+Повторный parse только при необходимости.
+
+### `is_core`
+
+Снижение лишнего formatting/API work.
 
 ---
 
-# 📦 24 модуля
+# 🗺️ Cross-Map Protection
 
-|  № | Модуль           | Назначение                                |
-| -: | ---------------- | ----------------------------------------- |
-|  1 | `is_core`        | Core API, logging, ban, configuration     |
-|  2 | `is_commands`    | Command protection                        |
-|  3 | `is_cvars`       | Client ConVar checks                      |
-|  4 | `is_antispam`    | Connection/name/team spam protection      |
-|  5 | `is_speedhack`   | Speed anomaly detection                   |
-|  6 | `is_aimbot`      | Aimbot detection                          |
-|  7 | `is_wallhack`    | Visibility / trace analysis               |
-|  8 | `is_eyetest`     | Eye-angle sanity                          |
-|  9 | `is_autotrigger` | Trigger automation detection              |
-| 10 | `is_spinhack`    | Spin detection                            |
-| 11 | `is_antiflash`   | Flash-related protection                  |
-| 12 | `is_antismoke`   | Smoke-related protection                  |
-| 13 | `is_rcon`        | RCON protection                           |
-| 14 | `is_banlist`     | Cached external banlists                  |
-| 15 | `is_aimlock`     | Aim-lock detection                        |
-| 16 | `is_macro`       | Input macro detection                     |
-| 17 | `is_nolerp`      | Interpolation sanity                      |
-| 18 | `is_backtrack`   | Backtrack telemetry                       |
-| 19 | `is_ping`        | Ping control                              |
-| 20 | `is_chatclear`   | Chat-clear protection                     |
-| 21 | `is_anglepatch`  | Angle anomaly protection                  |
-| 22 | `is_dll`         | DLL detection when extension is available |
-| 23 | `is_database`    | SQLite/MySQL logging                      |
-| 24 | `is_ml`          | Optional ML-assisted signal               |
-
----
-
-# ✨ Основные возможности
-
-* ✅ 24 SourceMod-модуля.
-* ✅ 23 classical detection modules.
-* ✅ Optional ML signal.
-* ✅ 93 CVAR.
-* ✅ SQLite / MySQL / MariaDB.
-* ✅ Automatic database reconnect.
-* ✅ Client-slot isolation.
-* ✅ Cross-map state protection.
-* ✅ Persistent timer lifecycle protection.
-* ✅ Bounded Ray/visibility trace budget.
-* ✅ Runtime trace metrics.
-* ✅ Aimbot ring-buffer optimization.
-* ✅ AntiSmoke spatial grid.
-* ✅ Banlist modification-time caching.
-* ✅ Fail-open runtime behaviour.
-* ✅ SourceMod admin immunity support.
-* ✅ Local deterministic ML inference.
-* ✅ Model checksum validation.
-* ✅ NaN/Inf model protection.
-* ✅ SourcePawn 1.12 compatibility.
-
----
-
-# 🤖 ML Configuration
-
-ML отключён по умолчанию:
+Исправлен критический сценарий:
 
 ```text
-is_ml_enabled 0
+Map A
+  ↓
+changelevel
+  ↓
+Map B
+  ↓
+reconnect
 ```
 
-Включение:
+Легитимный reconnect после смены карты не должен автоматически считаться connection spam.
+
+Также проверяются:
 
 ```text
-is_ml_enabled 1
-```
-
-Порог наблюдения:
-
-```text
-is_ml_confidence 0.5
-```
-
-Порог высокого confidence:
-
-```text
-is_ml_threshold 0.75
-```
-
-Интервал анализа:
-
-```text
-is_ml_sample_interval 5.0
-```
-
-Логирование:
-
-```text
-is_ml_log 1
-```
-
-Debug:
-
-```text
-is_ml_debug 1
-```
-
-После диагностики:
-
-```text
-is_ml_debug 0
-```
-
-Перезагрузка модели:
-
-```text
-is_ml_reload
-```
-
-Статус:
-
-```text
-is_ml_status
-```
-
-> ML является дополнительным сигналом и не должен использоваться как единственное основание для автоматического наказания.
-
----
-
-# 🧪 Проверка после установки
-
-## 1. SourceMod
-
-```text
-sm version
-```
-
-Ожидается SourceMod 1.12.x.
-
-## 2. Metamod
-
-```text
-meta list
-```
-
-## 3. Все плагины
-
-```text
-sm plugins list
-```
-
-## 4. Core
-
-```text
-is_status
-```
-
-## 5. Wallhack / Trace
-
-```text
-is_wallhack_status
-```
-
-## 6. Aimbot
-
-```text
-is_aimbot_status
-```
-
-## 7. Anti-Smoke
-
-```text
-is_antismoke_status
-```
-
-## 8. Banlist
-
-```text
-is_banlist_status
-```
-
-## 9. Database
-
-```text
-is_db_status
-```
-
-## 10. ML
-
-```text
-is_ml_status
-```
-
----
-
-# 🔍 Проверка команд модулей
-
-```text
-sm cmds is_core
-sm cmds is_antismoke
-sm cmds is_banlist
-sm cmds is_database
-sm cmds is_ml
-```
-
-Это позволяет увидеть команды, реально зарегистрированные каждым плагином.
-
----
-
-# 🤖 Полная проверка ML
-
-```text
-is_ml_status
-```
-
-Включить debug:
-
-```text
-is_ml_debug 1
-```
-
-Перезагрузить модель:
-
-```text
-is_ml_reload
-```
-
-Проверить:
-
-```text
-is_ml_status
-```
-
-Включить:
-
-```text
-is_ml_enabled 1
-```
-
-Проверить снова:
-
-```text
-is_ml_status
-```
-
-При работающем inference значение:
-
-```text
-inferences
-```
-
-должно увеличиваться при обработке игроков.
-
-После диагностики:
-
-```text
-is_ml_debug 0
-```
-
----
-
-# 🗺️ Проверка после смены карты
-
-После `changelevel`:
-
-```text
-sm plugins list
-is_status
-is_wallhack_status
-is_db_status
-is_ml_status
-```
-
-Проверяется:
-
-```text
-plugin state
-timer state
 client state
+timers
+timestamps
 trace state
-database state
 ML state
+database state
 ```
-
----
-
-# 🔄 Проверка reconnect
-
-После подключения/отключения игрока:
-
-```text
-is_status
-is_ml_status
-```
-
-Ключевое требование:
-
-```text
-Player A
-↓
-disconnect
-↓
-Player B
-↓
-same client slot
-```
-
-Игрок B не должен наследовать состояние игрока A.
-
----
-
-# ⚙️ Рекомендуемый production ML profile
-
-Для консервативного режима:
-
-```text
-is_ml_enabled 1
-is_ml_confidence 0.5
-is_ml_threshold 0.75
-is_ml_sample_interval 5.0
-is_ml_log 1
-is_ml_debug 0
-```
-
----
-
-# 👁️ Wallhack / Trace Performance
-
-Проверка:
-
-```text
-is_wallhack_status
-```
-
-Следить за:
-
-```text
-budget
-used
-checks
-drops
-blocked
-window_elapsed_ms
-trace_utilization
-```
-
-Если нагрузка становится высокой, система должна ограничивать объём дорогих trace-операций, а не выполнять бесконечное количество трассировок.
-
----
-
-# 🛡️ Detection Philosophy
-
-Iron Sentinel не считает отдельное событие автоматическим доказательством чита.
-
-Например:
-
-### Anti-Smoke
-
-Нахождение игрока в smoke само по себе не является доказательством чита.
-
-### Anti-Flash
-
-Получение flash само по себе не является доказательством anti-flash.
-
-### Macro
-
-Одно быстрое действие недостаточно для определения макроса.
-
-### NoLerp
-
-Одного подозрительного значения недостаточно для наказания.
-
-### Backtrack
-
-Используется совокупность признаков и повторяемость поведения.
-
-### Wallhack
-
-Visibility/trace data используется как дополнительное evidence, а некорректное состояние обрабатывается fail-open.
 
 ---
 
@@ -632,9 +361,13 @@ MySQL
 MariaDB
 ```
 
-Для одного сервера рекомендуется SQLite.
+Automatic reconnect:
 
-Database status:
+```text
+5 → 10 → 20 → 40 → 60 секунд
+```
+
+Проверка:
 
 ```text
 is_db_status
@@ -646,11 +379,36 @@ Reconnect:
 is_db_reconnect
 ```
 
-Retry:
+---
 
-```text
-5 → 10 → 20 → 40 → 60 секунд
-```
+# 📦 24 модуля
+
+|  № | Модуль           | Назначение                            |
+| -: | ---------------- | ------------------------------------- |
+|  1 | `is_core`        | Core API, ban, logging, configuration |
+|  2 | `is_commands`    | Command protection                    |
+|  3 | `is_cvars`       | Client ConVar validation              |
+|  4 | `is_antispam`    | Connection/name/team spam             |
+|  5 | `is_speedhack`   | Speed anomaly detection               |
+|  6 | `is_aimbot`      | Aimbot detection                      |
+|  7 | `is_wallhack`    | Visibility / trace analysis           |
+|  8 | `is_eyetest`     | Eye-angle validation                  |
+|  9 | `is_autotrigger` | Trigger behaviour                     |
+| 10 | `is_spinhack`    | Spin detection                        |
+| 11 | `is_antiflash`   | Flash protection                      |
+| 12 | `is_antismoke`   | Smoke protection                      |
+| 13 | `is_rcon`        | RCON protection                       |
+| 14 | `is_banlist`     | Cached banlists                       |
+| 15 | `is_aimlock`     | Aim-lock detection                    |
+| 16 | `is_macro`       | Macro detection                       |
+| 17 | `is_nolerp`      | Interpolation validation              |
+| 18 | `is_backtrack`   | Backtrack telemetry                   |
+| 19 | `is_ping`        | Ping control                          |
+| 20 | `is_chatclear`   | Chat-clear protection                 |
+| 21 | `is_anglepatch`  | Angle anomaly protection              |
+| 22 | `is_dll`         | DLL detection                         |
+| 23 | `is_database`    | SQLite/MySQL logging                  |
+| 24 | `is_ml`          | Optional ML-assisted signal           |
 
 ---
 
@@ -660,203 +418,229 @@ Retry:
 addons/sourcemod/configs/is_config.cfg
 ```
 
-Содержит основные настройки Iron Sentinel.
-
-ML-настройки:
+В проекте:
 
 ```text
-is_ml_*
+86 core CVAR
++
+7 ML CVAR
+=
+93 CVAR
+```
+
+---
+
+# 🧪 Проверка после установки
+
+```text
+sm version
+meta list
+sm plugins list
+```
+
+Core:
+
+```text
+is_status
+```
+
+Aimbot:
+
+```text
+is_aimbot_status
+```
+
+Wallhack:
+
+```text
+is_wallhack_status
+```
+
+AntiSmoke:
+
+```text
+is_antismoke_status
+```
+
+Banlist:
+
+```text
+is_banlist_status
 ```
 
 Database:
 
 ```text
-addons/sourcemod/configs/databases.cfg
-```
-
-Не заменяйте существующий `databases.cfg` целиком — добавляйте необходимые настройки Iron Sentinel в существующий блок `Databases`.
-
----
-
-# 🔨 Компиляция
-
-Windows:
-
-```text
-tools/compile_all_windows.bat
-```
-
-Runtime-focused:
-
-```text
-tools/compile_runtime_fix_windows.bat
-```
-
-Strict:
-
-```text
-tools/compile_strict_windows.bat
+is_db_status
 ```
 
 ML:
 
 ```text
-tools/compile_ml_windows.bat
-```
-
-После изменения любого `.sp` необходимо пересобрать соответствующий `.smx`.
-
----
-
-# 📁 Структура
-
-Исходники:
-
-```text
-addons/sourcemod/scripting/
-```
-
-Плагины:
-
-```text
-addons/sourcemod/plugins/
-```
-
-Конфигурация:
-
-```text
-addons/sourcemod/configs/
-```
-
-ML model:
-
-```text
-addons/sourcemod/data/is_ml/
-```
-
----
-
-# 📦 Release Package
-
-Основной production archive:
-
-```text
-Iron.Sentinel.Core.v1.1.2.zip
-```
-
-Содержит:
-
-```text
-23 classical SourcePawn modules
-+
-is_ml
-+
-configuration
-+
-translations
-+
-includes
-+
-build tools
-+
-ML model
-+
-tests
-+
-documentation
-```
-
----
-
-# 🔒 Security
-
-Проверены и усилены:
-
-* ✅ Client validation.
-* ✅ Entity validation.
-* ✅ Server/system `client = 0`.
-* ✅ Client-slot reuse.
-* ✅ Timer lifecycle.
-* ✅ Database callbacks.
-* ✅ RCON hook lifecycle.
-* ✅ Model checksum validation.
-* ✅ Model size validation.
-* ✅ NaN/Inf model protection.
-* ✅ Path handling.
-* ✅ Optional AntiDLL degradation.
-* ✅ Admin/immunity handling.
-* ✅ Fail-open behaviour.
-
----
-
-# 🧪 Диагностика
-
-При проблемах сначала:
-
-```text
-sm plugins list
-meta list
-sm version
-```
-
-Затем:
-
-```text
-is_status
-is_wallhack_status
-is_aimbot_status
-is_antismoke_status
-is_banlist_status
-is_db_status
 is_ml_status
+```
+
+Команды модулей:
+
+```text
+sm cmds is_core
+sm cmds is_antismoke
+sm cmds is_banlist
+sm cmds is_database
+sm cmds is_ml
+```
+
+---
+
+# 🧪 ML Live Check
+
+```text
+is_ml_status
+```
+
+Включить:
+
+```text
+is_ml_enabled 1
+```
+
+Debug:
+
+```text
+is_ml_debug 1
+```
+
+Reload:
+
+```text
+is_ml_reload
 ```
 
 Проверить:
 
 ```text
-addons/sourcemod/logs/
-addons/sourcemod/logs/errors_*.txt
+is_ml_status
 ```
 
-Искать:
+После проверки:
 
 ```text
-Invalid Handle
-Invalid client index
-Invalid convar handle
-Exception reported
-Plugin startup error
+is_ml_debug 0
+```
+
+Для рабочего inference значение:
+
+```text
+inferences
+```
+
+должно увеличиваться во время работы сервера.
+
+---
+
+# 🗺️ Проверка после смены карты
+
+```text
+sm plugins list
+is_status
+is_wallhack_status
+is_db_status
+is_ml_status
 ```
 
 ---
 
-# 🈯 Encoding / Русский текст
+# 🔨 Compilation
 
-Ресурсы проекта должны оставаться в корректном UTF-8.
+```text
+tools/compile_all_windows.bat
+tools/compile_runtime_fix_windows.bat
+tools/compile_strict_windows.bat
+tools/compile_ml_windows.bat
+```
 
-Если Windows console отображает русский текст в виде:
+Строгая сборка должна завершаться при наличии warning.
+
+---
+
+# 🔒 Security Hardening
+
+Проверяются:
+
+* ✅ Client validation.
+* ✅ Entity validation.
+* ✅ `client = 0` server context.
+* ✅ Client-slot reuse.
+* ✅ Timer lifecycle.
+* ✅ Database callback safety.
+* ✅ RCON hook lifecycle.
+* ✅ Model checksum.
+* ✅ Model size.
+* ✅ NaN/Inf model data.
+* ✅ Path handling.
+* ✅ Admin/immunity.
+* ✅ Fail-open behaviour.
+* ✅ Optional AntiDLL degradation.
+
+---
+
+# 🧪 QA
+
+Покрываются:
+
+```text
+compile checks
+regression tests
+property tests
+ML model validation
+checksum validation
+timer lifecycle
+client-slot reuse
+cross-map timing
+database callbacks
+model corruption
+NaN / Inf handling
+```
+
+Последний зафиксированный regression result:
+
+```text
+59 passed
+0 failed
+```
+
+ML tests:
+
+```text
+21 passed
+0 failed
+```
+
+---
+
+# 🈯 Encoding
+
+Проект использует UTF-8 для исходников, переводов и конфигураций.
+
+Если Windows CMD отображает русский текст неправильно:
 
 ```text
 ╨Я╨╛╨║╨░╨╖╨░╤В╤М ...
 ```
 
-это может быть проблема code page терминала.
-
-Для Windows CMD можно проверить:
+проверить code page:
 
 ```bat
 chcp 65001
 ```
 
-После чего повторить команду.
-
-Не перекодируйте исходники и translation files в ANSI только из-за неправильного отображения терминала.
+Не переводите файлы проекта в ANSI только из-за проблемы отображения терминала.
 
 ---
 
 # ⚠️ AntiDLL
 
-При отсутствии внешнего расширения возможен режим:
+При отсутствии внешнего расширения:
 
 ```text
 [IRON SENTINEL] AntiDLL extension not found. DLL detection in limited mode.
@@ -870,8 +654,6 @@ chcp 65001
 
 # 🧾 Source Metadata
 
-Все модули Iron Sentinel используют:
-
 ```text
 Version: 1.1.2
 Author: Maxim Melnikov
@@ -884,138 +666,72 @@ Author: Maxim Melnikov
 +
 1 optional ML module
 =
-24 total modules
+24 modules
 ```
 
 ---
 
 # 📋 Changelog — v1.1.2
 
-## Build
+### Build
 
-* Fixed Aimbot undefined symbols.
-* Fixed Wallhack constant-expression issue.
-* Fixed unsupported `Max()` usage.
-* Fixed Database missing native reference.
-* Fixed Wallhack window timing state.
-* Removed unused AntiSmoke state.
-* Improved SourcePawn 1.12 compatibility.
+* ✅ Aimbot compile fixes.
+* ✅ Wallhack compile fixes.
+* ✅ Database compile fixes.
+* ✅ SourcePawn 1.12 compatibility fixes.
+* ✅ Wallhack `Max()` compatibility fix.
 
-## Runtime
+### Runtime
 
-* Fixed AntiSmoke invalid handle.
-* Fixed Banlist `client = 0`.
-* Hardened Core system context.
-* Improved ConVar initialization.
-* Improved database callbacks.
-* Improved client-state reset.
-* Fixed persistent timer lifecycle.
+* ✅ AntiSmoke invalid handle fix.
+* ✅ Banlist `client = 0` fix.
+* ✅ Core startup/ConVar protection.
+* ✅ Client-slot state reset.
+* ✅ Timer lifecycle fixes.
+* ✅ Cross-map AntiSpam fix.
 
-## Cross-Map
+### Performance
 
-* Fixed AntiSpam map-transition reconnect handling.
-* Replaced affected persistent timing with monotonic timing.
-* Hardened map-change state.
-* Improved reconnect history cleanup.
+* ✅ Aimbot ring buffer.
+* ✅ Wallhack bounded trace budget.
+* ✅ Trace cache / early exits.
+* ✅ AntiSmoke spatial grid.
+* ✅ Speedhack threshold caching.
+* ✅ Banlist cache invalidation.
+* ✅ Core logging optimization.
 
-## Performance
+### Database
 
-* Aimbot ring-buffer optimization.
-* Wallhack bounded trace budget.
-* Wallhack cache and early exits.
-* AntiSmoke spatial grid.
-* Speedhack threshold caching.
-* Banlist modification-time caching.
-* Reduced repeated API work.
+* ✅ SQLite.
+* ✅ MySQL / MariaDB.
+* ✅ Automatic reconnect.
+* ✅ Retry backoff.
+* ✅ Health checks.
+* ✅ Stale callback protection.
 
-## Database
+### ML
 
-* SQLite support.
-* MySQL / MariaDB support.
-* Automatic reconnect.
-* Retry backoff.
-* Health checking.
-* Stale callback protection.
+* ✅ Optional `is_ml`.
+* ✅ Local deterministic inference.
+* ✅ Model schema validation.
+* ✅ Fixed-point coefficient representation.
+* ✅ Checksum validation.
+* ✅ NaN/Inf protection.
+* ✅ Model reload.
+* ✅ Live model-load verification.
 
-## Machine Learning
+### Security
 
-* Added optional `is_ml` module.
-* Added deterministic local inference.
-* Added model schema validation.
-* Added fixed-point coefficient representation.
-* Added checksum validation.
-* Added NaN/Inf protection.
-* Added model reload.
-* Added `is_ml_status`.
-* Added debug diagnostics.
-* Confirmed live model loading on CS:S server.
-
-## Security
-
-* Improved client validation.
-* Improved slot reuse isolation.
-* Improved server/system context handling.
-* Improved model validation.
-* Improved optional dependency handling.
-* Improved fail-safe behaviour.
+* ✅ Client validation.
+* ✅ Slot isolation.
+* ✅ Timer hardening.
+* ✅ Database callback hardening.
+* ✅ Model validation.
+* ✅ Fail-safe runtime behaviour.
 
 ---
 
-# 🧪 Live ML Verification
-
-На реальном сервере подтверждено:
-
-```text
-SourceMod: 1.12.0.7251
-SourcePawn: 1.12.0.7251
-```
-
-ML:
-
-```text
-Model loaded
-model_valid=1
-schema=1
-features=7
-checksum=1504619244
-```
-
-Пример фактического runtime debug:
-
-```text
-coefficient[0] = 4.80043220
-coefficient[1] = 4.75823879
-coefficient[2] = 4.76937675
-coefficient[3] = 4.78085613
-coefficient[4] = 5.34459400
-coefficient[5] = 4.83499717
-coefficient[6] = 4.91624879
-intercept = -13.59416961
-```
-
-Это подтверждает корректное чтение текущей модели SourceMod runtime.
-
----
-
-# 📜 License
-
-**GPLv3**
-
----
-
-# 🙏 Credits
-
-* **SourceMod Dev Team** — SourceMod
-* **Metamod:Source Team** — Metamod:Source
-* **SMAC Development Team** — anti-cheat concepts
-* **Little Anti-Cheat (Lilac)** — detection concepts
-* **AntiDLL** — DLL Detection concept
-
-Iron Sentinel является самостоятельным проектом и не является официальным продуктом перечисленных проектов.
-
----
-
-# 📞 Contact
+# 📞 Contacts
 
 **Author:** Maxim Melnikov
 
